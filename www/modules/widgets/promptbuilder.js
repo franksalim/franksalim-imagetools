@@ -9,7 +9,6 @@ export class PromptBuilder extends HTMLElement {
       <style>
         :host {
           display: block;
-          border: 1px solid #888;
           padding: 4px;
           margin: 4px;
         }

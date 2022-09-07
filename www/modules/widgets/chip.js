@@ -8,7 +8,7 @@ export class Chip extends HTMLElement {
           display: block;
           margin: 2px;
           padding: 2px;
-          border: 1px solid black;
+          border: 1px solid #888;
           border-radius: 4px;
         }
         input {

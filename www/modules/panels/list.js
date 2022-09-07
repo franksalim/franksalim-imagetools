@@ -10,13 +10,15 @@ export class FsList extends HTMLElement {
           background-color: #888;
           padding: 8px;
           margin: 4px;
+          width: 360px;
           overflow-y: scroll;
-          overflow-x: hidden;
-          width: 200px;
+        }
+        :host::-webkit-scrollbar {
+          width: 0 !important;
         }
         img {
           width: 120px;
-          display: block;
+          display: inline-block;
           margin: 4px;
         }
         </style>
