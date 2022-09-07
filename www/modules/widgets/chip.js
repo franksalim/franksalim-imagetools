@@ -3,7 +3,22 @@ export class Chip extends HTMLElement {
     super();
     let shadow = this.attachShadow({mode: 'open'});
     shadow.innerHTML = `
-      <input type=text id=input><button id=removeButton>❌</button>
+      <style>
+        :host {
+          display: block;
+          margin: 2px;
+          padding: 2px;
+          border: 1px solid black;
+          border-radius: 4px;
+        }
+        input {
+          background: none;
+          border: none;
+          outline: none;
+          margin-left: 16px;
+        }
+      </style>
+      <button id=removeButton>X</button><input type=text id=input>
     `;
     this.shadow = shadow;
     this.input = shadow.getElementById("input");
