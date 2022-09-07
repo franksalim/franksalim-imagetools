@@ -3,7 +3,7 @@
 import os
 SD_REPO_PATH = os.path.expanduser("~/repos/stable-diffusion/")
 
-from flask import Flask, send_file, request
+from flask import Flask, send_file, request, redirect
 from io import BytesIO
 
 import gc
@@ -157,6 +157,10 @@ def generate_bytes(args):
 app = Flask(__name__,
   static_url_path='', 
   static_folder='../www')
+
+@app.route('/')
+def index():
+    return redirect("/index.html", code=302)
 
 @app.route("/generate/", methods = ['POST'])
 def generate():
