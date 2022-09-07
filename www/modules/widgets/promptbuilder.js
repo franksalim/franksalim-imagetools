@@ -1,3 +1,5 @@
+import {Chip} from "/modules/widgets/chip.js";
+
 export class PromptBuilder extends HTMLElement {
   constructor() {
     super();
@@ -28,9 +30,13 @@ export class PromptBuilder extends HTMLElement {
     chips.innerHTML = "";
 
     for (const term of text.split(", ")) {
-      let chip = document.createElement("button");
-      chip.innerText = term;
-      chip.addEventListener("click", e => {
+      let chip = document.createElement("fs-chip");
+      chip.setValue(term);
+
+      chip.addEventListener("input", e => {
+        this.updateEditor(chips);
+      });
+      chip.addEventListener("delete", e => {
         chip.remove();
         this.updateEditor(chips);
       });
@@ -42,7 +48,7 @@ export class PromptBuilder extends HTMLElement {
     let prompt = "";
     let terms = [];
     for (const chip of chips.childNodes) {
-      terms.push(chip.innerText);
+      terms.push(chip.getValue());
     }
     prompt = terms.join(", ");
     this.ed.value = prompt;
