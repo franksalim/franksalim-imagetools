@@ -1,4 +1,4 @@
-# flask --app genrationserver.py --debug run
+# flask --app generationserver.py --debug run
 
 import os
 SD_REPO_PATH = os.path.expanduser("~/repos/stable-diffusion/")
@@ -14,7 +14,6 @@ import numpy as np
 from omegaconf import OmegaConf
 from PIL import Image
 from tqdm import tqdm, trange
-from imwatermark import WatermarkEncoder
 from itertools import islice
 from einops import rearrange
 from torchvision.utils import make_grid
