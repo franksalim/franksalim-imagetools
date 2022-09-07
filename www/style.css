@@ -1,0 +1,33 @@
+body, html {
+  margin: 0px;
+  background-color: #eee;
+}
+
+* {
+  font-family: sans-serif;
+}
+
+h1 {
+  margin: 0px;
+  font-size: 22px;
+  user-select: none;
+}
+
+h2 {
+  margin: 0px;
+  font-size: 18px;
+}
+
+details {
+  border: 1px solid #888;
+  padding: 4px;
+  user-select: none;
+}
+
+input, textarea {
+  width: 98%;
+}
+
+button {
+  margin: 4px;
+}
