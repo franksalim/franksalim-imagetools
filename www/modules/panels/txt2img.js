@@ -18,8 +18,6 @@ export class TextToImage extends HTMLElement {
         }
       </style>
 
-      <h1 id="titlebar">txt2image</h1>
-
       <fs-promptbuilder id=promptbuilder></fs-promptbuilder>
       <textarea placeholder=prompt id=prompt>macro photograph, glass beads, blue light, color grading</textarea>
 
