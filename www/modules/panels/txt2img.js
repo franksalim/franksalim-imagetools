@@ -128,7 +128,7 @@ export class TextToImage extends HTMLElement {
     let uri = URL.createObjectURL(await response.blob());
     document.getElementById("detail").setImage(uri);
     document.getElementById("detail").setArgs(params);
-    document.getElementById("historyList").addImage(uri);
+    document.getElementById("historyList").addImage(uri, params);
   }
 }
 

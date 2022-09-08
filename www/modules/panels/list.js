@@ -25,9 +25,14 @@ export class FsList extends HTMLElement {
     `;
     this.shadow = shadow;
   }
-  addImage(uri) {
+  addImage(uri, params) {
     let img = new Image();
     img.src = uri;
+    img.params = params;
+    img.addEventListener("click", e => {
+      document.getElementById("detail").setImage(uri);
+      document.getElementById("detail").setArgs(params);
+    });
     this.shadow.prepend(img);
   }
 }

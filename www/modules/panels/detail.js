@@ -17,14 +17,11 @@ export class Details extends HTMLElement {
         {'steps': '30', 'scale': '7.5', 'width': '448', 'height': '704', 'seed': '1337', 'prompt': 'neon light, cinematic color grading'}
       </p>
     `;
-
-    console.log(this.getAttribute("fs-id"));
     // TODO: buttons for actions (img2img, reopen prompt, etc.)
     // open in promptbuilder
     // img2img
     // star, annotate
     // upscale
-
     this.shadow = shadow;
   }
   
