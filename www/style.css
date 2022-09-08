@@ -30,7 +30,7 @@ details {
   user-select: none;
 }
 
-input, textarea {
+input, textarea, fs-slider {
   width: 98%;
 }
 

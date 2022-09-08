@@ -1,4 +1,6 @@
 import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
+import '../widgets/slider.js';
+
 export class TextToImage extends HTMLElement {
   static ids = ["steps", "scale", "width", "height", "seed", "prompt"];
 
@@ -27,18 +29,12 @@ export class TextToImage extends HTMLElement {
       <fs-promptbuilder id=promptbuilder></fs-promptbuilder>
       <textarea placeholder=prompt id=prompt>macro photograph, glass beads, blue light, color grading</textarea>
 
-      <details>
+      <details open>
         <h2>Width</h2>
-        <span class=inputAndValue>
-          <input type=range step=64 min=256 max=1024 value=704 id=width>
-          <span id=widthValue>704</span>
-        </span>
+        <fs-slider step=64 min=256 max=1024 value=704 id=width></fs-slider>
 
         <h2>Height</h2>
-        <span class=inputAndValue>
-          <input type=range step=64 min=256 max=1024 value=448 id=height>
-          <span id=heightValue>448</span>
-        </span>
+        <fs-slider step=64 min=256 max=1024 value=448 id=height></fs-slider>
 
         <button id=squarePresetButton>Square</button>
         <button id=portraitPresetButton>Portrait</button>
@@ -50,17 +46,11 @@ export class TextToImage extends HTMLElement {
         <button id=randomSeedButton>Random</button>
 
         <h2>Scale</h2>
-        <span class=inputAndValue>
-          <input type=range value=7.5 id=scale>
-          <span id=scaleValue>7.5</span>
-        </span>
+        <fs-slider step=0.5 min=-30 max=30 value=7.5 id=scale></fs-slider>
         <button id=defaultScaleButton>Default 7.5</button>
 
         <h2>Steps</h2>
-        <span class=inputAndValue>
-          <input type=range step=1 value=30 id=steps min=1 max=100>
-          <span id=stepsValue>30</span>
-        </span>
+        <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
         <button id=thirtyPresetButton>30</button>
         <button id=hundredPresetButton>100</button>
       </details>
@@ -89,23 +79,6 @@ export class TextToImage extends HTMLElement {
     let heightSlider = shadow.getElementById("height");
     let stepsSlider = shadow.getElementById("steps");
     let scaleSlider = shadow.getElementById("scale");
-
-    let widthValue = shadow.getElementById("widthValue");
-    let heightValue = shadow.getElementById("heightValue");
-    let stepsValue = shadow.getElementById("stepsValue");
-    let scaleValue = shadow.getElementById("scaleValue");
-    widthSlider.addEventListener("input", () => {
-      widthValue.textContent = widthSlider.value;
-    });
-    heightSlider.addEventListener("input", () => {
-      heightValue.textContent = heightSlider.value;
-    });
-    stepsSlider.addEventListener("input", () => {
-      stepsValue.textContent = stepsSlider.value;
-    });
-    scaleSlider.addEventListener("input", () => {
-      scaleValue.textContent = scaleSlider.value;
-    });
 
     let squarePresetButton = shadow.getElementById("squarePresetButton");
     squarePresetButton.addEventListener("click", e => {
