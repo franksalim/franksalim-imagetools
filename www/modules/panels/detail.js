@@ -8,8 +8,7 @@ export class Details extends HTMLElement {
         :host {
           flex: auto;
           background-color: #ccc;
-          padding: 8px;
-          margin: 4px;
+          padding: 16px;
         }
       </style>
       <img id=image>

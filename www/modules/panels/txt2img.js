@@ -10,18 +10,18 @@ export class TextToImage extends HTMLElement {
       <link rel=stylesheet href=style.css>
       <style>
         :host {
-          width: 400px;
-          flex: auto;
+          flex-basis: 300px;
+          flex-grow: 0;
+          flex-shrink: 0;
           background-color: #ccc;
-          border-radius: 8px;
-          padding: 8px;
+          padding: 16px;
         }
       </style>
 
       <h1 id="titlebar">txt2image</h1>
 
       <fs-promptbuilder id=promptbuilder></fs-promptbuilder>
-      <textarea placeholder=prompt id=prompt>macro photograph, velcro, blue light, color grading</textarea>
+      <textarea placeholder=prompt id=prompt>macro photograph, leaf cells, blue light, color grading</textarea>
 
       <details>
         <h2>Width</h2>

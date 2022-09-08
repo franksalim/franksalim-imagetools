@@ -6,11 +6,11 @@ export class FsList extends HTMLElement {
       <link rel=stylesheet href=style.css>
       <style>
         :host {
-          flex: auto;
+          flex-basis: 140px;
+          flex-grow: 0;
+          flex-shrink: 0;
           background-color: #888;
           padding: 8px;
-          margin: 4px;
-          width: 360px;
           overflow-y: scroll;
         }
         :host::-webkit-scrollbar {
