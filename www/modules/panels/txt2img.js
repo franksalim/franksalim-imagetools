@@ -1,11 +1,11 @@
-import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
+import { PromptBuilder } from "/modules/widgets/promptbuilder.js";
 
 export class TextToImage extends HTMLElement {
   static ids = ["steps", "scale", "width", "height", "seed", "prompt"];
 
   constructor() {
     super();
-    let shadow = this.attachShadow({mode: 'open'});
+    let shadow = this.attachShadow({ mode: 'open' });
     shadow.innerHTML = `
       <link rel=stylesheet href=style.css>
       <style>
@@ -35,6 +35,7 @@ export class TextToImage extends HTMLElement {
         <summary>Options</summary>
         <h2>Seed</h2>
         <input type=number value=1337 id=seed>
+        <button id=randomSeedButton>Random</button>
 
         <h2>Scale</h2>
         <input type=range value=7.5 id=scale>
@@ -53,14 +54,18 @@ export class TextToImage extends HTMLElement {
     shadow.getElementById("generateButton")
       .addEventListener("click", e => { this.generate() });
 
+    let seedInput = shadow.getElementById("seed");
+
+    shadow.getElementById("randomSeedButton")
+      .addEventListener("click", e => { seedInput.value = Math.floor(Math.random() * 1000000000) });
+
     shadow.getElementById("nextButton")
       .addEventListener("click", e => {
-        let seedInput = shadow.getElementById("seed");
         seedInput.value = Number.parseInt(seedInput.value) + 1;
 
         console.log(this);
         this.generate();
-    });
+      });
 
     let widthSlider = shadow.getElementById("width");
     let heightSlider = shadow.getElementById("height");
@@ -122,7 +127,7 @@ export class TextToImage extends HTMLElement {
     const response = await fetch("/generate/", {
       method: "POST",
       cache: "no-cache",
-      headers: {"Content-Type" : "application/json"},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(params)
     });
     let uri = URL.createObjectURL(await response.blob());
