@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from flask import Flask, send_file, request, redirect
 from io import BytesIO
 import gc
@@ -12,7 +14,8 @@ from torch import autocast
 # pip install git+https://github.com/huggingface/diffusers.git@main
 # pip install transformers ftfy
 # git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
-# flask --app generationserver.py --debug run
+# pushd stable-diffusion-v1-4 && git lfs pull; popd
+# ./services/generationserver.py
 
 
 def torch_gc():
@@ -80,3 +83,7 @@ def index():
 def generate():
     args = request.get_json()
     return generate_bytes(args)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
