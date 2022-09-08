@@ -11,10 +11,19 @@ from itertools import islice
 from transformers import AutoFeatureExtractor
 from diffusers import StableDiffusionPipeline
 from torch import autocast
+# 1. dependencies
 # pip install git+https://github.com/huggingface/diffusers.git@main
 # pip install transformers ftfy
+
+# 2. download model
+# if you have a huggingface account:
 # git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
 # pushd stable-diffusion-v1-4 && git lfs pull; popd
+# otherwise:
+# wget https://archive.org/download/stable-diffusion-v1-4.tar/stable-diffusion-v1-4.tar.gz
+# tar -zxf ./stable-diffusion-v1-4.tar.gz
+
+# 3. run server
 # ./services/generationserver.py
 
 
