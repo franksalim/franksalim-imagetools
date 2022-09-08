@@ -46,6 +46,10 @@ export class ToolPicker extends HTMLElement {
       document.getElementById("img2img").style.display = "block";
     });
 
+    shadow.getElementById("img2imgButton").addEventListener("dragover", e => {
+      shadow.getElementById("img2imgButton").dispatchEvent(new Event("click"));
+    });
+
     shadow.getElementById("txt2imgButton").addEventListener("click", e => {
       document.getElementById("txt2img").style.display = "block";
       document.getElementById("img2img").style.display = "none";
