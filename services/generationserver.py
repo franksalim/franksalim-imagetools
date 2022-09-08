@@ -9,7 +9,7 @@ from itertools import islice
 from transformers import AutoFeatureExtractor
 from diffusers import StableDiffusionPipeline
 from torch import autocast
-# pip install git+https: // github.com/huggingface/diffusers.git@main
+# pip install git+https://github.com/huggingface/diffusers.git@main
 # pip install transformers ftfy
 # git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
 # flask --app generationserver.py --debug run
