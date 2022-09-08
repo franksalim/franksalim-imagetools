@@ -24,9 +24,9 @@ export class ToolPicker extends HTMLElement {
         }
         </style>
 
-        <button title="image to image">img2img</button>
-        <button title="text to image" selected>txt2img</button>
-        <button title="inpainting">inpaint</button>
+        <button id=img2imgButton>img2img</button>
+        <button selected id=txt2imgButton>txt2img</button>
+        <button id=inpaintingButton>inpaint</button>
     `;
     this.shadow = shadow;
     let buttons = shadow.querySelectorAll("button");
@@ -36,6 +36,20 @@ export class ToolPicker extends HTMLElement {
         button.setAttribute("selected", true);
       })
     }
+
+    // default visibilities
+    document.getElementById("txt2img").style.display = "block";
+    document.getElementById("img2img").style.display = "none";
+
+    shadow.getElementById("img2imgButton").addEventListener("click", e => {
+      document.getElementById("txt2img").style.display = "none";
+      document.getElementById("img2img").style.display = "block";
+    });
+
+    shadow.getElementById("txt2imgButton").addEventListener("click", e => {
+      document.getElementById("txt2img").style.display = "block";
+      document.getElementById("img2img").style.display = "none";
+    });
   }
 }
 

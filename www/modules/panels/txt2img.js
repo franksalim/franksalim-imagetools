@@ -1,5 +1,4 @@
-import { PromptBuilder } from "/modules/widgets/promptbuilder.js";
-
+import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
 export class TextToImage extends HTMLElement {
   static ids = ["steps", "scale", "width", "height", "seed", "prompt"];
 
@@ -176,4 +175,4 @@ export class TextToImage extends HTMLElement {
   }
 }
 
-window.customElements.define('fs-txt2image', TextToImage);
+window.customElements.define('fs-txt2img', TextToImage);
