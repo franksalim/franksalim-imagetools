@@ -17,11 +17,9 @@ export class Details extends HTMLElement {
         {"steps":"30","scale":"7.5","width":"448","height":"704","seed":"1337","prompt":"neon light, cinematic color grading"}
       </p>
       <button id=openButton>Open in Prompt Builder</button>
+      <a id=downloadLink>Download</a>
     `;
-    // TODO: buttons for actions (img2img, etc.)
-    // img2img
-    // star, annotate
-    // upscale
+
     this.shadow = shadow;
     shadow.getElementById("openButton").addEventListener("click", e => {
       let s = shadow.getElementById("args").innerText;
@@ -32,6 +30,14 @@ export class Details extends HTMLElement {
 
   setImage(uri) {
     this.shadow.getElementById("image").setAttribute("src", uri);
+    let downloadLink = this.shadow.getElementById("downloadLink");
+    window.test1 = uri;
+    console.log(uri);
+    downloadLink.href = uri;
+    // get the path part of the object URL.
+    // URL.pathname doesn't work like HTTP URLs
+    let path = uri.toString().split("/").pop();
+    downloadLink.download = path + ".png";
   }
   
   setArgs(args) {
