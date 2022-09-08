@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from flask import Flask, send_file, request, redirect
 from io import BytesIO
 import gc
@@ -16,12 +18,13 @@ from torch import autocast
 # 2. download model
 # if you have a huggingface account:
 # git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
+# pushd stable-diffusion-v1-4 && git lfs pull; popd
 # otherwise:
 # wget https://archive.org/download/stable-diffusion-v1-4.tar/stable-diffusion-v1-4.tar.gz
 # tar -zxf ./stable-diffusion-v1-4.tar.gz
 
 # 3. run server
-# flask --app services/generationserver.py --debug run
+# ./services/generationserver.py
 
 
 def torch_gc():
@@ -89,3 +92,7 @@ def index():
 def generate():
     args = request.get_json()
     return generate_bytes(args)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
