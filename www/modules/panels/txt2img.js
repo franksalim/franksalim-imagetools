@@ -112,33 +112,42 @@ export class TextToImage extends HTMLElement {
     squarePresetButton.addEventListener("click", e => {
       widthSlider.value = 512;
       heightSlider.value = 512;
+      widthSlider.dispatchEvent(new Event("input"));
+      heightSlider.dispatchEvent(new Event("input"));
     });
 
     let portraitPresetButton = shadow.getElementById("portraitPresetButton");
     portraitPresetButton.addEventListener("click", e => {
       widthSlider.value = 448;
       heightSlider.value = 704;
+      widthSlider.dispatchEvent(new Event("input"));
+      heightSlider.dispatchEvent(new Event("input"));
     });
 
     let landcapePresetButton = shadow.getElementById("landcapePresetButton");
     landcapePresetButton.addEventListener("click", e => {
       widthSlider.value = 704;
       heightSlider.value = 448;
+      widthSlider.dispatchEvent(new Event("input"));
+      heightSlider.dispatchEvent(new Event("input"));
     });
 
     let thirtyPresetButton = shadow.getElementById("thirtyPresetButton");
     thirtyPresetButton.addEventListener("click", e => {
       stepsSlider.value = 30;
+      stepsSlider.dispatchEvent(new Event("input"));
     });
 
     let hundredPresetButton = shadow.getElementById("hundredPresetButton");
     hundredPresetButton.addEventListener("click", e => {
       stepsSlider.value = 100;
+      stepsSlider.dispatchEvent(new Event("input"));
     });
 
     let defaultScaleButton = shadow.getElementById("defaultScaleButton");
     defaultScaleButton.addEventListener("click", e => {
       scaleSlider.value = 7.5;
+      scaleSlider.dispatchEvent(new Event("input"));
     });
 
     shadow.getElementById('promptbuilder').setEditor(
