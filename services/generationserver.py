@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from flask import Flask, send_file, request, redirect
 from io import BytesIO
 import gc
@@ -21,7 +22,8 @@ from torch import autocast
 # tar -zxf ./stable-diffusion-v1-4.tar.gz
 
 # 3. run server
-# flask --app services/generationserver.py --debug run
+# cd services
+# ./generationserver.py
 
 
 def torch_gc():
@@ -89,3 +91,7 @@ def index():
 def generate():
     args = request.get_json()
     return generate_bytes(args)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
