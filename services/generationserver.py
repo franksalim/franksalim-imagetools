@@ -28,6 +28,7 @@ from torch import autocast
 
 device = "cuda"
 sd_pipeline = None
+img_pipeline = None
 
 class DummySafetyChecker():
     def __init__(self, *args, **kwargs):
@@ -96,7 +97,7 @@ def generate_img2img(request):
     image = request.files["initImage"]
 
     torch_gc()
-    global sd_pipeline
+    global img_pipeline
 
     optprompt = args["prompt"]
     optscale = float(args["scale"])
@@ -105,7 +106,7 @@ def generate_img2img(request):
     init_image = Image.open(BytesIO(image.stream.read())).convert("RGB")
 
     # load model if not loaded
-    if sd_pipeline is None:
+    if img_pipeline is None:
         print("loading img2img model...")
 
         # fp16 is half precision
@@ -116,12 +117,12 @@ def generate_img2img(request):
         pipe = pipe.to(device)
 
         pipe.enable_attention_slicing()
-        sd_pipeline = pipe
+        img_pipeline = pipe
 
     generator = torch.Generator(device=device)
 
     with autocast("cuda"):
-        image = sd_pipeline(prompt=optprompt,
+        image = img_pipeline(prompt=optprompt,
                             guidance_scale=optscale,
                             num_inference_steps=optsteps,
                             init_image=init_image).images[0]
