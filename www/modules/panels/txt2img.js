@@ -55,6 +55,9 @@ export class TextToImage extends HTMLElement {
         <button id=hundredPresetButton>100</button>
       </details>
 
+      <button id=import>Import from clipboard</button>
+      <br>
+
       <button id=generateButton>Generate</button>
       <button id=nextButton>Next</button>
     `;
@@ -124,6 +127,16 @@ export class TextToImage extends HTMLElement {
 
     shadow.getElementById('promptbuilder').setEditor(
       shadow.getElementById('prompt'));
+
+    const importButton = shadow.getElementById('import');
+    importButton.addEventListener('click', async e => {
+      const text = await navigator.clipboard.readText();
+      try {
+        const json = JSON.parse(text);
+        this.setArgs(json);
+      } catch {
+      }
+    });
 
     this.shadow = shadow;
   }
