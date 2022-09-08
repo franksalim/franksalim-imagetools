@@ -97,12 +97,12 @@ app = Flask(__name__,
             static_folder='../www')
 
 
-@ app.route('/')
+@app.route('/')
 def index():
     return redirect("/index.html", code=302)
 
 
-@ app.route("/generate/", methods=['POST'])
+@app.route("/generate/", methods=['POST'])
 def generate():
     args = request.get_json()
     return generate_bytes(args)
