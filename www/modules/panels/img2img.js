@@ -40,10 +40,19 @@ export class ImageToImage extends HTMLElement {
     });
     inputImage.addEventListener("drop", e => {
       e.preventDefault();
-      const blob = e.dataTransfer.items[0].getAsFile();
-      console.log(blob);
-      let uri = URL.createObjectURL(blob);
-      inputImage.setAttribute("src", uri);
+
+      if (!e.dataTransfer.items.length) {
+        return;
+      }
+
+      if (e.dataTransfer.items[0].kind == "file") {
+        const blob = e.dataTransfer.items[0].getAsFile();
+        let uri = URL.createObjectURL(blob);
+        inputImage.setAttribute("src", uri);
+      } else  {
+        let uri = e.dataTransfer.getData("text/plain");
+        inputImage.setAttribute("src", uri);
+      }
     });
   }
 

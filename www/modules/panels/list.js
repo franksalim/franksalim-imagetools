@@ -32,6 +32,10 @@ export class FsList extends HTMLElement {
       document.getElementById("detail").setImage(uri);
       document.getElementById("detail").setArgs(params);
     });
+    img.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", uri);
+      e.dataTransfer.dropEffect = "copy";
+    });
     this.shadow.prepend(img);
   }
 }
