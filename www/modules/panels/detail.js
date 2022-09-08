@@ -14,17 +14,22 @@ export class Details extends HTMLElement {
       </style>
       <img id=image>
       <p id=args>
-        {'steps': '30', 'scale': '7.5', 'width': '448', 'height': '704', 'seed': '1337', 'prompt': 'neon light, cinematic color grading'}
+        {"steps":"30","scale":"7.5","width":"448","height":"704","seed":"1337","prompt":"neon light, cinematic color grading"}
       </p>
+      <button id=openButton>Open in Prompt Builder</button>
     `;
-    // TODO: buttons for actions (img2img, reopen prompt, etc.)
-    // open in promptbuilder
+    // TODO: buttons for actions (img2img, etc.)
     // img2img
     // star, annotate
     // upscale
     this.shadow = shadow;
+    shadow.getElementById("openButton").addEventListener("click", e => {
+      let s = shadow.getElementById("args").innerText;
+      console.log(s);
+      document.getElementById("txt2img").setArgs(JSON.parse(s));
+    });
   }
-  
+
   setImage(uri) {
     this.shadow.getElementById("image").setAttribute("src", uri);
   }

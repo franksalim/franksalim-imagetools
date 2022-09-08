@@ -113,8 +113,11 @@ export class TextToImage extends HTMLElement {
 
   setArgs(params) {
     for (let id of TextToImage.ids) {
-      this.getElementById(id).value = params[id];
+      this.shadow.getElementById(id).value = params[id];
     }
+    // update prompt builder
+    this.shadow.getElementById("prompt").dispatchEvent(
+      new Event("input"));
   }
 
   async generate() {
