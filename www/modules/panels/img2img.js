@@ -1,5 +1,6 @@
 import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
 export class ImageToImage extends HTMLElement {
+  static ids = ["steps", "scale", "prompt"];
 
   constructor() {
     super();
@@ -25,6 +26,19 @@ export class ImageToImage extends HTMLElement {
       <input type=file id=filepicker>
       <fs-promptbuilder id=promptbuilder></fs-promptbuilder>
       <textarea placeholder=prompt id=prompt>macro photograph, glass beads, blue light, color grading</textarea>
+
+      <h2>Scale</h2>
+      <span class=inputAndValue>
+        <input type=range value=7.5 id=scale>
+        <span id=scaleValue>7.5</span>
+      </span>
+      <button id=defaultScaleButton>Default 7.5</button>
+
+      <h2>Steps</h2>
+      <span class=inputAndValue>
+        <input type=range step=1 value=30 id=steps min=1 max=100>
+        <span id=stepsValue>30</span>
+      </span>
       <button id=generateButton>Generate</button>
     `;
 
@@ -54,8 +68,37 @@ export class ImageToImage extends HTMLElement {
         inputImage.setAttribute("src", uri);
       }
     });
+    shadow.getElementById("generateButton")
+      .addEventListener("click", e => { this.generate() });
+
+    this.shadow = shadow;
   }
+  async generate() {
+    // grab parameters
+    let params = {};
+    for (let id of ImageToImage.ids) {
+      params[id] = this.shadow.getElementById(id).value
+    }
 
+    let inputUri = this.shadow.getElementById("inputImage").getAttribute("src");
+    if (!inputUri) {
+      return;
+    }
+    let blob = await fetch(inputUri).then(r => r.blob());
 
+    let formData = new FormData();
+    formData.append("params", JSON.stringify(params));
+    formData.append("initImage", blob);
+
+    const response = await fetch("/img2img/", {
+      method: "POST",
+      cache: "no-cache",
+      body: formData
+    });
+    let uri = URL.createObjectURL(await response.blob());
+    document.getElementById("detail").setImage(uri);
+    document.getElementById("detail").setArgs(params);
+    document.getElementById("historyList").addImage(uri, params);
+  }
 }
 window.customElements.define('fs-img2img', ImageToImage);

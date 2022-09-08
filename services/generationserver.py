@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from flask import Flask, send_file, request, redirect
+import json
 from io import BytesIO
 import gc
 import torch
@@ -8,7 +9,7 @@ from PIL import Image
 from tqdm import tqdm, trange
 from itertools import islice
 from transformers import AutoFeatureExtractor
-from diffusers import StableDiffusionPipeline
+from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
 from torch import autocast
 # 1. dependencies
 # pip install git+https://github.com/huggingface/diffusers.git@main
@@ -28,6 +29,13 @@ from torch import autocast
 device = "cuda"
 sd_pipeline = None
 
+class DummySafetyChecker():
+    def __init__(self, *args, **kwargs):
+        # required monkeypatching to prevent an error splitting the module name to check type
+        self.__module__ = "foo.bar.foo.bar"
+
+    def __call__(self, images, **kwargs):
+        return (images, False)
 
 def torch_gc():
     gc.collect()
@@ -51,15 +59,7 @@ def generate_bytes(args):
 
     # load model if not loaded
     if sd_pipeline is None:
-        print("loading model...")
-
-        class DummySafetyChecker():
-            def __init__(self, *args, **kwargs):
-                # required monkeypatching to prevent an error splitting the module name to check type
-                self.__module__ = "foo.bar.foo.bar"
-
-            def __call__(self, images, **kwargs):
-                return (images, False)
+        print("loading txt2img model...")
 
         # fp16 is half precision
         pipe = StableDiffusionPipeline.from_pretrained(
@@ -91,6 +91,48 @@ def generate_bytes(args):
 
         return send_file(bio, as_attachment=False, mimetype="image/png")
 
+def generate_img2img(request):
+    args = json.loads(request.form["params"])
+    image = request.files["initImage"]
+
+    torch_gc()
+    global sd_pipeline
+
+    optprompt = args["prompt"]
+    optscale = float(args["scale"])
+    optsteps = int(args["steps"])
+
+    init_image = Image.open(BytesIO(image.stream.read())).convert("RGB")
+
+    # load model if not loaded
+    if sd_pipeline is None:
+        print("loading img2img model...")
+
+        # fp16 is half precision
+        pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
+            "../stable-diffusion-v1-4", local_files_only=True, use_auth_token=False,  revision="fp16",
+            torch_dtype=torch.float16, safety_checker=DummySafetyChecker())
+
+        pipe = pipe.to(device)
+
+        pipe.enable_attention_slicing()
+        sd_pipeline = pipe
+
+    generator = torch.Generator(device=device)
+
+    with autocast("cuda"):
+        image = sd_pipeline(prompt=optprompt,
+                            guidance_scale=optscale,
+                            num_inference_steps=optsteps,
+                            init_image=init_image).images[0]
+
+        bio = BytesIO()
+        image.save(bio, format="png")
+        bio.seek(0)
+
+        torch_gc()
+
+        return send_file(bio, as_attachment=False, mimetype="image/png")
 
 app = Flask(__name__,
             static_url_path='',
@@ -101,12 +143,14 @@ app = Flask(__name__,
 def index():
     return redirect("/index.html", code=302)
 
-
 @app.route("/generate/", methods=['POST'])
 def generate():
     args = request.get_json()
     return generate_bytes(args)
 
+@app.route("/img2img/", methods=['POST'])
+def img2img():
+    return generate_img2img(request)
 
 if __name__ == '__main__':
     app.run(debug=True)
