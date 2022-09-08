@@ -13,15 +13,15 @@ export class TextToImage extends HTMLElement {
           flex-basis: 300px;
           flex-grow: 0;
           flex-shrink: 0;
-          background-color: #ccc;
           padding: 16px;
+          box-shadow: 0px 0px 16px rgba(0, 0, 0, .5);
         }
       </style>
 
       <h1 id="titlebar">txt2image</h1>
 
       <fs-promptbuilder id=promptbuilder></fs-promptbuilder>
-      <textarea placeholder=prompt id=prompt>macro photograph, leaf cells, blue light, color grading</textarea>
+      <textarea placeholder=prompt id=prompt>macro photograph, glass beads, blue light, color grading</textarea>
 
       <details>
         <h2>Width</h2>

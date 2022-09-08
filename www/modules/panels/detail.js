@@ -7,7 +7,6 @@ export class Details extends HTMLElement {
       <style>
         :host {
           flex: auto;
-          background-color: #ccc;
           padding: 16px;
         }
       </style>
@@ -31,7 +30,6 @@ export class Details extends HTMLElement {
     this.shadow.getElementById("image").setAttribute("src", uri);
     let downloadLink = this.shadow.getElementById("downloadLink");
     window.test1 = uri;
-    console.log(uri);
     downloadLink.href = uri;
     // get the path part of the object URL.
     // URL.pathname doesn't work like HTTP URLs

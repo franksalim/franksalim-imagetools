@@ -9,7 +9,6 @@ export class FsList extends HTMLElement {
           flex-basis: 140px;
           flex-grow: 0;
           flex-shrink: 0;
-          background-color: #888;
           padding: 8px;
           overflow-y: scroll;
         }
