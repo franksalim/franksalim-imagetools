@@ -16,6 +16,13 @@ export class TextToImage extends HTMLElement {
           padding: 16px;
           box-shadow: 0px 0px 16px rgba(0, 0, 0, .5);
         }
+        .inputAndValue {
+          display: flex;
+        }
+        .inputAndValue > span {
+          font-size: 12px;
+          margin-left: 12px;
+        }
       </style>
 
       <fs-promptbuilder id=promptbuilder></fs-promptbuilder>
@@ -23,9 +30,17 @@ export class TextToImage extends HTMLElement {
 
       <details>
         <h2>Width</h2>
-        <input type=range step=64 min=256 max=1024 value=704 id=width>
+        <span class=inputAndValue>
+          <input type=range step=64 min=256 max=1024 value=704 id=width>
+          <span id=widthValue>704</span>
+        </span>
+
         <h2>Height</h2>
-        <input type=range step=64 min=256 max=1024 value=448 id=height>
+        <span class=inputAndValue>
+          <input type=range step=64 min=256 max=1024 value=448 id=height>
+          <span id=heightValue>448</span>
+        </span>
+
         <button id=squarePresetButton>Square</button>
         <button id=portraitPresetButton>Portrait</button>
         <button id=landcapePresetButton>Landscape</button>
@@ -36,11 +51,17 @@ export class TextToImage extends HTMLElement {
         <button id=randomSeedButton>Random</button>
 
         <h2>Scale</h2>
-        <input type=range value=7.5 id=scale>
+        <span class=inputAndValue>
+          <input type=range value=7.5 id=scale>
+          <span id=scaleValue>7.5</span>
+        </span>
         <button id=defaultScaleButton>Default 7.5</button>
 
         <h2>Steps</h2>
-        <input type=range step=1 value=30 id=steps min=1 max=100>
+        <span class=inputAndValue>
+          <input type=range step=1 value=30 id=steps min=1 max=100>
+          <span id=stepsValue>30</span>
+        </span>
         <button id=thirtyPresetButton>30</button>
         <button id=hundredPresetButton>100</button>
       </details>
@@ -69,6 +90,23 @@ export class TextToImage extends HTMLElement {
     let heightSlider = shadow.getElementById("height");
     let stepsSlider = shadow.getElementById("steps");
     let scaleSlider = shadow.getElementById("scale");
+
+    let widthValue = shadow.getElementById("widthValue");
+    let heightValue = shadow.getElementById("heightValue");
+    let stepsValue = shadow.getElementById("stepsValue");
+    let scaleValue = shadow.getElementById("scaleValue");
+    widthSlider.addEventListener("input", () => {
+      widthValue.textContent = widthSlider.value;
+    });
+    heightSlider.addEventListener("input", () => {
+      heightValue.textContent = heightSlider.value;
+    });
+    stepsSlider.addEventListener("input", () => {
+      stepsValue.textContent = stepsSlider.value;
+    });
+    scaleSlider.addEventListener("input", () => {
+      scaleValue.textContent = scaleSlider.value;
+    });
 
     let squarePresetButton = shadow.getElementById("squarePresetButton");
     squarePresetButton.addEventListener("click", e => {
