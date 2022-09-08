@@ -1,9 +1,9 @@
-import {Chip} from "/modules/widgets/chip.js";
+import { Chip } from "/modules/widgets/chip.js";
 
 export class PromptBuilder extends HTMLElement {
   constructor() {
     super();
-    let shadow = this.attachShadow({mode: 'open'});
+    let shadow = this.attachShadow({ mode: 'open' });
     shadow.innerHTML = `
       <link rel=stylesheet href=style.css>
       <style>
