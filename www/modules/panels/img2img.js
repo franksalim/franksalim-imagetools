@@ -14,19 +14,39 @@ export class ImageToImage extends HTMLElement {
           padding: 16px;
           box-shadow: 0px 0px 16px rgba(0, 0, 0, .5);
         }
-        img#input {
+        img#inputImage {
           width: 260px;
-          height: 260px;
+          min-height: 100px;
           outline: 1px solid #888;
           background-color: #ddd;
         }
       </style>
-      <img id=input>
+      <img id=inputImage>
+      <input type=file id=filepicker>
       <fs-promptbuilder id=promptbuilder></fs-promptbuilder>
       <textarea placeholder=prompt id=prompt>macro photograph, glass beads, blue light, color grading</textarea>
       <button id=generateButton>Generate</button>
     `;
+
+    const inputImage = shadow.getElementById("inputImage");
+
+    shadow.getElementById("filepicker").addEventListener("change", e => {
+      const blob = e.target.files[0];
+      let uri = URL.createObjectURL(blob);
+      inputImage.setAttribute("src", uri);
+    });
+    inputImage.addEventListener("dragover", e => {
+      e.preventDefault();
+    });
+    inputImage.addEventListener("drop", e => {
+      e.preventDefault();
+      const blob = e.dataTransfer.items[0].getAsFile();
+      console.log(blob);
+      let uri = URL.createObjectURL(blob);
+      inputImage.setAttribute("src", uri);
+    });
   }
+
 
 }
 window.customElements.define('fs-img2img', ImageToImage);
