@@ -52,13 +52,21 @@ def generate_bytes(args):
     # load model if not loaded
     if sd_pipeline is None:
         print("loading model...")
+
+        class DummySafetyChecker():
+            def __init__(self, *args, **kwargs):
+                # required monkeypatching to prevent an error splitting the module name to check type
+                self.__module__ = "foo.bar.foo.bar"
+
+            def __call__(self, images, **kwargs):
+                return (images, False)
+
         # fp16 is half precision
         pipe = StableDiffusionPipeline.from_pretrained(
             "../stable-diffusion-v1-4", local_files_only=True, use_auth_token=False,  revision="fp16",
-            torch_dtype=torch.float16)
+            torch_dtype=torch.float16, safety_checker=DummySafetyChecker())
 
         pipe = pipe.to(device)
-        pipe.safety_checker = lambda images, **kwargs: (images, False)
 
         pipe.enable_attention_slicing()
         sd_pipeline = pipe
