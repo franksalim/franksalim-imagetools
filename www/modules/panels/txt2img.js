@@ -26,8 +26,7 @@ export class TextToImage extends HTMLElement {
         }
       </style>
 
-      <fs-promptbuilder id=promptbuilder></fs-promptbuilder>
-      <textarea placeholder=prompt id=prompt>macro photograph, glass beads, blue light, color grading</textarea>
+      <fs-promptbuilder id=prompt></fs-promptbuilder>
 
       <details open>
         <h2>Width</h2>
@@ -124,9 +123,6 @@ export class TextToImage extends HTMLElement {
       scaleSlider.value = 7.5;
       scaleSlider.dispatchEvent(new Event("input"));
     });
-
-    shadow.getElementById('promptbuilder').setEditor(
-      shadow.getElementById('prompt'));
 
     const importButton = shadow.getElementById('import');
     importButton.addEventListener('click', async e => {

@@ -24,8 +24,7 @@ export class ImageToImage extends HTMLElement {
       </style>
       <img id=inputImage>
       <input type=file id=filepicker>
-      <fs-promptbuilder id=promptbuilder></fs-promptbuilder>
-      <textarea placeholder=prompt id=prompt>macro photograph, glass beads, blue light, color grading</textarea>
+      <fs-promptbuilder id=prompt></fs-promptbuilder>
 
       <h2>Scale</h2>
       <span class=inputAndValue>

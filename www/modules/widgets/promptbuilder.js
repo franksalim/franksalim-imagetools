@@ -14,14 +14,12 @@ export class PromptBuilder extends HTMLElement {
         }
         </style>
       <div id=chips></div>
+      <textarea placeholder=prompt id=ed>macro photograph, glass beads, blue light, color grading</textarea>
     `;
     this.shadow = shadow;
-  }
-
-  setEditor(ed) {
-    this.ed = ed;
-    this.updateChips(ed.value);
-    ed.addEventListener("input", e => { this.updateChips(e.target.value) });
+    this.ed = shadow.getElementById("ed");
+    this.updateChips(this.ed.value);
+    this.ed.addEventListener("input", e => { this.updateChips(e.target.value) });
   }
 
   updateChips(text) {
@@ -41,6 +39,7 @@ export class PromptBuilder extends HTMLElement {
       });
       chips.appendChild(chip);
     }
+    this.value = this.ed.value;
   }
 
   updateEditor(chips) {
