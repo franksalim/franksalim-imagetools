@@ -50,6 +50,7 @@ export class PromptBuilder extends HTMLElement {
     }
     prompt = terms.join(", ");
     this.ed.value = prompt;
+    this.value = prompt;
   }
 }
 window.customElements.define('fs-promptbuilder', PromptBuilder);
