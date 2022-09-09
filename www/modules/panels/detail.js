@@ -11,9 +11,7 @@ export class Details extends HTMLElement {
         }
       </style>
       <img id=image>
-      <p id=args>
-        {"steps":"30","scale":"7.5","width":"448","height":"704","seed":"1337","prompt":"neon light, cinematic color grading"}
-      </p>
+      <p id=args></p>
       <button id=openButton>Open in Prompt Builder</button>
       <a id=downloadLink>Download</a>
     `;
@@ -21,7 +19,6 @@ export class Details extends HTMLElement {
     this.shadow = shadow;
     shadow.getElementById("openButton").addEventListener("click", e => {
       let s = shadow.getElementById("args").innerText;
-      console.log(s);
       document.getElementById("txt2img").setArgs(JSON.parse(s));
     });
   }

@@ -1,6 +1,8 @@
 import { Chip } from "/modules/widgets/chip.js";
 
 export class PromptBuilder extends HTMLElement {
+  static get observedAttributes() { return ["value"]; }
+
   constructor() {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
@@ -51,6 +53,13 @@ export class PromptBuilder extends HTMLElement {
     prompt = terms.join(", ");
     this.ed.value = prompt;
     this.value = prompt;
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name == "value") {
+      this.ed.value = newValue;
+      this.updateChips(newValue);
+    }
   }
 }
 window.customElements.define('fs-promptbuilder', PromptBuilder);
