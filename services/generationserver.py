@@ -30,6 +30,7 @@ device = "cuda"
 sd_pipeline = None
 img_pipeline = None
 
+
 class DummySafetyChecker():
     def __init__(self, *args, **kwargs):
         # required monkeypatching to prevent an error splitting the module name to check type
@@ -37,6 +38,7 @@ class DummySafetyChecker():
 
     def __call__(self, images, **kwargs):
         return (images, False)
+
 
 def torch_gc():
     gc.collect()
@@ -92,6 +94,7 @@ def generate_bytes(args):
 
         return send_file(bio, as_attachment=False, mimetype="image/png")
 
+
 def generate_img2img(request):
     args = json.loads(request.form["params"])
     image = request.files["initImage"]
@@ -105,6 +108,12 @@ def generate_img2img(request):
     optstrength = float(args["strength"])
 
     init_image = Image.open(BytesIO(image.stream.read())).convert("RGB")
+
+    # check if image is multiple of 64 in both dimensions, otherwise resize
+    if init_image.size[0] % 64 != 0 or init_image.size[1] % 64 != 0:
+        # resize to nearest multiple of 64
+        init_image = init_image.resize(
+            (init_image.size[0] // 64 * 64, init_image.size[1] // 64 * 64))
 
     # load model if not loaded
     if img_pipeline is None:
@@ -124,10 +133,10 @@ def generate_img2img(request):
 
     with autocast("cuda"):
         image = img_pipeline(prompt=optprompt,
-                            guidance_scale=optscale,
-                            strength=optstrength,
-                            num_inference_steps=optsteps,
-                            init_image=init_image).images[0]
+                             guidance_scale=optscale,
+                             strength=optstrength,
+                             num_inference_steps=optsteps,
+                             init_image=init_image).images[0]
 
         bio = BytesIO()
         image.save(bio, format="png")
@@ -136,6 +145,7 @@ def generate_img2img(request):
         torch_gc()
 
         return send_file(bio, as_attachment=False, mimetype="image/png")
+
 
 app = Flask(__name__,
             static_url_path='',
@@ -146,14 +156,17 @@ app = Flask(__name__,
 def index():
     return redirect("/index.html", code=302)
 
+
 @app.route("/generate/", methods=['POST'])
 def generate():
     args = request.get_json()
     return generate_bytes(args)
 
+
 @app.route("/img2img/", methods=['POST'])
 def img2img():
     return generate_img2img(request)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
