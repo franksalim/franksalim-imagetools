@@ -42,6 +42,10 @@ export class Chip extends HTMLElement {
 
     this.addEventListener("drop", e => {
       e.preventDefault();
+      if (e.target == Chip.dragged) {
+        return;
+      }
+
       // if dropped on the top half of the row, insert before
       let isAbove = e.y < e.target.getBoundingClientRect().top +
         e.target.offsetHeight/2;
