@@ -52,6 +52,8 @@ export class Chip extends HTMLElement {
       } else {
         e.target.after(Chip.dragged);
       }
+      const event = new Event("input");
+      this.dispatchEvent(event);
     });
   }
 
