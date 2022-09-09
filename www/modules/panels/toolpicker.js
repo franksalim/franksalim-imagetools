@@ -2,6 +2,10 @@ export class ToolPicker extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({mode: 'open'});
+    /*
+      icons from https://fonts.google.com/icons
+        https://github.com/google/material-design-icons
+    */
     shadow.innerHTML = `
       <style>
         :host {
@@ -18,16 +22,30 @@ export class ToolPicker extends HTMLElement {
           position: relative;
           z-index: 10;
         }
+        button img {
+          height: 40px;
+          width: 40px;
+          opacity: .5;
+        }
         button[selected] {
           background-color: #ccc;
           box-shadow: -6px 8px 8px rgba(0, 0, 0, .25);
         }
         </style>
 
-        <button id=img2imgButton>img2img</button>
-        <button selected id=txt2imgButton>txt2img</button>
-        <button id=inpaintingButton>inpaint</button>
-        <button id=inpaintingButton>draw</button>
+        <button id=img2imgButton title="text to image">
+          <img src=/assets/imagesmode_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
+        <button selected id=txt2imgButton title="image to image">
+          <img src=/assets/edit_document_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
+        <button id=inpaintingButton title="inpainting">
+          <img src=/assets/brush_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
+        <button id=drawButton title="draw">
+          <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
+
     `;
     this.shadow = shadow;
     let buttons = shadow.querySelectorAll("button");
