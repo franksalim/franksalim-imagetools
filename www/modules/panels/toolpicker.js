@@ -20,7 +20,7 @@ export class ToolPicker extends HTMLElement {
           margin: 0px ;
           background: none;
           position: relative;
-          z-index: 10;
+          z-index: 9;
         }
         button img {
           height: 40px;

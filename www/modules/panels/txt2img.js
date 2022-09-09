@@ -52,10 +52,10 @@ export class TextToImage extends HTMLElement {
         <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
         <button id=thirtyPresetButton>30</button>
         <button id=hundredPresetButton>100</button>
-      </details>
 
-      <button id=import>Import from clipboard</button>
-      <br>
+        <br>
+        <button id=import>Import from clipboard</button>
+      </details>
 
       <button id=generateButton>Generate</button>
       <button id=nextButton>Next</button>
@@ -131,6 +131,7 @@ export class TextToImage extends HTMLElement {
         const json = JSON.parse(text);
         this.setArgs(json);
       } catch {
+        console.log("Could not parse clipboard contents");
       }
     });
 
