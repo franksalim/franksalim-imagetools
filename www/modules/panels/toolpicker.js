@@ -27,6 +27,7 @@ export class ToolPicker extends HTMLElement {
         <button id=img2imgButton>img2img</button>
         <button selected id=txt2imgButton>txt2img</button>
         <button id=inpaintingButton>inpaint</button>
+        <button id=inpaintingButton>draw</button>
     `;
     this.shadow = shadow;
     let buttons = shadow.querySelectorAll("button");
