@@ -46,12 +46,9 @@ export class TextToImage extends HTMLElement {
 
         <h2>Scale</h2>
         <fs-slider step=0.5 min=-30 max=30 value=7.5 id=scale></fs-slider>
-        <button id=defaultScaleButton>Default 7.5</button>
 
         <h2>Steps</h2>
         <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
-        <button id=thirtyPresetButton>30</button>
-        <button id=hundredPresetButton>100</button>
 
         <br>
         <button id=import>Import from clipboard</button>
@@ -104,24 +101,6 @@ export class TextToImage extends HTMLElement {
       heightSlider.value = 448;
       widthSlider.dispatchEvent(new Event("input"));
       heightSlider.dispatchEvent(new Event("input"));
-    });
-
-    let thirtyPresetButton = shadow.getElementById("thirtyPresetButton");
-    thirtyPresetButton.addEventListener("click", e => {
-      stepsSlider.value = 30;
-      stepsSlider.dispatchEvent(new Event("input"));
-    });
-
-    let hundredPresetButton = shadow.getElementById("hundredPresetButton");
-    hundredPresetButton.addEventListener("click", e => {
-      stepsSlider.value = 100;
-      stepsSlider.dispatchEvent(new Event("input"));
-    });
-
-    let defaultScaleButton = shadow.getElementById("defaultScaleButton");
-    defaultScaleButton.addEventListener("click", e => {
-      scaleSlider.value = 7.5;
-      scaleSlider.dispatchEvent(new Event("input"));
     });
 
     const importButton = shadow.getElementById('import');
