@@ -1,6 +1,6 @@
 import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
 export class ImageToImage extends HTMLElement {
-  static ids = ["steps", "scale", "prompt"];
+  static ids = ["steps", "scale", "prompt", "strength"];
 
   constructor() {
     super();
@@ -27,17 +27,13 @@ export class ImageToImage extends HTMLElement {
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
       <h2>Scale</h2>
-      <span class=inputAndValue>
-        <input type=range value=7.5 id=scale>
-        <span id=scaleValue>7.5</span>
-      </span>
-      <button id=defaultScaleButton>Default 7.5</button>
+      <fs-slider step=0.5 min=-30 max=30 value=7.5 id=scale></fs-slider>
 
       <h2>Steps</h2>
-      <span class=inputAndValue>
-        <input type=range step=1 value=30 id=steps min=1 max=100>
-        <span id=stepsValue>30</span>
-      </span>
+      <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
+
+      <h2>Strength</h2>
+      <fs-slider step=0.01 min=0.0 max=1.0 value=0.75 id=strength></fs-slider>
       <button id=generateButton>Generate</button>
     `;
 

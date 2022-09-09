@@ -102,6 +102,7 @@ def generate_img2img(request):
     optprompt = args["prompt"]
     optscale = float(args["scale"])
     optsteps = int(args["steps"])
+    optstrength = float(args["strength"])
 
     init_image = Image.open(BytesIO(image.stream.read())).convert("RGB")
 
@@ -124,6 +125,7 @@ def generate_img2img(request):
     with autocast("cuda"):
         image = img_pipeline(prompt=optprompt,
                             guidance_scale=optscale,
+                            strength=optstrength,
                             num_inference_steps=optsteps,
                             init_image=init_image).images[0]
 
