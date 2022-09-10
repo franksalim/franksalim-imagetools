@@ -40,8 +40,15 @@ export class FsList extends HTMLElement {
       e.dataTransfer.setData("text/plain", uri);
       e.dataTransfer.dropEffect = "copy";
     });
+    const selected = this.shadow.querySelector('img.selected');
+    // If there is no selected image, or if the top image is selected,
+    // then select our new image. Otherwise leave the user's selection alone.
+    const shouldSelectNewImage =
+        !selected || selected == this.shadow.querySelector('img');
     this.shadow.prepend(img);
-    this.select(img);
+    if (shouldSelectNewImage) {
+      this.select(img);
+    }
   }
   select(img) {
     this.shadow.querySelector('img.selected')?.classList.remove('selected');
