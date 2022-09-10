@@ -1,4 +1,4 @@
-import { PromptBuilder } from "/modules/widgets/promptbuilder.js";
+import { PromptBuilder } from "../widgets/promptbuilder.js";
 import '../widgets/slider.js';
 
 export class TextToImage extends HTMLElement {
@@ -27,6 +27,10 @@ export class TextToImage extends HTMLElement {
       </style>
 
       <fs-promptbuilder id=prompt></fs-promptbuilder>
+      <label>
+        Tiled
+        <input type=checkbox id=tiled>
+      </label>
 
       <details open>
         <summary>Options</summary>
@@ -174,6 +178,7 @@ export class TextToImage extends HTMLElement {
       // hack: input type number will take string props but not attrs?
       this.shadow.getElementById(id).value = params[id];
     }
+    this.shadow.getElementById('tiled').checked = params.tiled;
   }
 
   async generate(progressMessage = `Generating...`) {
@@ -182,6 +187,7 @@ export class TextToImage extends HTMLElement {
     for (let id of TextToImage.ids) {
       params[id] = this.shadow.getElementById(id).value
     }
+    params.tiled = this.shadow.getElementById('tiled').checked;
 
     const progressMessageElem = this.shadow.getElementById('progressMessage');
     progressMessageElem.textContent = progressMessage;
@@ -200,9 +206,9 @@ export class TextToImage extends HTMLElement {
 window.customElements.define('fs-txt2img', TextToImage);
 
 /**
- * Just concats the string, but this is a hint to editor plugins to 
+ * Just concats the string, but this is a hint to editor plugins to
  * give language support as though the contents are HTML.
- * @param {TemplateStringsArray} s 
+ * @param {TemplateStringsArray} s
  */
  function html(s) {
   return s.join('');
