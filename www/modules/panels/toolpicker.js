@@ -42,7 +42,7 @@ export class ToolPicker extends HTMLElement {
         <button id=inpaintingButton title="inpainting">
           <img src=/assets/brush_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
-        <button id=drawButton title="draw">
+        <button id=drawingButton title="draw">
           <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
     `;
@@ -55,23 +55,37 @@ export class ToolPicker extends HTMLElement {
       })
     }
 
+    const txt2imgTool = document.getElementById("txt2img");
+    const img2imgTool = document.getElementById("img2img");
+    const drawingTool = document.getElementById("drawing");
+
     // default visibilities
-    document.getElementById("txt2img").style.display = "block";
-    document.getElementById("img2img").style.display = "none";
+    img2imgTool.style.display = "none";
+    txt2imgTool.style.display = "block";
+    drawingTool.style.display = "none";
 
     shadow.getElementById("img2imgButton").addEventListener("click", e => {
-      document.getElementById("txt2img").style.display = "none";
-      document.getElementById("img2img").style.display = "block";
+      img2imgTool.style.display = "block";
+      txt2imgTool.style.display = "none";
+      drawingTool.style.display = "none";
+    });
+
+    shadow.getElementById("txt2imgButton").addEventListener("click", e => {
+      img2imgTool.style.display = "none";
+      txt2imgTool.style.display = "block";
+      drawingTool.style.display = "none";
+    });
+
+    shadow.getElementById("drawingButton").addEventListener("click", e => {
+      img2imgTool.style.display = "none";
+      txt2imgTool.style.display = "none";
+      drawingTool.style.display = "block";
     });
 
     shadow.getElementById("img2imgButton").addEventListener("dragover", e => {
       shadow.getElementById("img2imgButton").dispatchEvent(new Event("click"));
     });
 
-    shadow.getElementById("txt2imgButton").addEventListener("click", e => {
-      document.getElementById("txt2img").style.display = "block";
-      document.getElementById("img2img").style.display = "none";
-    });
   }
 }
 
