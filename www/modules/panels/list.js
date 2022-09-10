@@ -41,7 +41,7 @@ export class FsList extends HTMLElement {
       e.dataTransfer.dropEffect = "copy";
     });
     this.shadow.prepend(img);
-    this.select(uri);
+    this.select(img);
   }
   select(img) {
     this.shadow.querySelector('img.selected')?.classList.remove('selected');

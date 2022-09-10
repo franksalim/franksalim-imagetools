@@ -72,6 +72,7 @@ export class TextToImage extends HTMLElement {
           progressMessage.textContent = "";
         } catch (e) {
           progressMessage.textContent = String(e);
+          console.error(e);
         }
       });
 
@@ -99,7 +100,9 @@ export class TextToImage extends HTMLElement {
           progressMessage.textContent = `Generating ${i + 1} of ${batchSize}...`;
           try {
             await this.generate();
-          } catch {}
+          } catch(e) {
+            console.error(e);
+          }
         }
         progressMessage.textContent = '';
       });
@@ -115,7 +118,9 @@ export class TextToImage extends HTMLElement {
             progressMessage.textContent = `Generating...`;
             try {
               await this.generate();
-            } catch {}
+            } catch(e) {
+              console.error(e);
+            }
           }
           progressMessage.textContent = '';
         } else {
