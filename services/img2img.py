@@ -1,6 +1,7 @@
 from diffusersextras import DummySafetyChecker, torch_gc, device
 
 from flask import send_file
+import json
 
 import gc
 import torch
