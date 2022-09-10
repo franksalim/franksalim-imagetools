@@ -54,12 +54,40 @@ export class TextToImage extends HTMLElement {
         <button id=import>Import from clipboard</button>
       </details>
 
+      <label>
+        Batch size
+        <input id=batchSize value=1 type=number style="width: 160px;">
+      </label>
       <button id=generateButton>Generate</button>
       <button id=nextButton>Next</button>
+      <div id="progressMessage" style="white-space:pre-wrap"></div>
     `;
 
     shadow.getElementById("generateButton")
-      .addEventListener("click", e => { this.generate() });
+      .addEventListener("click", async e => { 
+        progressMessage.textContent = "Generating...";
+        try {
+          await this.generate();
+          progressMessage.textContent = "";
+        } catch (e) {
+          progressMessage.textContent = String(e);
+        } 
+      });
+
+    const batchSizeInput = shadow.getElementById("batchSize");
+    let batchSize = 1;
+    batchSizeInput.addEventListener('input', () => {
+      const num = Number(batchSizeInput.value);
+      if (Number.isNaN(num)) {
+        return;
+      }
+      batchSize = num;
+      if (batchSize === 1) {
+        shadow.querySelector('#nextButton').textContent = `Next`;
+      } else {
+        shadow.querySelector('#nextButton').textContent = `Next ${num}`;
+      }
+    });
 
     let seedInput = shadow.getElementById("seed");
 
@@ -67,12 +95,18 @@ export class TextToImage extends HTMLElement {
       .addEventListener("click", e => { seedInput.value = Math.floor(Math.random() * 1000000000) });
 
     shadow.getElementById("nextButton")
-      .addEventListener("click", e => {
-        seedInput.value = Number.parseInt(seedInput.value) + 1;
-
-        console.log(this);
-        this.generate();
+      .addEventListener("click", async e => {
+        for (let i = 0; i < batchSize; i++) {
+          seedInput.value = Number.parseInt(seedInput.value) + 1;
+          progressMessage.textContent = `Generating ${i + 1} of ${batchSize}...`;
+          try {
+            await this.generate();
+          } catch {}
+        }
+        progressMessage.textContent = '';
       });
+
+    const progressMessage = shadow.querySelector('#progressMessage');
 
     let widthSlider = shadow.getElementById("width");
     let heightSlider = shadow.getElementById("height");
