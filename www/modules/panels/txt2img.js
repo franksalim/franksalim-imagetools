@@ -77,15 +77,12 @@ export class TextToImage extends HTMLElement {
     const batchSizeInput = shadow.getElementById("batchSize");
     let batchSize = 1;
     batchSizeInput.addEventListener('input', () => {
-      const num = Number(batchSizeInput.value);
-      if (Number.isNaN(num)) {
-        return;
-      }
+      const num = batchSizeInput.valueAsNumber;
       batchSize = num;
       if (batchSize === 1) {
-        shadow.querySelector('#nextButton').textContent = `Next`;
+        shadow.getElementById('nextButton').textContent = `Next`;
       } else {
-        shadow.querySelector('#nextButton').textContent = `Next ${num}`;
+        shadow.getElementById('nextButton').textContent = `Next ${num}`;
       }
     });
 
@@ -97,7 +94,7 @@ export class TextToImage extends HTMLElement {
     shadow.getElementById("nextButton")
       .addEventListener("click", async e => {
         for (let i = 0; i < batchSize; i++) {
-          seedInput.value = Number.parseInt(seedInput.value) + 1;
+          seedInput.value = seedInput.valueAsNumber + 1;
           progressMessage.textContent = `Generating ${i + 1} of ${batchSize}...`;
           try {
             await this.generate();
@@ -106,12 +103,11 @@ export class TextToImage extends HTMLElement {
         progressMessage.textContent = '';
       });
 
-    const progressMessage = shadow.querySelector('#progressMessage');
-
-    let widthSlider = shadow.getElementById("width");
-    let heightSlider = shadow.getElementById("height");
-    let stepsSlider = shadow.getElementById("steps");
-    let scaleSlider = shadow.getElementById("scale");
+    const progressMessage = shadow.getElementById('progressMessage');
+    const widthSlider = shadow.getElementById("width");
+    const heightSlider = shadow.getElementById("height");
+    const stepsSlider = shadow.getElementById("steps");
+    const scaleSlider = shadow.getElementById("scale");
 
     let squarePresetButton = shadow.getElementById("squarePresetButton");
     squarePresetButton.addEventListener("click", e => {

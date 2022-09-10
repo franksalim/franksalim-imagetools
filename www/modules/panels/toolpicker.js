@@ -45,7 +45,6 @@ export class ToolPicker extends HTMLElement {
         <button id=drawButton title="draw">
           <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
-
     `;
     this.shadow = shadow;
     let buttons = shadow.querySelectorAll("button");
