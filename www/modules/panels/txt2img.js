@@ -155,9 +155,6 @@ export class TextToImage extends HTMLElement {
     for (let id of TextToImage.ids) {
       this.shadow.getElementById(id).setAttribute("value", params[id]);
     }
-    // update prompt builder
-    this.shadow.getElementById("prompt").dispatchEvent(
-      new Event("input"));
   }
 
   async generate() {
