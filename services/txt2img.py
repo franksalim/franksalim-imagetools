@@ -16,7 +16,6 @@ from torch import autocast
 sd_pipeline = None
 
 def generate_txt2img(args):
-    print(json.dumps(args))
     torch_gc()
     global sd_pipeline
 
