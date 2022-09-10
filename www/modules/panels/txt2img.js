@@ -29,38 +29,37 @@ export class TextToImage extends HTMLElement {
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
       <details open>
+        <summary>Options</summary>
+
+        <!-- Dimensions -->
         <h2>Width</h2>
         <fs-slider step=64 min=256 max=1024 value=704 id=width></fs-slider>
-
         <h2>Height</h2>
         <fs-slider step=64 min=256 max=1024 value=448 id=height></fs-slider>
-
         <button id=squarePresetButton>Square</button>
         <button id=portraitPresetButton>Portrait</button>
         <button id=landcapePresetButton>Landscape</button>
 
-        <summary>Options</summary>
         <h2>Seed</h2>
         <input type=number value=1337 id=seed>
         <button id=randomSeedButton>Random</button>
-
         <h2>Scale</h2>
         <fs-slider step=0.5 min=-30 max=30 value=7.5 id=scale></fs-slider>
-
         <h2>Steps</h2>
         <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
-
-        <br>
-        <button id=import>Import from clipboard</button>
       </details>
 
-      <label>
-        Batch size
-        <input id=batchSize value=1 type=number style="width: 160px;">
-      </label>
+      <details>
+        <summary>Batch Generation</summary>
+        <h2>Batch size</h2>
+        <fs-slider id=batchSize min=1 max=100 value=1></fs-slider>
+
+        <button id=nextButton title="Increment the seed and generate the next image.">Next</button>
+        <button id=runForever>Run forever</button>
+      </details>
+
       <button id=generateButton>Generate</button>
-      <button id=nextButton title="Increment the seed and generate the next image.">Next</button>
-      <button id=runForever>Run forever</button>
+      <button id=import>Import from clipboard</button>
       <div id="progressMessage" style="white-space:pre-wrap"></div>
     `;
 
@@ -79,7 +78,7 @@ export class TextToImage extends HTMLElement {
     const batchSizeInput = shadow.getElementById("batchSize");
     let batchSize = 1;
     batchSizeInput.addEventListener('input', () => {
-      const num = batchSizeInput.valueAsNumber;
+      const num = batchSizeInput.value;
       batchSize = num;
       if (batchSize === 1) {
         shadow.getElementById('nextButton').textContent = `Next`;
