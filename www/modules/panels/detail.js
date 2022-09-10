@@ -9,7 +9,13 @@ export class Details extends HTMLElement {
           flex: auto;
           padding: 16px;
         }
+        #scroller {
+          overflow: scroll;
+        }
       </style>
+      <div id=scroller>
+        <div id=background></div>
+      </div>
       <img id=image>
       <p id=args></p>
       <div id="controls" hidden>
@@ -25,9 +31,27 @@ export class Details extends HTMLElement {
     });
   }
 
-  setImage(uri) {
+  setImage(uri, args) {
+    this.shadow.getElementById("args").innerText = JSON.stringify(args);
     this.shadow.getElementById("controls").removeAttribute("hidden");
-    this.shadow.getElementById("image").setAttribute("src", uri);
+
+    if (args.tiled) {
+      // Need to make #scroller the size of the image and then make
+      // #image 3x that size, with #scroller set to overflow: scroll.
+      // That way we can see that the image tiles properly.
+      const {width, height} = args;
+      this.shadow.getElementById("image").style.display = "none";
+      this.shadow.getElementById("scroller").style.display = "block";
+      this.shadow.getElementById("scroller").style.width = `${width}px`;
+      this.shadow.getElementById("scroller").style.height = `${height}px`;
+      this.shadow.getElementById("background").style.width = `${width * 100}px`;
+      this.shadow.getElementById("background").style.height = `${height * 100}px`;
+      this.shadow.getElementById("background").style.background = `url(${uri})`;
+    } else {
+      this.shadow.getElementById("scroller").style.display = "none";
+      this.shadow.getElementById("image").style.display = "block";
+      this.shadow.getElementById("image").setAttribute("src", uri);
+    }
     let downloadLink = this.shadow.getElementById("downloadLink");
     window.test1 = uri;
     downloadLink.href = uri;
@@ -36,10 +60,7 @@ export class Details extends HTMLElement {
     let path = uri.toString().split("/").pop();
     downloadLink.download = path + ".png";
   }
-  
-  setArgs(args) {
-    this.shadow.getElementById("args").innerText = JSON.stringify(args);
-  }
+
 }
 
 window.customElements.define('fs-detail', Details);
