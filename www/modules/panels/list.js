@@ -29,13 +29,25 @@ export class FsList extends HTMLElement {
     `;
     this.shadow = shadow;
   }
-  addImage(uri, params) {
+  queuePrompt(params) {
     let img = new Image();
-    img.src = uri;
     img.params = params;
+    img.title = JSON.stringify(params);
     img.addEventListener("click", e => {
-      this.select(img);
+      document.getElementById("detail").setImage(img.src);
+      document.getElementById("detail").setArgs(img.params);
     });
+    this.shadow.prepend(img);
+  }
+  getEarliestUnprocessedImage() {
+    let images = this.shadow.querySelectorAll("img:not([src])");
+    if (images.length > 0) {
+      return images[images.length - 1];
+    }
+    return null;
+  }  
+  setImageSource(img, uri) {
+    img.src = uri;
     img.addEventListener("dragstart", e => {
       e.dataTransfer.setData("text/plain", uri);
       e.dataTransfer.dropEffect = "copy";
