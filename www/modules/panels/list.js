@@ -29,13 +29,27 @@ export class FsList extends HTMLElement {
     `;
     this.shadow = shadow;
   }
-  addImage(uri, params) {
+  queuePrompt(params) {
     let img = new Image();
-    img.src = uri;
     img.params = params;
+    img.title = "queued";
     img.addEventListener("click", e => {
-      this.select(img);
+      document.getElementById("detail").setImage(img.src);
+      document.getElementById("detail").setArgs(img.params);
     });
+    this.shadow.prepend(img);
+  }
+  getEarliestUnprocessedImageForProcessing() {
+    let images = this.shadow.querySelectorAll("img:not([src])");
+    if (images.length > 0) {
+      let image = images[images.length - 1];
+      image.title = 'processing ...';
+      return image;
+    }
+    return null;
+  }  
+  setImageSource(img, uri) {
+    img.src = uri;
     img.addEventListener("dragstart", e => {
       e.dataTransfer.setData("text/plain", uri);
       e.dataTransfer.dropEffect = "copy";
@@ -45,7 +59,6 @@ export class FsList extends HTMLElement {
     // then select our new image. Otherwise leave the user's selection alone.
     const shouldSelectNewImage =
         !selected || selected == this.shadow.querySelector('img');
-    this.shadow.prepend(img);
     if (shouldSelectNewImage) {
       this.select(img);
     }

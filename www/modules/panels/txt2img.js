@@ -58,21 +58,14 @@ export class TextToImage extends HTMLElement {
         <button id=runForever>Run forever</button>
       </details>
 
-      <button id=generateButton>Generate</button>
+      <button id=queuePromptButton>Queue Prompt</button>
       <button id=import>Import from clipboard</button>
-      <div id="progressMessage" style="white-space:pre-wrap"></div>
     `;
 
-    shadow.getElementById("generateButton")
-      .addEventListener("click", async e => {
-        progressMessage.textContent = "Generating...";
-        try {
-          await this.generate();
-          progressMessage.textContent = "";
-        } catch (e) {
-          progressMessage.textContent = String(e);
-          console.error(e);
-        }
+    shadow.getElementById("queuePromptButton")
+      .addEventListener("click", async e => { 
+        document.getElementById("historyList").queuePrompt(this.getParams());
+        this.generateImagesUntilQueueIsEmptyOrForeverIsStopped();
       });
 
     const batchSizeInput = shadow.getElementById("batchSize");
@@ -96,39 +89,23 @@ export class TextToImage extends HTMLElement {
       .addEventListener("click", async e => {
         for (let i = 0; i < batchSize; i++) {
           seedInput.value = seedInput.valueAsNumber + 1;
-          progressMessage.textContent = `Generating ${i + 1} of ${batchSize}...`;
-          try {
-            await this.generate();
-          } catch(e) {
-            console.error(e);
-          }
+          document.getElementById("historyList").queuePrompt(this.getParams());
         }
-        progressMessage.textContent = '';
+        this.generateImagesUntilQueueIsEmptyOrForeverIsStopped();
       });
 
-    let runForever = false;
+    this.runForever = false;
     shadow.getElementById("runForever")
       .addEventListener("click", async e => {
-        runForever = !runForever;
-        if (runForever) {
+        this.runForever = !this.runForever;
+        if (this.runForever) {
           e.target.textContent = "Stop";
-          while (runForever) {
-            seedInput.valueAsNumber = seedInput.valueAsNumber + 1;
-            progressMessage.textContent = `Generating...`;
-            try {
-              await this.generate();
-            } catch(e) {
-              console.error(e);
-            }
-          }
-          progressMessage.textContent = '';
+          this.generateImagesUntilQueueIsEmptyOrForeverIsStopped();
         } else {
           e.target.textContent = "Run forever";
-          progressMessage.textContent = 'Finishing last image before stopping...';
         }
       });
 
-    const progressMessage = shadow.getElementById('progressMessage');
     const widthSlider = shadow.getElementById("width");
     const heightSlider = shadow.getElementById("height");
     const stepsSlider = shadow.getElementById("steps");
@@ -169,7 +146,29 @@ export class TextToImage extends HTMLElement {
       }
     });
 
+    this.generationLoopIsRunning = false;
     this.shadow = shadow;
+  }
+
+  async generateImagesUntilQueueIsEmptyOrForeverIsStopped() {
+    if (this.generationLoopIsRunning == true) {
+      return;
+    }
+    this.generationLoopIsRunning = true;
+    while (true) {
+      let image = document.getElementById("historyList").getEarliestUnprocessedImageForProcessing();
+
+      if (image) {
+        await this.generate(image.params, image);
+      } else if (this.runForever) {
+        document.getElementById("historyList").queuePrompt(this.getParams());
+        let seedInput = this.shadow.getElementById("seed");
+        seedInput.value = seedInput.valueAsNumber + 1;
+      } else {
+        this.generationLoopIsRunning = false;
+        break;
+      }  
+    }
   }
 
   setArgs(params) {
@@ -180,13 +179,15 @@ export class TextToImage extends HTMLElement {
     }
   }
 
-  async generate() {
-    // grab parameters
+  getParams() {
     let params = {};
     for (let id of TextToImage.ids) {
-      params[id] = this.shadow.getElementById(id).value
+      params[id] = this.shadow.getElementById(id).value;
     }
+    return params;
+  }
 
+  async generate(params, image) {
     const response = await fetch("/generate/", {
       method: "POST",
       cache: "no-cache",
@@ -194,7 +195,9 @@ export class TextToImage extends HTMLElement {
       body: JSON.stringify(params)
     });
     let uri = URL.createObjectURL(await response.blob());
-    document.getElementById("historyList").addImage(uri, params);
+    document.getElementById("detail").setImage(uri);
+    document.getElementById("detail").setArgs(params);
+    document.getElementById("historyList").setImageSource(image, uri);
   }
 }
 
