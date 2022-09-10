@@ -60,18 +60,19 @@ export class TextToImage extends HTMLElement {
       </label>
       <button id=generateButton>Generate</button>
       <button id=nextButton title="Increment the seed and generate the next image.">Next</button>
+      <button id=runForever>Run forever</button>
       <div id="progressMessage" style="white-space:pre-wrap"></div>
     `;
 
     shadow.getElementById("generateButton")
-      .addEventListener("click", async e => { 
+      .addEventListener("click", async e => {
         progressMessage.textContent = "Generating...";
         try {
           await this.generate();
           progressMessage.textContent = "";
         } catch (e) {
           progressMessage.textContent = String(e);
-        } 
+        }
       });
 
     const batchSizeInput = shadow.getElementById("batchSize");
@@ -101,6 +102,26 @@ export class TextToImage extends HTMLElement {
           } catch {}
         }
         progressMessage.textContent = '';
+      });
+
+    let runForever = false;
+    shadow.getElementById("runForever")
+      .addEventListener("click", async e => {
+        runForever = !runForever;
+        if (runForever) {
+          e.target.textContent = "Stop";
+          while (runForever) {
+            seedInput.valueAsNumber = seedInput.valueAsNumber + 1;
+            progressMessage.textContent = `Generating...`;
+            try {
+              await this.generate();
+            } catch {}
+          }
+          progressMessage.textContent = '';
+        } else {
+          e.target.textContent = "Run forever";
+          progressMessage.textContent = 'Finishing last image before stopping...';
+        }
       });
 
     const progressMessage = shadow.getElementById('progressMessage');
