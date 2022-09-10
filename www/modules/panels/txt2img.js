@@ -7,7 +7,7 @@ export class TextToImage extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
-    shadow.innerHTML = `
+    shadow.innerHTML = html`
       <link rel=stylesheet href=style.css>
       <style>
         :host {
@@ -52,7 +52,7 @@ export class TextToImage extends HTMLElement {
       <details>
         <summary>Batch Generation</summary>
         <h2>Batch size</h2>
-        <fs-slider id=batchSize min=1 max=100 value=1></fs-slider>
+        <fs-slider id=batchSize min=1 max=500 value=1></fs-slider>
 
         <button id=nextButton title="Increment the seed and generate the next image.">Next</button>
         <button id=runForever>Run forever</button>
@@ -199,3 +199,12 @@ export class TextToImage extends HTMLElement {
 }
 
 window.customElements.define('fs-txt2img', TextToImage);
+
+/**
+ * Just concats the string, but this is a hint to editor plugins to 
+ * give language support as though the contents are HTML.
+ * @param {TemplateStringsArray} s 
+ */
+ function html(s) {
+  return s.join('');
+}
