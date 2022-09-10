@@ -1,6 +1,7 @@
 from diffusersextras import DummySafetyChecker, torch_gc, device
 
 from flask import send_file
+import json
 
 import gc
 import torch
@@ -16,6 +17,7 @@ from torch import autocast
 img_pipeline = None
 
 def generate_img2img(image, args):
+    print(json.dumps(args))
     torch_gc()
     global img_pipeline
 

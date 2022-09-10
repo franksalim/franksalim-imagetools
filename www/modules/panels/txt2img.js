@@ -1,4 +1,4 @@
-import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
+import { PromptBuilder } from "/modules/widgets/promptbuilder.js";
 import '../widgets/slider.js';
 
 export class TextToImage extends HTMLElement {
@@ -59,7 +59,7 @@ export class TextToImage extends HTMLElement {
         <input id=batchSize value=1 type=number style="width: 160px;">
       </label>
       <button id=generateButton>Generate</button>
-      <button id=nextButton>Next</button>
+      <button id=nextButton title="Increment the seed and generate the next image.">Next</button>
       <div id="progressMessage" style="white-space:pre-wrap"></div>
     `;
 
