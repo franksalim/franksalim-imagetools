@@ -65,10 +65,8 @@ export class TextToImage extends HTMLElement {
 
     shadow.getElementById("generateButton")
       .addEventListener("click", async e => {
-        progressMessage.textContent = "Generating...";
         try {
           await this.generate();
-          progressMessage.textContent = "";
         } catch (e) {
           progressMessage.textContent = String(e);
           console.error(e);
@@ -96,9 +94,8 @@ export class TextToImage extends HTMLElement {
       .addEventListener("click", async e => {
         for (let i = 0; i < batchSize; i++) {
           seedInput.value = seedInput.valueAsNumber + 1;
-          progressMessage.textContent = `Generating ${i + 1} of ${batchSize}...`;
           try {
-            await this.generate();
+            await this.generate(`Generating ${i + 1} of ${batchSize}...`);
           } catch(e) {
             console.error(e);
           }
@@ -114,7 +111,6 @@ export class TextToImage extends HTMLElement {
           e.target.textContent = "Stop";
           while (runForever) {
             seedInput.valueAsNumber = seedInput.valueAsNumber + 1;
-            progressMessage.textContent = `Generating...`;
             try {
               await this.generate();
             } catch(e) {
@@ -180,13 +176,15 @@ export class TextToImage extends HTMLElement {
     }
   }
 
-  async generate() {
+  async generate(progressMessage = `Generating...`) {
     // grab parameters
     let params = {};
     for (let id of TextToImage.ids) {
       params[id] = this.shadow.getElementById(id).value
     }
 
+    const progressMessageElem = this.shadow.getElementById('progressMessage');
+    progressMessageElem.textContent = progressMessage;
     const response = await fetch("/generate/", {
       method: "POST",
       cache: "no-cache",
@@ -195,6 +193,7 @@ export class TextToImage extends HTMLElement {
     });
     let uri = URL.createObjectURL(await response.blob());
     document.getElementById("historyList").addImage(uri, params);
+    progressMessageElem.textContent = '';
   }
 }
 
