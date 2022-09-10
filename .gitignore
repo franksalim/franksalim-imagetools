@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+/stable-diffusion-v1-4.tar.gz
+/stable-diffusion-v1-4/
