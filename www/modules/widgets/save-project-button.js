@@ -23,7 +23,7 @@ export class SaveProjectButton extends HTMLElement {
           return {...item, uri: base64Url};
         })
       );
-      const project = {history};
+      const project = {version: 1, history};
       const blob = new Blob([JSON.stringify(project)], {
         type: "application/json",
       });
