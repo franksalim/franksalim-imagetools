@@ -12,8 +12,10 @@ export class Details extends HTMLElement {
       </style>
       <img id=image>
       <p id=args></p>
-      <button id=openButton>Open in Prompt Builder</button>
-      <a id=downloadLink>Download</a>
+      <div id="controls" hidden>
+        <button id=openButton>Open in Prompt Builder</button>
+        <a id=downloadLink>Download</a>
+      </div>
     `;
 
     this.shadow = shadow;
@@ -24,6 +26,7 @@ export class Details extends HTMLElement {
   }
 
   setImage(uri) {
+    this.shadow.getElementById("controls").removeAttribute("hidden");
     this.shadow.getElementById("image").setAttribute("src", uri);
     let downloadLink = this.shadow.getElementById("downloadLink");
     window.test1 = uri;
