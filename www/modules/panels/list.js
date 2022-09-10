@@ -23,7 +23,7 @@ export class FsList extends HTMLElement {
           margin: 4px;
         }
         img.selected {
-          box-shadow: 4px 4px 8px rgba(0, 0, 0, 1);
+          box-shadow: 4px 4px 8px rgba(0, 0, 0, .75);
         }
         </style>
     `;
