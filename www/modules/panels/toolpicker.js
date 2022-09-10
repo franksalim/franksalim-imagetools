@@ -55,37 +55,35 @@ export class ToolPicker extends HTMLElement {
       })
     }
 
-    const txt2imgTool = document.getElementById("txt2img");
     const img2imgTool = document.getElementById("img2img");
+    const txt2imgTool = document.getElementById("txt2img");
+    const inpaintingTool = document.getElementById("inpainting");
     const drawingTool = document.getElementById("drawing");
-
-    // default visibilities
-    img2imgTool.style.display = "none";
-    txt2imgTool.style.display = "block";
-    drawingTool.style.display = "none";
-
-    shadow.getElementById("img2imgButton").addEventListener("click", e => {
-      img2imgTool.style.display = "block";
-      txt2imgTool.style.display = "none";
-      drawingTool.style.display = "none";
-    });
-
-    shadow.getElementById("txt2imgButton").addEventListener("click", e => {
-      img2imgTool.style.display = "none";
-      txt2imgTool.style.display = "block";
-      drawingTool.style.display = "none";
-    });
-
-    shadow.getElementById("drawingButton").addEventListener("click", e => {
-      img2imgTool.style.display = "none";
-      txt2imgTool.style.display = "none";
-      drawingTool.style.display = "block";
-    });
+    this.tools = [txt2imgTool, img2imgTool, inpaintingTool, drawingTool];
+    this.select(txt2imgTool);
 
     shadow.getElementById("img2imgButton").addEventListener("dragover", e => {
       shadow.getElementById("img2imgButton").dispatchEvent(new Event("click"));
     });
+    shadow.getElementById("img2imgButton").addEventListener("click", e => {
+      this.select(img2imgTool);
+    });
+    shadow.getElementById("txt2imgButton").addEventListener("click", e => {
+      this.select(txt2imgTool);
+    });
+    shadow.getElementById("inpaintingButton").addEventListener("click", e => {
+      this.select(inpaintingTool);
+    });
+    shadow.getElementById("drawingButton").addEventListener("click", e => {
+      this.select(drawingTool);
+    });
+  }
 
+  select(selected) {
+    for (let tool of this.tools) {
+      tool.style.display = "none";
+    }
+    selected.style.display = "block";
   }
 }
 

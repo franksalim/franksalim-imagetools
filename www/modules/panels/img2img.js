@@ -6,7 +6,6 @@ export class ImageToImage extends HTMLElement {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
     shadow.innerHTML = `
-      <link rel=stylesheet href=style.css>
       <style>
         :host {
           flex-basis: 300px;
