@@ -1,4 +1,4 @@
-import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
+import { PromptBuilder } from "/modules/widgets/promptbuilder.js";
 import '../widgets/slider.js';
 
 export class TextToImage extends HTMLElement {
@@ -55,7 +55,7 @@ export class TextToImage extends HTMLElement {
       </details>
 
       <button id=generateButton>Generate</button>
-      <button id=nextButton>Next</button>
+      <button id=nextButton title="Increment the seed and generate the next image.">Next</button>
     `;
 
     shadow.getElementById("generateButton")
