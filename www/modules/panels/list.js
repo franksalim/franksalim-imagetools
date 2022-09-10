@@ -11,7 +11,7 @@ export class FsList extends HTMLElement {
           flex-shrink: 0;
           padding: 8px;
           overflow-y: scroll;
-          height: calc(100vh - 56px);
+          height: calc(100vh - 80px);
           padding-bottom: 16px;
         }
         :host::-webkit-scrollbar {
@@ -23,7 +23,7 @@ export class FsList extends HTMLElement {
           margin: 4px;
         }
         img.selected {
-          outline: 3px dashed #3bb02a;
+          box-shadow: 4px 4px 8px rgba(0, 0, 0, 1);
         }
         </style>
     `;
