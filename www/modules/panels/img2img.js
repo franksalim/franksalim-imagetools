@@ -91,8 +91,6 @@ export class ImageToImage extends HTMLElement {
       body: formData
     });
     let uri = URL.createObjectURL(await response.blob());
-    document.getElementById("detail").setImage(uri);
-    document.getElementById("detail").setArgs(params);
     document.getElementById("historyList").addImage(uri, params);
   }
 }
