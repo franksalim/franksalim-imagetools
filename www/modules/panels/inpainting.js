@@ -41,7 +41,16 @@ export class Inpainting extends HTMLElement {
     `;
 
     shadow.getElementById("generateButton")
-      .addEventListener("click", e => { this.generate() });
+      .addEventListener("click", async e => {
+        Inpainting.setStatus("Inpainting...");
+        try {
+          await this.generate();
+          Inpainting.setStatus("");
+        } catch (e) {
+          console.error(e);
+          Inpainting.setStatus(String(e));
+        }
+      });
 
     let imagePicker = shadow.getElementById("imagepicker");
     imagePicker.addEventListener("input", e => {
@@ -126,9 +135,12 @@ export class Inpainting extends HTMLElement {
       return;
     }
     let blob = await fetch(inputUri).then(r => r.blob());
-    this.shadow.querySelector("canvas").toBlob(async maskBlob => {
-      await StableDiffusion.inpaint(blob, maskBlob, params);
+    const maskBlob = await new Promise((resolve) => {
+      this.shadow.querySelector("canvas").toBlob(maskBlob => {
+        resolve(maskBlob);
+      });
     });
+    await StableDiffusion.inpaint(blob, maskBlob, params);
   }
 
   setArgs(params) {
@@ -141,6 +153,10 @@ export class Inpainting extends HTMLElement {
   /** @param {File} file */
   setInputImage(file) {
     this.shadow.getElementById("imagepicker").setImageFile(file);
+  }
+
+  static setStatus(s) {
+    document.getElementById("appbar").setStatus(s);
   }
 }
 
