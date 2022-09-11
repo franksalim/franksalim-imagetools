@@ -26,6 +26,21 @@ export class LoadProjectButton extends HTMLElement {
     `;
     const button = shadow.querySelector('button');
     button.addEventListener('click', SaveLoad.loadProject);
+
+    shadow.addEventListener("dragover", e => {
+      e.preventDefault();
+    });
+    shadow.addEventListener("drop", e => {
+      e.preventDefault();
+      if (!e.dataTransfer.items.length) {
+        return;
+      }
+      if (e.dataTransfer.items[0].kind == "file") {
+        const file = e.dataTransfer.items[0].getAsFile();
+        SaveLoad.loadProjectFromFile(file);
+      }
+    });
+
   }
 }
 
