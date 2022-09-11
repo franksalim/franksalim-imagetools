@@ -1,3 +1,5 @@
+import {SaveLoad} from "/modules/api/storage.js";
+
 export class LoadProjectButton extends HTMLElement {
   constructor() {
     super();
@@ -22,37 +24,8 @@ export class LoadProjectButton extends HTMLElement {
       </style>
       <button><img src=/assets/folder_open_FILL0_wght400_GRAD0_opsz48.svg></button>
     `;
-
     const button = shadow.querySelector('button');
-    const list = document.querySelector('fs-list');
-    button.addEventListener('click', async () => {
-      const [fileHandle] = await window.showOpenFilePicker({
-        types: [
-          {
-            description: 'JSON files',
-            accept: {
-              'application/json': ['.json'],
-            },
-          },
-        ],
-      });
-      const file = await fileHandle.getFile();
-      const text = await file.text();
-      const project = JSON.parse(text);
-      list.clearHistory();
-      const converted = await Promise.all(
-        project.history.map(async (item) => {
-          const base64Url = item.uri;
-          const result = await fetch(base64Url);
-          const blob = await result.blob();
-          const objectUrl = URL.createObjectURL(blob);
-          return {...item, uri: objectUrl};
-        })
-      );
-      for (const item of converted) {
-        list.addImage(item.uri, item);
-      }
-    });
+    button.addEventListener('click', SaveLoad.loadProject);
   }
 }
 
