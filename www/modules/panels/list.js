@@ -95,6 +95,21 @@ export class FsList extends HTMLElement {
       prev.scrollIntoView();
     }
   }
+  deleteSelected() {
+    let selected = this.shadow.querySelector('img.selected');
+    if (selected) {
+      let prev = selected.previousElementSibling;
+      let next = selected.nextElementSibling;
+      selected.remove();
+      if (prev) {
+        this.select(prev);
+        prev.scrollIntoView();
+      } else if (next) {
+        this.select(next);
+        next.scrollIntoView();
+      }
+    }
+  }
 }
 
 window.customElements.define('fs-list', FsList);

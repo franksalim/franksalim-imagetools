@@ -14,9 +14,15 @@ document.addEventListener('keydown', e => {
   if (composedDirectTarget.tagName == "INPUT" || composedDirectTarget.tagName == "TEXTAREA") {
     return;
   }
-  if (e.key === 'j') {
-    document.getElementById("historyList").selectNext();
-  } else if (e.key === 'k') {
-    document.getElementById("historyList").selectPrevious();
+  switch(e.key) {
+    case "j":
+      document.getElementById("historyList").selectNext();
+      break;
+    case "k":
+      document.getElementById("historyList").selectPrevious();
+      break;
+    case "Delete":
+      document.getElementById("historyList").deleteSelected();
+      break;
   }
 });
