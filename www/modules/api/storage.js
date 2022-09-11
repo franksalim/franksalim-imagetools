@@ -2,8 +2,8 @@ export class SaveLoad {
   static async saveProject() {
     const list = document.querySelector("fs-list");
     const history = await Promise.all(
-      list.history.map(async (item) => {
-        const objectUrl = item.uri;
+      list.getHistory().map(async (img) => {
+        const objectUrl = img.getAttribute("src");
         const result = await fetch(objectUrl);
         const blob = await result.blob();
         const reader = new FileReader();
@@ -12,7 +12,7 @@ export class SaveLoad {
           reader.addEventListener('loadend', resolve);
         });
         const base64Url = reader.result;
-        return {...item, uri: base64Url};
+        return {...img.params, uri: base64Url};
       })
     );
     const project = {version: 1, history};

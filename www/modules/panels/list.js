@@ -1,6 +1,4 @@
 export class FsList extends HTMLElement {
-  history = [];
-
   constructor() {
     super();
     let shadow = this.attachShadow({mode: 'open'});
@@ -31,7 +29,6 @@ export class FsList extends HTMLElement {
     this.shadow = shadow;
   }
   addImage(uri, params) {
-    this.history.push({...params, uri});
     let img = new Image();
     img.src = uri;
     img.params = params;
@@ -52,12 +49,12 @@ export class FsList extends HTMLElement {
       this.select(img);
     }
   }
+  getHistory() {
+    return [...this.shadow.querySelectorAll('img')];
+  }
   clearHistory() {
-    for (const item of this.history) {
-      URL.revokeObjectURL(item.uri);
-    }
-    this.history = [];
     for (const img of this.shadow.querySelectorAll('img')) {
+      URL.revokeObjectURL(img.getAttribute("src"));
       img.remove();
     }
   }
