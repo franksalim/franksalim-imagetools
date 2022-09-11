@@ -66,7 +66,6 @@ export class TextToImage extends HTMLElement {
 
       <button id=generateButton>Generate</button>
       <button id=import>Import from clipboard</button>
-      <div id="progressMessage" style="white-space:pre-wrap"></div>
     `;
 
     shadow.getElementById("generateButton")
@@ -74,7 +73,6 @@ export class TextToImage extends HTMLElement {
         try {
           await this.generate();
         } catch (e) {
-          progressMessage.textContent = String(e);
           console.error(e);
         }
       });
@@ -101,12 +99,12 @@ export class TextToImage extends HTMLElement {
         for (let i = 0; i < batchSize; i++) {
           seedInput.value = seedInput.valueAsNumber + 1;
           try {
-            await this.generate(`Generating ${i + 1} of ${batchSize}...`);
+            await this.generate(`Generating ${i + 1} of ${batchSize}`);
           } catch(e) {
             console.error(e);
           }
         }
-        progressMessage.textContent = '';
+        TextToImage.setStatus('');
       });
 
     let runForever = false;
@@ -123,14 +121,13 @@ export class TextToImage extends HTMLElement {
               console.error(e);
             }
           }
-          progressMessage.textContent = '';
+          TextToImage.setStatus('');
         } else {
           e.target.textContent = "Run forever";
-          progressMessage.textContent = 'Finishing last image before stopping...';
+          TextToImage.setStatus("Finishing last image before stopping");
         }
       });
 
-    const progressMessage = shadow.getElementById('progressMessage');
     const widthSlider = shadow.getElementById("width");
     const heightSlider = shadow.getElementById("height");
     const stepsSlider = shadow.getElementById("steps");
@@ -183,7 +180,7 @@ export class TextToImage extends HTMLElement {
     this.shadow.getElementById('tiled').checked = params.tiled;
   }
 
-  async generate(progressMessage = `Generating...`) {
+  async generate(message = `Generating`) {
     // grab parameters
     let params = {};
     for (let id of TextToImage.ids) {
@@ -191,10 +188,13 @@ export class TextToImage extends HTMLElement {
     }
     params.tiled = this.shadow.getElementById('tiled').checked;
 
-    const progressMessageElem = this.shadow.getElementById('progressMessage');
-    progressMessageElem.textContent = progressMessage;
+    TextToImage.setStatus(message);
     await StableDiffusion.generateImageFromText(params);
-    progressMessageElem.textContent = '';
+    TextToImage.setStatus("");
+  }
+
+  static setStatus(s) {
+    document.getElementById("appbar").setStatus(s);
   }
 }
 

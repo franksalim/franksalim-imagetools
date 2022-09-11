@@ -14,13 +14,23 @@ export class AppBar extends HTMLElement {
           box-shadow: 0px 0px 8px rgba(0, 0, 0, .5);
           display: flex;
           align-items: center;
+          justify-content: right;
         }
         * {
           margin: 5px;
         }
+        #status {
+          color: white;
+          padding: 0px 16px;
+        }
       </style>
+      <div id=status></div>
     `;
     this.shadow = shadow;
+  }
+
+  setStatus(status) {
+    this.shadow.getElementById("status").textContent = status;
   }
 }
 
