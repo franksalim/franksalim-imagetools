@@ -7,6 +7,7 @@ export class Details extends HTMLElement {
         :host {
           flex: auto;
           padding: 16px;
+          display: none;
         }
         #scroller {
           overflow: scroll;
@@ -31,6 +32,7 @@ export class Details extends HTMLElement {
   }
 
   setImage(uri, args) {
+    this.style.display = "block";
     this.shadow.getElementById("args").innerText = JSON.stringify(args);
     this.shadow.getElementById("controls").removeAttribute("hidden");
 
