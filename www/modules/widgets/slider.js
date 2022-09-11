@@ -41,6 +41,7 @@ export class Slider extends HTMLElement {
       this.#display.select();
     });
     this.addEventListener("wheel", e => {
+      e.preventDefault();
       if (e.deltaY > 0) {
         this.value -= this.step;
       } else if (e.deltaY < 0) {
