@@ -1,5 +1,6 @@
-import { PromptBuilder } from "../widgets/promptbuilder.js";
-import '../widgets/slider.js';
+import {PromptBuilder} from "../widgets/promptbuilder.js";
+import {Slider} from "/modules/widgets/slider.js";
+import {StableDiffusion} from "/modules/api/stablediffusion.js";
 
 export class TextToImage extends HTMLElement {
   static ids = ["steps", "scale", "width", "height", "seed", "prompt"];
@@ -192,14 +193,7 @@ export class TextToImage extends HTMLElement {
 
     const progressMessageElem = this.shadow.getElementById('progressMessage');
     progressMessageElem.textContent = progressMessage;
-    const response = await fetch("/generate/", {
-      method: "POST",
-      cache: "no-cache",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(params)
-    });
-    let uri = URL.createObjectURL(await response.blob());
-    document.getElementById("historyList").addImage(uri, params);
+    await StableDiffusion.generateImageFromText(params);
     progressMessageElem.textContent = '';
   }
 }

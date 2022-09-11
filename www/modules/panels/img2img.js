@@ -1,4 +1,7 @@
-import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
+import {PromptBuilder} from "../widgets/promptbuilder.js";
+import {Slider} from "/modules/widgets/slider.js";
+import {StableDiffusion} from "/modules/api/stablediffusion.js";
+
 export class ImageToImage extends HTMLElement {
   static ids = ["steps", "scale", "prompt", "strength"];
 
@@ -83,18 +86,7 @@ export class ImageToImage extends HTMLElement {
       return;
     }
     let blob = await fetch(inputUri).then(r => r.blob());
-
-    let formData = new FormData();
-    formData.append("params", JSON.stringify(params));
-    formData.append("initImage", blob);
-
-    const response = await fetch("/img2img/", {
-      method: "POST",
-      cache: "no-cache",
-      body: formData
-    });
-    let uri = URL.createObjectURL(await response.blob());
-    document.getElementById("historyList").addImage(uri, params);
+    StableDiffusion.generateImageFromImage(blob, params);
   }
 }
 window.customElements.define('fs-img2img', ImageToImage);
