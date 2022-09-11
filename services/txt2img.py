@@ -13,12 +13,46 @@ from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
 from torch import autocast
 
 
+def force_tiled():
+    global unforce_tiled
+    cls = torch.nn.Conv2d
+    init = cls.__init__
+
+    def __init__(self, *args, **kwargs):
+        patch = {"padding_mode": "circular"}
+        return init(self, *args, **kwargs, **patch)
+    cls.__init__ = __init__
+
+    def unp():
+        global unforce_tiled
+        cls.__init__ = init
+        def unforce_tiled(): return None
+    unforce_tiled = unp
+
+
+currently_tiled = False
+def unforce_tiled(): return None
+
+
 sd_pipeline = None
 
+
 def generate_txt2img(args):
-    print(json.dumps(args))
-    torch_gc()
     global sd_pipeline
+    global currently_tiled
+    print(args)
+    should_tile = args.get("tiled", False) == True
+
+    # we patch torch internals to force tiled convolutions so we need
+    # to reload the model if we change this setting
+    if should_tile == True and currently_tiled == False:
+        currently_tiled = True
+        force_tiled()
+        sd_pipeline = None
+    if should_tile == False and currently_tiled == True:
+        currently_tiled = False
+        unforce_tiled()
+        sd_pipeline = None
 
     optprompt = args["prompt"]
     optseed = int(args["seed"])
@@ -28,6 +62,7 @@ def generate_txt2img(args):
     optwidth = int(args["width"])
 
     # load model if not loaded
+    torch_gc()
     if sd_pipeline is None:
         print("loading txt2img model...")
 

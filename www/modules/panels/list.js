@@ -65,8 +65,7 @@ export class FsList extends HTMLElement {
   select(img) {
     this.shadow.querySelector('img.selected')?.classList.remove('selected');
     img.classList.add('selected');
-    document.getElementById("detail").setImage(img.src);
-    document.getElementById("detail").setArgs(img.params);
+    document.getElementById("detail").setImage(img.src, img.params);
   }
   selectNext() {
     let selected = this.shadow.querySelector('img.selected');

@@ -39,6 +39,13 @@ details {
 input, textarea, fs-slider {
   width: 98%;
 }
+label > input[type="checkbox"] {
+  width: auto;
+}
+label {
+  display: block;
+  width: 100%;
+}
 
 button {
   margin: 4px;

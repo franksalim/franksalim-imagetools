@@ -1,4 +1,4 @@
-import { PromptBuilder } from "/modules/widgets/promptbuilder.js";
+import { PromptBuilder } from "../widgets/promptbuilder.js";
 import '../widgets/slider.js';
 
 export class TextToImage extends HTMLElement {
@@ -27,6 +27,10 @@ export class TextToImage extends HTMLElement {
       </style>
 
       <fs-promptbuilder id=prompt></fs-promptbuilder>
+      <label>
+        Tiled
+        <input type=checkbox id=tiled>
+      </label>
 
       <details open>
         <summary>Options</summary>
@@ -65,10 +69,8 @@ export class TextToImage extends HTMLElement {
 
     shadow.getElementById("generateButton")
       .addEventListener("click", async e => {
-        progressMessage.textContent = "Generating...";
         try {
           await this.generate();
-          progressMessage.textContent = "";
         } catch (e) {
           progressMessage.textContent = String(e);
           console.error(e);
@@ -96,9 +98,8 @@ export class TextToImage extends HTMLElement {
       .addEventListener("click", async e => {
         for (let i = 0; i < batchSize; i++) {
           seedInput.value = seedInput.valueAsNumber + 1;
-          progressMessage.textContent = `Generating ${i + 1} of ${batchSize}...`;
           try {
-            await this.generate();
+            await this.generate(`Generating ${i + 1} of ${batchSize}...`);
           } catch(e) {
             console.error(e);
           }
@@ -114,7 +115,6 @@ export class TextToImage extends HTMLElement {
           e.target.textContent = "Stop";
           while (runForever) {
             seedInput.valueAsNumber = seedInput.valueAsNumber + 1;
-            progressMessage.textContent = `Generating...`;
             try {
               await this.generate();
             } catch(e) {
@@ -178,15 +178,19 @@ export class TextToImage extends HTMLElement {
       // hack: input type number will take string props but not attrs?
       this.shadow.getElementById(id).value = params[id];
     }
+    this.shadow.getElementById('tiled').checked = params.tiled;
   }
 
-  async generate() {
+  async generate(progressMessage = `Generating...`) {
     // grab parameters
     let params = {};
     for (let id of TextToImage.ids) {
       params[id] = this.shadow.getElementById(id).value
     }
+    params.tiled = this.shadow.getElementById('tiled').checked;
 
+    const progressMessageElem = this.shadow.getElementById('progressMessage');
+    progressMessageElem.textContent = progressMessage;
     const response = await fetch("/generate/", {
       method: "POST",
       cache: "no-cache",
@@ -195,15 +199,16 @@ export class TextToImage extends HTMLElement {
     });
     let uri = URL.createObjectURL(await response.blob());
     document.getElementById("historyList").addImage(uri, params);
+    progressMessageElem.textContent = '';
   }
 }
 
 window.customElements.define('fs-txt2img', TextToImage);
 
 /**
- * Just concats the string, but this is a hint to editor plugins to 
+ * Just concats the string, but this is a hint to editor plugins to
  * give language support as though the contents are HTML.
- * @param {TemplateStringsArray} s 
+ * @param {TemplateStringsArray} s
  */
  function html(s) {
   return s.join('');

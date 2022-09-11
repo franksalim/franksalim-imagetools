@@ -17,7 +17,6 @@ from torch import autocast
 img_pipeline = None
 
 def generate_img2img(image, args):
-    print(json.dumps(args))
     torch_gc()
     global img_pipeline
 
