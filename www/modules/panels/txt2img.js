@@ -21,6 +21,7 @@ export class TextToImage extends HTMLElement {
           font-size: 18px;
         }
         details {
+          user-select: none;
           padding: 16px 0px;
         }
       </style>
