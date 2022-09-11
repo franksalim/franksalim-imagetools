@@ -33,10 +33,7 @@ export class ImagePicker extends HTMLElement {
       }
 
       if (e.dataTransfer.items[0].kind == "file") {
-        const blob = e.dataTransfer.items[0].getAsFile();
-        let uri = URL.createObjectURL(blob);
-        inputImage.setAttribute("src", uri);
-        this.dispatchEvent(new Event("input"));
+        this.setImageFile(e.dataTransfer.items[0].getAsFile());
       } else  {
         let uri = e.dataTransfer.getData("text/plain");
         inputImage.setAttribute("src", uri);
@@ -48,6 +45,13 @@ export class ImagePicker extends HTMLElement {
 
   getImageSrc() {
     return this.shadow.getElementById("inputImage").getAttribute("src");
+  }
+
+  /** @param {File} file */
+  setImageFile(file) {
+    let uri = URL.createObjectURL(file);
+    this.shadow.getElementById("inputImage").setAttribute("src", uri);
+    this.dispatchEvent(new Event("input"));
   }
 }
 window.customElements.define('fs-imagepicker', ImagePicker);

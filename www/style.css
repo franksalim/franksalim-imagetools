@@ -20,3 +20,21 @@ body, html {
   height: 100%;
 }
 
+#tools {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 300px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+#tools > * {
+  display: none;
+}
+
+#tools > .active {
+  display: block;
+  flex-basis: 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
+}

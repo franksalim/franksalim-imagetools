@@ -97,10 +97,9 @@ export class ToolPicker extends HTMLElement {
   }
 
   select(selected) {
-    for (let tool of this.tools) {
-      tool.style.display = "none";
-    }
-    selected.style.display = "block";
+    const tools = document.getElementById('tools');
+    tools.querySelector('.active')?.classList.remove('active');
+    selected.classList.add('active');
   }
 }
 

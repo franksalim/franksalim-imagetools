@@ -1,6 +1,6 @@
 import {PromptBuilder} from "../widgets/promptbuilder.js";
-import {ImagePicker} from "/modules/widgets/imagepicker.js";
-import {Slider} from "/modules/widgets/slider.js";
+import {ImagePicker} from "../widgets/imagepicker.js";
+import {Slider} from "../widgets/slider.js";
 import {StableDiffusion} from "/modules/api/stablediffusion.js";
 
 export class ImageToImage extends HTMLElement {
@@ -9,7 +9,7 @@ export class ImageToImage extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
-    shadow.innerHTML = `
+    shadow.innerHTML = html`
       <link rel=stylesheet href=/css/panel.css>
       <fs-imagepicker id=imagepicker></fs-imagepicker>
       <fs-promptbuilder id=prompt></fs-promptbuilder>
@@ -29,7 +29,16 @@ export class ImageToImage extends HTMLElement {
     `;
 
     shadow.getElementById("generateButton")
-      .addEventListener("click", e => { this.generate() });
+      .addEventListener("click", async e => {
+        ImageToImage.setStatus("Generating...");
+        try {
+          this.generate();
+          ImageToImage.setStatus("");
+        } catch (e) {
+          console.error(e);
+          ImageToImage.setStatus(e);
+        }
+      });
 
     this.shadow = shadow;
   }
@@ -47,5 +56,16 @@ export class ImageToImage extends HTMLElement {
     let blob = await fetch(inputUri).then(r => r.blob());
     StableDiffusion.generateImageFromImage(blob, params);
   }
+  static setStatus(s) {
+    document.getElementById("appbar").setStatus(s);
+  }
+  /** @param {File} file */
+  setInputImage(file) {
+    this.shadow.getElementById("imagepicker").setImageFile(file);
+  }
 }
 window.customElements.define('fs-img2img', ImageToImage);
+
+function html(strings) {
+  return strings.join("");
+}
