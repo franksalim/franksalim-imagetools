@@ -1,4 +1,5 @@
 import {PromptBuilder} from "../widgets/promptbuilder.js";
+import {ImagePicker} from "/modules/widgets/imagepicker.js";
 import {Slider} from "/modules/widgets/slider.js";
 import {StableDiffusion} from "/modules/api/stablediffusion.js";
 
@@ -17,19 +18,12 @@ export class ImageToImage extends HTMLElement {
           padding: 16px;
           box-shadow: 0px 0px 16px rgba(0, 0, 0, .5);
         }
-        img#inputImage {
-          width: 260px;
-          min-height: 100px;
-          outline: 1px solid #888;
-          background-color: #ddd;
-        }
         h2 {
           margin: 0px;
           font-size: 18px;
         }
       </style>
-      <img id=inputImage>
-      <input type=file id=filepicker>
+      <fs-imagepicker id=imagepicker></fs-imagepicker>
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
       <h2>Scale</h2>
@@ -43,32 +37,6 @@ export class ImageToImage extends HTMLElement {
       <button id=generateButton>Generate</button>
     `;
 
-    const inputImage = shadow.getElementById("inputImage");
-
-    shadow.getElementById("filepicker").addEventListener("change", e => {
-      const blob = e.target.files[0];
-      let uri = URL.createObjectURL(blob);
-      inputImage.setAttribute("src", uri);
-    });
-    inputImage.addEventListener("dragover", e => {
-      e.preventDefault();
-    });
-    inputImage.addEventListener("drop", e => {
-      e.preventDefault();
-
-      if (!e.dataTransfer.items.length) {
-        return;
-      }
-
-      if (e.dataTransfer.items[0].kind == "file") {
-        const blob = e.dataTransfer.items[0].getAsFile();
-        let uri = URL.createObjectURL(blob);
-        inputImage.setAttribute("src", uri);
-      } else  {
-        let uri = e.dataTransfer.getData("text/plain");
-        inputImage.setAttribute("src", uri);
-      }
-    });
     shadow.getElementById("generateButton")
       .addEventListener("click", e => { this.generate() });
 
@@ -81,7 +49,7 @@ export class ImageToImage extends HTMLElement {
       params[id] = this.shadow.getElementById(id).value
     }
 
-    let inputUri = this.shadow.getElementById("inputImage").getAttribute("src");
+    let inputUri = this.shadow.getElementById("imagepicker").getImageSrc();
     if (!inputUri) {
       return;
     }
