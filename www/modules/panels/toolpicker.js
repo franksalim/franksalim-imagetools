@@ -59,6 +59,10 @@ export class ToolPicker extends HTMLElement {
         [...buttons].map(b => { b.removeAttribute("selected") });
         button.setAttribute("selected", true);
       })
+      // Select each tool when dragging over
+      button.addEventListener("dragover", e => {
+        button.dispatchEvent(new Event("click"));
+    });
     }
 
     const img2imgTool = document.getElementById("img2img");
@@ -68,9 +72,6 @@ export class ToolPicker extends HTMLElement {
     this.tools = [txt2imgTool, img2imgTool, inpaintingTool, drawingTool];
     this.select(txt2imgTool);
 
-    shadow.getElementById("img2imgButton").addEventListener("dragover", e => {
-      shadow.getElementById("img2imgButton").dispatchEvent(new Event("click"));
-    });
     shadow.getElementById("img2imgButton").addEventListener("click", e => {
       this.select(img2imgTool);
     });
