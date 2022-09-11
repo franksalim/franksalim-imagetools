@@ -3,7 +3,24 @@ export class SaveProjectButton extends HTMLElement {
     super();
     const shadow = this.attachShadow({mode: 'open'});
     shadow.innerHTML = `
-      <button>Save</button>
+      <style>
+        button {
+          height: 60px;
+          width: 60px;
+          border: 0px;
+          outline: 0px;
+          margin: 0px ;
+          background: none;
+          position: relative;
+          z-index: 9;
+        }
+        button img {
+          height: 40px;
+          width: 40px;
+          opacity: .5;
+        }
+      </style>
+      <button><img src=/assets/save_FILL0_wght400_GRAD0_opsz48.svg></button>
     `;
 
     const button = shadow.querySelector("button");

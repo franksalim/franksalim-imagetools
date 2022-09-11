@@ -1,3 +1,6 @@
+import {SaveProjectButton} from '/modules/widgets/save-project-button.js';
+import {LoadProjectButton} from '/modules/widgets/open-project-button.js';
+
 export class ToolPicker extends HTMLElement {
   constructor() {
     super();
@@ -45,6 +48,9 @@ export class ToolPicker extends HTMLElement {
         <button id=drawingButton title="draw">
           <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
+
+        <fs-save-project-button></fs-save-project-button>
+        <fs-open-project-button></fs-open-project-button>
     `;
     this.shadow = shadow;
     let buttons = shadow.querySelectorAll("button");

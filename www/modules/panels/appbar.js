@@ -1,6 +1,3 @@
-import '../widgets/save-project-button.js';
-import '../widgets/open-project-button.js';
-
 export class AppBar extends HTMLElement {
   constructor() {
     super();
@@ -22,9 +19,6 @@ export class AppBar extends HTMLElement {
           margin: 5px;
         }
       </style>
-
-      <fs-save-project-button></fs-save-project-button>
-      <fs-open-project-button></fs-open-project-button>
     `;
     this.shadow = shadow;
   }
