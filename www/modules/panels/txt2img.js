@@ -8,31 +8,12 @@ export class TextToImage extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
-    shadow.innerHTML = html`
-      <style>
-        :host {
-          flex-basis: 300px;
-          flex-grow: 0;
-          flex-shrink: 0;
-          padding: 16px;
-          box-shadow: 0px 0px 16px rgba(0, 0, 0, .5);
-        }
-        h2 {
-          margin: 0px;
-          font-size: 18px;
-        }
-        details {
-          user-select: none;
-          padding: 16px 0px;
-        }
-      </style>
-
+    shadow.innerHTML = `
+      <link rel=stylesheet href=/css/panel.css>
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
       <details open>
         <summary>Options</summary>
-
-        <!-- Dimensions -->
         <h2>Width</h2>
         <fs-slider step=64 min=256 max=1024 value=704 id=width></fs-slider>
         <h2>Height</h2>
@@ -52,7 +33,7 @@ export class TextToImage extends HTMLElement {
         <label>
           Tiled
           <input type=checkbox id=tiled>
-      </label>
+        </label>
       </details>
 
       <details>
@@ -60,7 +41,10 @@ export class TextToImage extends HTMLElement {
         <h2>Batch size</h2>
         <fs-slider id=batchSize min=1 max=500 value=1></fs-slider>
 
-        <button id=nextButton title="Increment the seed and generate the next image.">Next</button>
+        <button id=nextButton
+                title="Increment the seed and generate the next image.">
+          Next
+        </button>
         <button id=runForever>Run forever</button>
       </details>
 
@@ -69,13 +53,7 @@ export class TextToImage extends HTMLElement {
     `;
 
     shadow.getElementById("generateButton")
-      .addEventListener("click", async e => {
-        try {
-          await this.generate();
-        } catch (e) {
-          console.error(e);
-        }
-      });
+      .addEventListener("click", e => { this.generate() });
 
     const batchSizeInput = shadow.getElementById("batchSize");
     let batchSize = 1;
@@ -91,8 +69,8 @@ export class TextToImage extends HTMLElement {
 
     let seedInput = shadow.getElementById("seed");
 
-    shadow.getElementById("randomSeedButton")
-      .addEventListener("click", e => { seedInput.value = Math.floor(Math.random() * 1000000000) });
+    shadow.getElementById("randomSeedButton").addEventListener("click",
+      e => { seedInput.value = Math.floor(Math.random() * 1000000000) });
 
     shadow.getElementById("nextButton")
       .addEventListener("click", async e => {
@@ -199,12 +177,3 @@ export class TextToImage extends HTMLElement {
 }
 
 window.customElements.define('fs-txt2img', TextToImage);
-
-/**
- * Just concats the string, but this is a hint to editor plugins to
- * give language support as though the contents are HTML.
- * @param {TemplateStringsArray} s
- */
- function html(s) {
-  return s.join('');
-}

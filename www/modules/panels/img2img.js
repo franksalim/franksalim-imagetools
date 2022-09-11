@@ -10,19 +10,7 @@ export class ImageToImage extends HTMLElement {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
     shadow.innerHTML = `
-      <style>
-        :host {
-          flex-basis: 300px;
-          flex-grow: 0;
-          flex-shrink: 0;
-          padding: 16px;
-          box-shadow: 0px 0px 16px rgba(0, 0, 0, .5);
-        }
-        h2 {
-          margin: 0px;
-          font-size: 18px;
-        }
-      </style>
+      <link rel=stylesheet href=/css/panel.css>
       <fs-imagepicker id=imagepicker></fs-imagepicker>
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
