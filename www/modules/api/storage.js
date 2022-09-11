@@ -35,19 +35,8 @@ export class SaveLoad {
     await writable.close();
   }
 
-  static async loadProject() {
+  static async loadProjectFromFile(file) {
     const list = document.querySelector('fs-list');
-    const [fileHandle] = await window.showOpenFilePicker({
-      types: [
-        {
-          description: 'JSON files',
-          accept: {
-            'application/json': ['.json'],
-          },
-        },
-      ],
-    });
-    const file = await fileHandle.getFile();
     const text = await file.text();
     const project = JSON.parse(text);
     list.clearHistory();
@@ -63,5 +52,20 @@ export class SaveLoad {
     for (const item of converted) {
       list.addImage(item.uri, item);
     }
+  }
+
+  static async loadProject() {
+    const [fileHandle] = await window.showOpenFilePicker({
+      types: [
+        {
+          description: 'JSON files',
+          accept: {
+            'application/json': ['.json'],
+          },
+        },
+      ],
+    });
+    const file = await fileHandle.getFile();
+    return await loadProjectFromFile(file);
   }
 }

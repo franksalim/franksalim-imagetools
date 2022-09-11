@@ -16,6 +16,11 @@ export class SaveProjectButton extends HTMLElement {
           position: relative;
           z-index: 9;
         }
+        button:active {
+          position: relative;
+          z-index: 9;
+          background-color: #ccc;
+        }
         button img {
           height: 40px;
           width: 40px;

@@ -13,8 +13,11 @@ export class LoadProjectButton extends HTMLElement {
           outline: 0px;
           margin: 0px ;
           background: none;
+        }
+        button:active {
           position: relative;
           z-index: 9;
+          background-color: #ccc;
         }
         button img {
           height: 40px;
