@@ -37,10 +37,11 @@ def unforce_tiled(): return None
 sd_pipeline = None
 
 
-def generate_txt2img(args):
+def generate_txt2img(args, verbose=False):
+    if verbose:
+        print(json.dumps(args))
     global sd_pipeline
     global currently_tiled
-    print(args)
     should_tile = args.get("tiled", False) == True
 
     # we patch torch internals to force tiled convolutions so we need

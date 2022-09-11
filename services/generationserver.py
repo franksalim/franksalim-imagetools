@@ -20,9 +20,12 @@ cd services
 from flask import Flask, send_file, request, redirect
 import json
 import threading
+import sys
 
 from txt2img import generate_txt2img
 from img2img import generate_img2img
+
+verbose = False
 
 app = Flask(__name__,
             static_url_path='',
@@ -31,6 +34,7 @@ app = Flask(__name__,
 # Working with images will eat all the VRAM, so you've got to
 # hold this lock in order to do that ok.
 work_lock = threading.Lock()
+
 
 @app.route('/')
 def index():
@@ -41,7 +45,7 @@ def index():
 def generate():
     with work_lock:
         args = request.get_json()
-        return generate_txt2img(args)
+        return generate_txt2img(args, verbose=verbose)
 
 
 @app.route("/img2img/", methods=['POST'])
@@ -49,8 +53,10 @@ def img2img():
     with work_lock:
         args = json.loads(request.form["params"])
         image = request.files["initImage"]
-        return generate_img2img(image, args)
+        return generate_img2img(image, args, verbose=verbose)
 
 
 if __name__ == '__main__':
+    if "--verbose" in sys.argv or "-v" in sys.argv:
+        verbose = True
     app.run(host='0.0.0.0', debug=True)
