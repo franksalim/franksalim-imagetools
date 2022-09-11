@@ -20,6 +20,10 @@ export class ImageToImage extends HTMLElement {
           outline: 1px solid #888;
           background-color: #ddd;
         }
+        h2 {
+          margin: 0px;
+          font-size: 18px;
+        }
       </style>
       <img id=inputImage>
       <input type=file id=filepicker>

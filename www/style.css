@@ -20,33 +20,3 @@ body, html {
   height: 100%;
 }
 
-h1 {
-  margin: 0px;
-  font-size: 22px;
-  user-select: none;
-}
-
-h2 {
-  margin: 0px;
-  font-size: 18px;
-}
-
-details {
-  padding: 4px;
-  user-select: none;
-}
-
-input, textarea, fs-slider {
-  width: 98%;
-}
-label > input[type="checkbox"] {
-  width: auto;
-}
-label {
-  display: block;
-  width: 100%;
-}
-
-button {
-  margin: 4px;
-}

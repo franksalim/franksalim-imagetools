@@ -7,12 +7,14 @@ export class PromptBuilder extends HTMLElement {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
     shadow.innerHTML = `
-      <link rel=stylesheet href=style.css>
       <style>
         :host {
           display: block;
           padding: 4px;
           margin: 4px;
+        }
+        textarea {
+          width: 98%;
         }
         </style>
       <div id=chips></div>

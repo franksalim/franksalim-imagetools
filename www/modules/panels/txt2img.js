@@ -8,7 +8,6 @@ export class TextToImage extends HTMLElement {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
     shadow.innerHTML = html`
-      <link rel=stylesheet href=style.css>
       <style>
         :host {
           flex-basis: 300px;
@@ -17,20 +16,16 @@ export class TextToImage extends HTMLElement {
           padding: 16px;
           box-shadow: 0px 0px 16px rgba(0, 0, 0, .5);
         }
-        .inputAndValue {
-          display: flex;
+        h2 {
+          margin: 0px;
+          font-size: 18px;
         }
-        .inputAndValue > span {
-          font-size: 12px;
-          margin-left: 12px;
+        details {
+          padding: 16px 0px;
         }
       </style>
 
       <fs-promptbuilder id=prompt></fs-promptbuilder>
-      <label>
-        Tiled
-        <input type=checkbox id=tiled>
-      </label>
 
       <details open>
         <summary>Options</summary>
@@ -51,6 +46,11 @@ export class TextToImage extends HTMLElement {
         <fs-slider step=0.5 min=-30 max=30 value=7.5 id=scale></fs-slider>
         <h2>Steps</h2>
         <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
+
+        <label>
+          Tiled
+          <input type=checkbox id=tiled>
+      </label>
       </details>
 
       <details>
