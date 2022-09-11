@@ -15,6 +15,12 @@ export class ToolPicker extends HTMLElement {
           flex-basis: 60px;
           flex-grow: 0;
           flex-shrink: 0;
+
+          display: flex;
+          flex-direction: column;
+        }
+        .spacer {
+          flex-grow: 1;
         }
         button {
           height: 60px;
@@ -24,6 +30,9 @@ export class ToolPicker extends HTMLElement {
           background: none;
           position: relative;
           z-index: 9;
+
+          flex-grow: 0;
+          flex-shrink: 0;
         }
         button img {
           height: 40px;
@@ -49,6 +58,7 @@ export class ToolPicker extends HTMLElement {
           <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
 
+        <div class=spacer></div>
         <fs-save-project-button></fs-save-project-button>
         <fs-open-project-button></fs-open-project-button>
     `;
