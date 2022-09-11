@@ -40,6 +40,13 @@ export class Slider extends HTMLElement {
     this.#display.addEventListener("focus", () => {
       this.#display.select();
     });
+    this.addEventListener("wheel", e => {
+      if (e.deltaY > 0) {
+        this.value -= this.step;
+      } else if (e.deltaY < 0) {
+        this.value += this.step;
+      }
+    });
 
     // Defaults
     this.value = 0;
