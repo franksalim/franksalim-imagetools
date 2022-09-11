@@ -6,7 +6,7 @@ export class ImagePicker extends HTMLElement {
       <style>
         img#inputImage {
           display: block;
-          width: 260px;
+          min-width: 260px;
           min-height: 100px;
           outline: 1px solid #888;
           background-color: #ddd;
@@ -20,6 +20,7 @@ export class ImagePicker extends HTMLElement {
       const blob = e.target.files[0];
       let uri = URL.createObjectURL(blob);
       inputImage.setAttribute("src", uri);
+      this.dispatchEvent(new Event("input"));
     });
     inputImage.addEventListener("dragover", e => {
       e.preventDefault();
@@ -35,9 +36,11 @@ export class ImagePicker extends HTMLElement {
         const blob = e.dataTransfer.items[0].getAsFile();
         let uri = URL.createObjectURL(blob);
         inputImage.setAttribute("src", uri);
+        this.dispatchEvent(new Event("input"));
       } else  {
         let uri = e.dataTransfer.getData("text/plain");
         inputImage.setAttribute("src", uri);
+        this.dispatchEvent(new Event("input"));
       }
     });
     this.shadow = shadow;

@@ -12,12 +12,14 @@ export class Inpainting extends HTMLElement {
       <link rel=stylesheet href=/css/panel.css>
       <style>
         canvas {
-          background-color: rgba(256, 256, 256, 0.5);
+          opacity: .5;
+          z-index:100;
+          position: absolute;
         }
       </style>
       <div>
         <fs-imagepicker id=imagepicker></fs-imagepicker>
-        <canvas width=512 height=512>
+        <canvas width=0 height=0>
       </div>
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
@@ -31,12 +33,36 @@ export class Inpainting extends HTMLElement {
       <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
 
       <h2>Strength</h2>
-      <fs-slider step=0.01 min=0.0 max=1.0 value=0.75 id=strength></fs-slider>
+      <fs-slider step=0.01 min=0.0 max=1.0 value=0.95 id=strength></fs-slider>
 
       <div class=buttonbar>
         <button id=generateButton>Generate</button>
       </div>
     `;
+
+    shadow.getElementById("generateButton")
+      .addEventListener("click", e => { this.generate() });
+
+    let imagePicker = shadow.getElementById("imagepicker");
+    imagePicker.addEventListener("input", e => {
+      let image = new Image();
+      image.src = imagePicker.getImageSrc();
+      image.onload = e => {
+        this.setupCanvas(image.width, image.height);
+      }
+    });
+
+    this.shadow = shadow;
+  }
+
+  setupCanvas(w, h) {
+    const imagePicker = this.shadow.getElementById("imagepicker");
+    const canvas = this.shadow.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = w;
+    canvas.height = h;
+    canvas.style.top = imagePicker.getBoundingClientRect().top + "px";
+    canvas.style.left = imagePicker.getBoundingClientRect().left + "px";
 
     let fromEvent = function(e) {
       const x = e.x - e.target.getBoundingClientRect().left;
@@ -52,8 +78,6 @@ export class Inpainting extends HTMLElement {
       ctx.stroke();
     }
 
-    const canvas = shadow.querySelector("canvas");
-    const ctx = canvas.getContext("2d");
     let drawing = false;
     let start = {x: 0, y: 0};
 
@@ -78,21 +102,18 @@ export class Inpainting extends HTMLElement {
       start = fromEvent(e);
     });
 
-    let brushSizeSlider = shadow.getElementById("brushSize");
+    let brushSizeSlider = this.shadow.getElementById("brushSize");
     brushSizeSlider.addEventListener("input", e => {
       ctx.lineWidth = brushSizeSlider.value;
     });
     ctx.lineWidth = brushSizeSlider.value;
     ctx.lineCap = "round";
+    ctx.lineJoin = "round";
     ctx.strokeStyle = "white";
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, 512, 512);
-
-    shadow.getElementById("generateButton")
-      .addEventListener("click", e => { this.generate() });
-
-    this.shadow = shadow;
+    ctx.fillRect(0, 0, w, h);
   }
+
   async generate() {
     // grab parameters
     let params = {};
