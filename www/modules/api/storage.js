@@ -2,7 +2,7 @@ export class SaveLoad {
   static async saveProject() {
     const list = document.querySelector("fs-list");
     const history = await Promise.all(
-      list.getHistory().map(async (img) => {
+      list.getHistory().reverse().map(async (img) => {
         const objectUrl = img.getAttribute("src");
         const result = await fetch(objectUrl);
         const blob = await result.blob();
