@@ -46,6 +46,7 @@ export class Slider extends HTMLElement {
       } else if (e.deltaY < 0) {
         this.value += this.step;
       }
+      this.dispatchEvent(new Event("input"));
     });
 
     // Defaults
