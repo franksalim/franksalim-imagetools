@@ -24,6 +24,7 @@ import sys
 
 from txt2img import generate_txt2img
 from img2img import generate_img2img
+from inpainting import generate_inpaint
 
 verbose = False
 
@@ -55,6 +56,13 @@ def img2img():
         image = request.files["initImage"]
         return generate_img2img(image, args, verbose=verbose)
 
+@app.route("/inpaint/", methods=['POST'])
+def inpaint():
+    with work_lock:
+        args = json.loads(request.form["params"])
+        image = request.files["initImage"]
+        mask = request.files["maskImage"]
+        return generate_inpaint(image, mask, args, verbose=verbose)
 
 if __name__ == '__main__':
     if "--verbose" in sys.argv or "-v" in sys.argv:

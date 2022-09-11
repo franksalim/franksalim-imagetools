@@ -23,4 +23,19 @@ export class StableDiffusion {
     let uri = URL.createObjectURL(await response.blob());
     document.getElementById("historyList").addImage(uri, params);
   }
+
+  static async inpaint(imageBlob, maskBlob, params) {
+    let formData = new FormData();
+    formData.append("params", JSON.stringify(params));
+    formData.append("initImage", imageBlob);
+    formData.append("maskImage", maskBlob);
+
+    const response = await fetch("/inpaint/", {
+      method: "POST",
+      cache: "no-cache",
+      body: formData
+    });
+    let uri = URL.createObjectURL(await response.blob());
+    document.getElementById("historyList").addImage(uri, params);
+  }
 }

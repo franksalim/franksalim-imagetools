@@ -5,6 +5,7 @@ export class ImagePicker extends HTMLElement {
     shadow.innerHTML = `
       <style>
         img#inputImage {
+          display: block;
           width: 260px;
           min-height: 100px;
           outline: 1px solid #888;
