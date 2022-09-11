@@ -22,7 +22,10 @@ export class ImageToImage extends HTMLElement {
 
       <h2>Strength</h2>
       <fs-slider step=0.01 min=0.0 max=1.0 value=0.75 id=strength></fs-slider>
-      <button id=generateButton>Generate</button>
+
+      <div class=buttonbar>
+        <button id=generateButton>Generate</button>
+      </div>
     `;
 
     shadow.getElementById("generateButton")

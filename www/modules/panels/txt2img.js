@@ -12,44 +12,48 @@ export class TextToImage extends HTMLElement {
       <link rel=stylesheet href=/css/panel.css>
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
-      <details open>
-        <summary>Options</summary>
-        <h2>Width</h2>
-        <fs-slider step=64 min=256 max=1024 value=704 id=width></fs-slider>
-        <h2>Height</h2>
-        <fs-slider step=64 min=256 max=1024 value=448 id=height></fs-slider>
+      <h2>Width</h2>
+      <fs-slider step=64 min=256 max=1024 value=704 id=width></fs-slider>
+      <h2>Height</h2>
+      <fs-slider step=64 min=256 max=1024 value=448 id=height></fs-slider>
+
+      <div class=buttonbar>
         <button id=squarePresetButton>Square</button>
         <button id=portraitPresetButton>Portrait</button>
         <button id=landcapePresetButton>Landscape</button>
-
-        <h2>Seed</h2>
-        <input type=number value=1337 id=seed>
-        <button id=randomSeedButton>Random</button>
-        <h2>Scale</h2>
-        <fs-slider step=0.5 min=-30 max=30 value=7.5 id=scale></fs-slider>
-        <h2>Steps</h2>
-        <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
-
-        <label>
+       <label>
           Tiled
           <input type=checkbox id=tiled>
         </label>
-      </details>
+      </div>
+
+      <h2>Seed</h2>
+      <input type=number value=1337 id=seed>
+      <button id=randomSeedButton>Random</button>
+      <h2>Scale</h2>
+      <fs-slider step=0.5 min=-30 max=30 value=7.5 id=scale></fs-slider>
+      <h2>Steps</h2>
+      <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
+
 
       <details>
         <summary>Batch Generation</summary>
         <h2>Batch size</h2>
         <fs-slider id=batchSize min=1 max=500 value=1></fs-slider>
 
-        <button id=nextButton
-                title="Increment the seed and generate the next image.">
-          Next
-        </button>
-        <button id=runForever>Run forever</button>
+        <div class=buttonbar>
+          <button id=nextButton
+                  title="Increment the seed and generate the next image.">
+            Next
+          </button>
+          <button id=runForever>Run forever</button>
+        </buttonbar>
       </details>
 
-      <button id=generateButton>Generate</button>
-      <button id=import>Import from clipboard</button>
+      <div class=buttonbar>
+        <button id=generateButton>Generate</button>
+        <button id=import>Import from clipboard</button>
+      </div>
     `;
 
     shadow.getElementById("generateButton")
