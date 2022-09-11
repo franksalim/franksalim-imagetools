@@ -59,6 +59,13 @@ export class ImageToImage extends HTMLElement {
   static setStatus(s) {
     document.getElementById("appbar").setStatus(s);
   }
+  setArgs(params) {
+    for (let id of ImageToImage.ids) {
+      this.shadow.getElementById(id).setAttribute("value", params[id]);
+      // hack: input type number will take string props but not attrs?
+      this.shadow.getElementById(id).value = params[id];
+    }
+  }
   /** @param {File} file */
   setInputImage(file) {
     this.shadow.getElementById("imagepicker").setImageFile(file);
