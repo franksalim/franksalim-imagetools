@@ -3,7 +3,7 @@ import {TextToImage} from "/modules/panels/txt2img.js";
 import {ImageToImage} from "/modules/panels/img2img.js";
 import {Inpainting} from "/modules/panels/inpainting.js";
 import {Drawing} from "/modules/panels/drawing.js";
-import {FsList} from "/modules/panels/list.js";
+import {HistoryList} from "/modules/panels/list.js";
 import {Details} from "/modules/panels/detail.js";
 import {ToolPicker} from "/modules/panels/toolpicker.js";
 

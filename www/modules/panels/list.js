@@ -1,4 +1,4 @@
-export class FsList extends HTMLElement {
+export class HistoryList extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({mode: 'open'});
@@ -108,4 +108,4 @@ export class FsList extends HTMLElement {
   }
 }
 
-window.customElements.define('fs-list', FsList);
+window.customElements.define('fs-list', HistoryList);
