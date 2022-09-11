@@ -1,4 +1,4 @@
-import {PromptBuilder} from "../widgets/promptbuilder.js";
+import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
 import {Slider} from "/modules/widgets/slider.js";
 import {StableDiffusion} from "/modules/api/stablediffusion.js";
 
