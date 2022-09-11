@@ -16,9 +16,12 @@ from torch import autocast
 
 img_pipeline = None
 
-def generate_img2img(image, args):
+
+def generate_img2img(image, args, verbose=False):
     torch_gc()
     global img_pipeline
+    if verbose:
+        print(json.dumps(args))
 
     optprompt = args["prompt"]
     optscale = float(args["scale"])
