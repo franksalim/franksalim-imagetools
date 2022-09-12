@@ -1,10 +1,10 @@
-import {SaveProjectButton} from '/modules/widgets/save-project-button.js';
-import {LoadProjectButton} from '/modules/widgets/open-project-button.js';
+import { SaveProjectButton } from '/modules/widgets/save-project-button.js';
+import { LoadProjectButton } from '/modules/widgets/open-project-button.js';
 
 export class ToolPicker extends HTMLElement {
   constructor() {
     super();
-    let shadow = this.attachShadow({mode: 'open'});
+    let shadow = this.attachShadow({ mode: 'open' });
     /*
       icons from https://fonts.google.com/icons
         https://github.com/google/material-design-icons
@@ -45,10 +45,10 @@ export class ToolPicker extends HTMLElement {
         }
         </style>
 
-        <button id=img2imgButton title="text to image">
+        <button id=img2imgButton title="image to image">
           <img src=/assets/imagesmode_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
-        <button selected id=txt2imgButton title="image to image">
+        <button selected id=txt2imgButton title="text to image">
           <img src=/assets/edit_document_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
         <button id=inpaintingButton title="inpainting">
@@ -72,7 +72,7 @@ export class ToolPicker extends HTMLElement {
       // Select each tool when dragging over
       button.addEventListener("dragover", e => {
         button.dispatchEvent(new Event("click"));
-    });
+      });
     }
 
     const img2imgTool = document.getElementById("img2img");
