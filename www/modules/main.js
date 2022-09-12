@@ -1,11 +1,11 @@
-import {AppBar} from "/modules/panels/appbar.js";
-import {TextToImage} from "/modules/panels/txt2img.js";
-import {ImageToImage} from "/modules/panels/img2img.js";
-import {Inpainting} from "/modules/panels/inpainting.js";
-import {Drawing} from "/modules/panels/drawing.js";
-import {HistoryList} from "/modules/panels/list.js";
-import {Details} from "/modules/panels/detail.js";
-import {ToolPicker} from "/modules/panels/toolpicker.js";
+import { AppBar } from "/modules/panels/appbar.js";
+import { TextToImage } from "/modules/panels/txt2img.js";
+import { ImageToImage } from "/modules/panels/img2img.js";
+import { Inpainting } from "/modules/panels/inpainting.js";
+import { Drawing } from "/modules/panels/drawing.js";
+import { HistoryList } from "/modules/panels/list.js";
+import { Details } from "/modules/panels/detail.js";
+import { ToolPicker } from "/modules/panels/toolpicker.js";
 
 // navigate history using the j and k keys
 document.addEventListener('keydown', e => {
@@ -14,7 +14,7 @@ document.addEventListener('keydown', e => {
   if (composedDirectTarget.tagName == "INPUT" || composedDirectTarget.tagName == "TEXTAREA") {
     return;
   }
-  switch(e.key) {
+  switch (e.key) {
     case "j":
       document.getElementById("historyList").selectNext();
       break;
@@ -26,3 +26,8 @@ document.addEventListener('keydown', e => {
       break;
   }
 });
+
+// This default onbeforeunload event
+window.onbeforeunload = function () {
+  return "Really exit? Any unsaved images will be lost"
+}
