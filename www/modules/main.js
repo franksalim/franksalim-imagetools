@@ -27,7 +27,7 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// This default onbeforeunload event
+// confirm with user before unloading to prevent sad lost images
 window.onbeforeunload = function () {
   return "Really exit? Any unsaved images will be lost"
 }
