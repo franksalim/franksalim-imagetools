@@ -13,9 +13,7 @@ from transformers import AutoFeatureExtractor
 from diffusers import StableDiffusionInpaintPipeline
 from torch import autocast
 
-
-inpainting_pipeline = None
-
+from img2img import img_pipeline
 
 def generate_inpaint(image, mask, args, verbose=False):
     torch_gc()
@@ -44,7 +42,7 @@ def generate_inpaint(image, mask, args, verbose=False):
             (mask_image.size[0] // 64 * 64, mask_image.size[1] // 64 * 64))
 
     # load model if not loaded
-    if inpainting_pipeline is None:
+    if img_pipeline is None:
         print("loading inpainting model...")
 
         # fp16 is half precision
