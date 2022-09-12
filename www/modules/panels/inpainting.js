@@ -24,7 +24,7 @@ export class Inpainting extends HTMLElement {
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
       <h2>Brush Size</h2>
-      <fs-slider step=1 min=1 max=100 value=10 id=brushSize></fs-slider>
+      <fs-slider step=1 min=1 max=100 value=50 id=brushSize></fs-slider>
 
       <h2>Scale</h2>
       <fs-slider step=0.5 min=-30 max=30 value=7.5 id=scale></fs-slider>
