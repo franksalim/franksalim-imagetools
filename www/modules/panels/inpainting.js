@@ -1,5 +1,6 @@
 import {ImagePicker} from "/modules/widgets/imagepicker.js";
 import {Slider} from "/modules/widgets/slider.js";
+import {DrawingCanvas} from "/modules/widgets/drawingcanvas.js";
 import {StableDiffusion} from "/modules/api/stablediffusion.js";
 
 export class Inpainting extends HTMLElement {
@@ -8,18 +9,18 @@ export class Inpainting extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({mode: 'open'});
-    shadow.innerHTML = html`
+    shadow.innerHTML = `
       <link rel=stylesheet href=/css/panel.css>
       <style>
-        canvas {
-          opacity: .5;
+        fs-drawingcanvas {
+          opacity: .75;
           z-index:100;
           position: absolute;
         }
       </style>
       <div>
         <fs-imagepicker id=imagepicker></fs-imagepicker>
-        <canvas width=0 height=0></canvas>
+        <fs-drawingcanvas width=0 height=0></fs-drawingcanvas>
       </div>
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
@@ -52,75 +53,25 @@ export class Inpainting extends HTMLElement {
         }
       });
 
+    let canvas = shadow.querySelector("fs-drawingcanvas");
     let imagePicker = shadow.getElementById("imagepicker");
     imagePicker.addEventListener("input", e => {
       let image = new Image();
       image.src = imagePicker.getImageSrc();
       image.onload = e => {
-        this.setupCanvas(image.width, image.height);
+        canvas.setupCanvas(image.width, image.height);
+        canvas.style.top = imagePicker.getBoundingClientRect().top + "px";
+        canvas.style.left = imagePicker.getBoundingClientRect().left + "px";
+        canvas.brushSize = 50;
       }
+    });
+
+    let brushSizeSlider = shadow.getElementById("brushSize");
+    brushSizeSlider.addEventListener("input", e => {
+      canvas.brushSize = brushSizeSlider.value;
     });
 
     this.shadow = shadow;
-  }
-
-  setupCanvas(w, h) {
-    const imagePicker = this.shadow.getElementById("imagepicker");
-    const canvas = this.shadow.querySelector("canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = w;
-    canvas.height = h;
-    canvas.style.top = imagePicker.getBoundingClientRect().top + "px";
-    canvas.style.left = imagePicker.getBoundingClientRect().left + "px";
-
-    let fromEvent = function(e) {
-      const x = e.x - e.target.getBoundingClientRect().left;
-      const y = e.y - e.target.getBoundingClientRect().top;
-      return {x: x, y: y};
-    }
-
-    let drawPath = function(start, end) {
-      ctx.beginPath();
-      ctx.moveTo(start.x, start.y);
-      ctx.lineTo(end.x, end.y);
-      ctx.closePath();
-      ctx.stroke();
-    }
-
-    let drawing = false;
-    let start = {x: 0, y: 0};
-
-    canvas.addEventListener("mouseout", e => { drawing = false; });
-    canvas.addEventListener("mouseup", e => {
-      drawing = false;
-      if (drawing) {
-        let end = fromEvent(e);
-        drawPath(start, end);
-        start = end;
-      }
-    });
-    canvas.addEventListener("mousemove", e => {
-      if (drawing) {
-        let end = fromEvent(e);
-        drawPath(start, end);
-        start = end;
-      }
-    });
-    canvas.addEventListener("mousedown", e => {
-      drawing = true;
-      start = fromEvent(e);
-    });
-
-    let brushSizeSlider = this.shadow.getElementById("brushSize");
-    brushSizeSlider.addEventListener("input", e => {
-      ctx.lineWidth = brushSizeSlider.value;
-    });
-    ctx.lineWidth = brushSizeSlider.value;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.strokeStyle = "white";
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, w, h);
   }
 
   async generate() {
@@ -135,11 +86,7 @@ export class Inpainting extends HTMLElement {
       return;
     }
     let blob = await fetch(inputUri).then(r => r.blob());
-    const maskBlob = await new Promise((resolve) => {
-      this.shadow.querySelector("canvas").toBlob(maskBlob => {
-        resolve(maskBlob);
-      });
-    });
+    let maskBlob = await this.shadow.querySelector("fs-drawingcanvas").getBlob();
     await StableDiffusion.inpaint(blob, maskBlob, params);
   }
 
@@ -161,7 +108,3 @@ export class Inpainting extends HTMLElement {
 }
 
 window.customElements.define('fs-inpainting', Inpainting);
-
-function html(s) {
-  return s.join("");
-}

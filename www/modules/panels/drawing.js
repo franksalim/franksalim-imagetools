@@ -1,3 +1,5 @@
+import {DrawingCanvas} from "/modules/widgets/drawingcanvas.js";
+
 export class Drawing extends HTMLElement {
   constructor() {
     super();
@@ -12,8 +14,12 @@ export class Drawing extends HTMLElement {
           background-color: #ddd;
         }
       </style>
+      <fs-drawingcanvas></fs-drawingcanvas>
       <div id=colorpicker></div>
     `;
+
+    let canvas = shadow.querySelector("fs-drawingcanvas");
+    canvas.setupCanvas(408, 704);
     this.shadow = shadow;
   }
 }
