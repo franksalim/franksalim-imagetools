@@ -8,7 +8,7 @@ export class Inpainting extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({mode: 'open'});
-    shadow.innerHTML = `
+    shadow.innerHTML = html`
       <link rel=stylesheet href=/css/panel.css>
       <style>
         canvas {
@@ -19,7 +19,7 @@ export class Inpainting extends HTMLElement {
       </style>
       <div>
         <fs-imagepicker id=imagepicker></fs-imagepicker>
-        <canvas width=0 height=0>
+        <canvas width=0 height=0></canvas>
       </div>
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
@@ -41,7 +41,16 @@ export class Inpainting extends HTMLElement {
     `;
 
     shadow.getElementById("generateButton")
-      .addEventListener("click", e => { this.generate() });
+      .addEventListener("click", async e => {
+        Inpainting.setStatus("Inpainting...");
+        try {
+          await this.generate();
+          Inpainting.setStatus("");
+        } catch (e) {
+          console.error(e);
+          Inpainting.setStatus(String(e));
+        }
+      });
 
     let imagePicker = shadow.getElementById("imagepicker");
     imagePicker.addEventListener("input", e => {
@@ -126,10 +135,33 @@ export class Inpainting extends HTMLElement {
       return;
     }
     let blob = await fetch(inputUri).then(r => r.blob());
-    this.shadow.querySelector("canvas").toBlob(async maskBlob => {
-      await StableDiffusion.inpaint(blob, maskBlob, params);
+    const maskBlob = await new Promise((resolve) => {
+      this.shadow.querySelector("canvas").toBlob(maskBlob => {
+        resolve(maskBlob);
+      });
     });
+    await StableDiffusion.inpaint(blob, maskBlob, params);
+  }
+
+  setArgs(params) {
+    for (let id of Inpainting.ids) {
+      this.shadow.getElementById(id).setAttribute("value", params[id]);
+      // hack: input type number will take string props but not attrs?
+      this.shadow.getElementById(id).value = params[id];
+    }
+  }
+  /** @param {File} file */
+  setInputImage(file) {
+    this.shadow.getElementById("imagepicker").setImageFile(file);
+  }
+
+  static setStatus(s) {
+    document.getElementById("appbar").setStatus(s);
   }
 }
 
 window.customElements.define('fs-inpainting', Inpainting);
+
+function html(s) {
+  return s.join("");
+}

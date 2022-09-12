@@ -27,6 +27,37 @@ document.addEventListener('keydown', e => {
   }
 });
 
+// handle the user pasting an image
+document.addEventListener('paste', async e => {
+  // ignore the event if the user is typing in a text field
+  const composedDirectTarget = e.composedPath()[0];
+  if (composedDirectTarget.tagName == "INPUT" || composedDirectTarget.tagName == "TEXTAREA") {
+    return;
+  }
+  const activeTool = document.querySelector('#tools > .active');
+  if (e.clipboardData.files.length > 0) {
+    const file = e.clipboardData.files[0];
+    if (!file.type.startsWith("image/")) {
+      document.getElementById("appbar").setStatus("Only images can be pasted");
+      return;
+    }
+    if (activeTool?.setInputImage == null) {
+      document.getElementById("appbar").setStatus(`<${activeTool?.localName}> does not support pasting images`);
+      return;
+    }
+    activeTool.setInputImage(file);
+    return;
+  }
+  // maybe they're pasting params as JSON
+  const text = e.clipboardData.getData("text/plain");
+  const params = JSON.parse(text); // ok if this throws
+  if (activeTool?.setArgs == null) {
+      document.getElementById("appbar").setStatus(`<${activeTool?.localName}> does not support pasting parameters`);
+      return;
+    }
+    activeTool.setArgs(params);
+});
+
 if (new URLSearchParams(document.location.search).get("mode") != "development") {
   // confirm with user before unloading to prevent sad lost images
   window.onbeforeunload = function () {
