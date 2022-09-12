@@ -1,7 +1,12 @@
 import gc
 import torch
+import os
 
 device = "cuda"
+
+if os.environ["CUDA_DEVICE"] != "":
+    device = device + ":" + os.environ["CUDA_DEVICE"]
+
 
 class DummySafetyChecker():
     def __init__(self, *args, **kwargs):
@@ -10,7 +15,8 @@ class DummySafetyChecker():
 
     def __call__(self, images, **kwargs):
         return (images, False)
-        
+
+
 def torch_gc():
     gc.collect()
     # try to get my vram back :/
