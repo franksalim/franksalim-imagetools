@@ -84,6 +84,9 @@ export class DrawingCanvas extends HTMLElement {
   set brushSize(value) {
     this.#ctx.lineWidth = value;
   }
+  set brushColor(value) {
+    this.#ctx.strokeStyle = value;
+  }
 }
 
 window.customElements.define('fs-drawingcanvas', DrawingCanvas);
