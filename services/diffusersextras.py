@@ -4,7 +4,9 @@ import os
 
 device = "cuda"
 
-if os.environ["CUDA_DEVICE"] != "":
+print(os.environ)
+
+if "CUDA_DEVICE" in os.environ:
     device = device + ":" + os.environ["CUDA_DEVICE"]
 
 
