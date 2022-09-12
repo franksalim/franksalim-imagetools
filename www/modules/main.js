@@ -27,7 +27,9 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// confirm with user before unloading to prevent sad lost images
-window.onbeforeunload = function () {
-  return "Really exit? Any unsaved images will be lost"
+if (new URLSearchParams(document.location.search).get("mode") != "development") {
+  // confirm with user before unloading to prevent sad lost images
+  window.onbeforeunload = function () {
+    return "Really exit? Any unsaved images will be lost"
+  }
 }
