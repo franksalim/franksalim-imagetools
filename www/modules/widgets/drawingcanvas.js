@@ -2,8 +2,6 @@ export class DrawingCanvas extends HTMLElement {
   static get observedAttributes() {
     return ["brushSize"];
   }
-  #canvas;
-  #ctx;
 
   constructor() {
     super();
@@ -69,28 +67,46 @@ export class DrawingCanvas extends HTMLElement {
     ctx.strokeStyle = "white";
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    this.#canvas = canvas;
-    this.#ctx = ctx;
+    this.canvas = canvas;
+    this.ctx = ctx;
+  }
+
+  replaceWithImage(image) {
+    // save context
+    let savedContext = {};
+    const props = ["lineWidth", "lineCap", "lineJoin", "strokeStyle"];
+    for (let prop of props) {
+      savedContext[prop] = this.ctx[prop];
+    }
+
+    this.canvas.width = image.width;
+    this.canvas.height = image.height;
+    this.ctx.drawImage(image, 0, 0);
+
+    // restore context
+    for (let prop in savedContext) {
+      this.ctx[prop] = savedContext[prop];
+    }
   }
 
   async getBlob() {
     return await new Promise((resolve) => {
-      this.#canvas.toBlob(maskBlob => {
+      this.canvas.toBlob(maskBlob => {
         resolve(maskBlob);
       });
     });
   }
 
   set brushSize(value) {
-    this.#ctx.lineWidth = value;
+    this.ctx.lineWidth = value;
   }
   set brushColor(value) {
-    this.#ctx.strokeStyle = value;
+    this.ctx.strokeStyle = value;
   }
 
   fill(color) {
-    this.#ctx.fillStyle = color;
-    this.#ctx.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }
 

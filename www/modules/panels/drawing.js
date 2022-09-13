@@ -53,7 +53,17 @@ export class Drawing extends HTMLElement {
     colorPalette.addEventListener("color", e => {
       canvas.brushColor = e.color;
     });
+
+    this.canvas = canvas;
     this.shadow = shadow;
+  }
+
+  setInputImage(file) {
+    let image = new Image();
+    image.setAttribute("src", URL.createObjectURL(file));
+    image.onload = e => {
+      this.canvas.replaceWithImage(image);
+    }
   }
 }
 
