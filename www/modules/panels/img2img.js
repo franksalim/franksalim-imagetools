@@ -1,6 +1,6 @@
-import {PromptBuilder} from "../widgets/promptbuilder.js";
-import {ImagePicker} from "../widgets/imagepicker.js";
-import {Slider} from "../widgets/slider.js";
+import {PromptBuilder} from "/modules/widgets/promptbuilder.js";
+import {ImagePicker} from "/modules/widgets/imagepicker.js";
+import {Slider} from "/modules/widgets/slider.js";
 import {StableDiffusion} from "/modules/api/stablediffusion.js";
 
 export class ImageToImage extends HTMLElement {
@@ -30,7 +30,7 @@ export class ImageToImage extends HTMLElement {
 
     shadow.getElementById("generateButton")
       .addEventListener("click", async e => {
-        ImageToImage.setStatus("Generating...");
+        ImageToImage.setStatus("Generating");
         try {
           this.generate();
           ImageToImage.setStatus("");
@@ -59,6 +59,7 @@ export class ImageToImage extends HTMLElement {
   static setStatus(s) {
     document.getElementById("appbar").setStatus(s);
   }
+
   setArgs(params) {
     for (let id of ImageToImage.ids) {
       this.shadow.getElementById(id).setAttribute("value", params[id]);
@@ -66,7 +67,7 @@ export class ImageToImage extends HTMLElement {
       this.shadow.getElementById(id).value = params[id];
     }
   }
-  /** @param {File} file */
+
   setInputImage(file) {
     this.shadow.getElementById("imagepicker").setImageFile(file);
   }

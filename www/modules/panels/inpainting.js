@@ -43,7 +43,7 @@ export class Inpainting extends HTMLElement {
 
     shadow.getElementById("generateButton")
       .addEventListener("click", async e => {
-        Inpainting.setStatus("Inpainting...");
+        Inpainting.setStatus("Inpainting");
         try {
           await this.generate();
           Inpainting.setStatus("");
@@ -97,7 +97,7 @@ export class Inpainting extends HTMLElement {
       this.shadow.getElementById(id).value = params[id];
     }
   }
-  /** @param {File} file */
+
   setInputImage(file) {
     this.shadow.getElementById("imagepicker").setImageFile(file);
   }

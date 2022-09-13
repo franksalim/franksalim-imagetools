@@ -53,8 +53,6 @@ export class Drawing extends HTMLElement {
     colorPalette.addEventListener("color", e => {
       canvas.brushColor = e.color;
     });
-
-
     this.shadow = shadow;
   }
 }
