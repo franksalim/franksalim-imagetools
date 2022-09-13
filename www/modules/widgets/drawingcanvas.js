@@ -87,6 +87,11 @@ export class DrawingCanvas extends HTMLElement {
   set brushColor(value) {
     this.#ctx.strokeStyle = value;
   }
+
+  fill(color) {
+    this.#ctx.fillStyle = color;
+    this.#ctx.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
+  }
 }
 
 window.customElements.define('fs-drawingcanvas', DrawingCanvas);

@@ -29,6 +29,7 @@ export class Drawing extends HTMLElement {
     canvas.setupCanvas(408, 704);
     canvas.brushColor = "black";
     canvas.brushSize = 50;
+    canvas.fill("slategray");
 
     shadow.getElementById("saveButton")
       .addEventListener("click", async e => {
