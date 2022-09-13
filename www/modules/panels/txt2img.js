@@ -72,7 +72,14 @@ export class TextToImage extends HTMLElement {
     });
 
     let seedInput = shadow.getElementById("seed");
-
+    seedInput.addEventListener("wheel", e => {
+      e.preventDefault();
+      if (e.deltaY > 0) {
+        seedInput.valueAsNumber -= 1;
+      } else if (e.deltaY < 0) {
+        seedInput.valueAsNumber += 1;
+      }
+    });
     shadow.getElementById("randomSeedButton").addEventListener("click",
       e => { seedInput.value = Math.floor(Math.random() * 1000000000) });
 
