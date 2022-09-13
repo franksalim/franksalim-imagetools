@@ -1,4 +1,5 @@
 import {DrawingCanvas} from "/modules/widgets/drawingcanvas.js";
+import {ColorPalette} from "/modules/widgets/colorpalette.js";
 
 export class Drawing extends HTMLElement {
   constructor() {
@@ -15,6 +16,7 @@ export class Drawing extends HTMLElement {
         }
       </style>
       <fs-drawingcanvas></fs-drawingcanvas>
+      <fs-colorpalette></fs-colorpalette>
       <input type=color id=colorPicker>
 
       <h2>Brush Size</h2>
@@ -43,8 +45,13 @@ export class Drawing extends HTMLElement {
       canvas.brushSize = brushSizeSlider.value;
     });
     let colorPicker = shadow.getElementById("colorPicker");
-    colorPicker.addEventListener("input", e => {
+    let colorPalette = shadow.querySelector("fs-colorpalette");
+    colorPicker.addEventListener("change", e => {
       canvas.brushColor = colorPicker.value;
+      colorPalette.add(colorPicker.value);
+    });
+    colorPalette.addEventListener("color", e => {
+      canvas.brushColor = e.color;
     });
 
 
