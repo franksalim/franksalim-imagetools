@@ -44,7 +44,7 @@ export class TextToImage extends HTMLElement {
         <div class=buttonbar>
           <button id=nextButton
                   title="Increment the seed and generate the next image.">
-            Next
+            Next 10
           </button>
           <button id=runForever>Run forever</button>
         </buttonbar>
@@ -60,7 +60,7 @@ export class TextToImage extends HTMLElement {
       .addEventListener("click", e => { this.generate() });
 
     const batchSizeInput = shadow.getElementById("batchSize");
-    let batchSize = 1;
+    let batchSize = 10;
     batchSizeInput.addEventListener('input', () => {
       const num = batchSizeInput.value;
       batchSize = num;
