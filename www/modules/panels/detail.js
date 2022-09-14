@@ -17,17 +17,35 @@ export class Details extends HTMLElement {
         fs-colorpalette {
           padding: 16px 0px;
         }
+        button, a {
+          height: 60px;
+          width: 60px;
+          border: 0px;
+          background: none;
+        }
+        button img, a img {
+          height: 40px;
+          width: 40px;
+          opacity: .5;
+        }
+        #args {
+          max-width: 448px;
+        }
       </style>
       <div id=scroller>
         <div id=background></div>
       </div>
       <img id=image>
-      <p id=args></p>
       <div id="controls" hidden>
-        <button id=openButton>Open in Prompt Builder</button>
-        <a id=downloadLink>Download</a>
+        <button id=openButton title="Open prompt in txt2img">
+          <img src=/assets/edit_document_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
+        <a id=downloadLink>
+          <img src=assets/download_FILL0_wght400_GRAD0_opsz48.svg>
+        </a>
       </div>
       <fs-colorpalette></fs-colorpalette>
+      <p id=args></p>
     `;
 
     this.shadow = shadow;
