@@ -104,6 +104,9 @@ export class DrawingCanvas extends HTMLElement {
   set brushColor(value) {
     this.ctx.strokeStyle = value;
   }
+  get brushColor() {
+    return this.ctx.strokeStyle;
+  }
 
   fill(color) {
     this.ctx.fillStyle = color;

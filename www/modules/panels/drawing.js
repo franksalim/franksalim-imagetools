@@ -52,6 +52,8 @@ export class Drawing extends HTMLElement {
     });
     document.addEventListener("colorchange", e => {
       canvas.brushColor = e.color;
+      // <canvas> reformats the css color to #RRGGBB format suitable for <input>
+      colorPicker.value = canvas.brushColor;
     });
 
     this.canvas = canvas;

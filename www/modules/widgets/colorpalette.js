@@ -49,7 +49,7 @@ export class ColorPalette extends HTMLElement {
       let r = colors[j+0];
       let g = colors[j+1];
       let b = colors[j+2];
-      this.add(`rgba(${r},${g},${b}, 1.0)`);
+      this.add(`rgb(${r},${g},${b})`);
     }
   }
 }
