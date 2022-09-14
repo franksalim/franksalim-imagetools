@@ -1,3 +1,5 @@
+import {ColorPalette} from "/modules/widgets/colorpalette.js";
+
 export class Details extends HTMLElement {
   constructor() {
     super();
@@ -12,6 +14,9 @@ export class Details extends HTMLElement {
         #scroller {
           overflow: scroll;
         }
+        fs-colorpalette {
+          padding: 16px 0px;
+        }
       </style>
       <div id=scroller>
         <div id=background></div>
@@ -22,6 +27,7 @@ export class Details extends HTMLElement {
         <button id=openButton>Open in Prompt Builder</button>
         <a id=downloadLink>Download</a>
       </div>
+      <fs-colorpalette></fs-colorpalette>
     `;
 
     this.shadow = shadow;
@@ -50,8 +56,12 @@ export class Details extends HTMLElement {
       this.shadow.getElementById("background").style.background = `url(${uri})`;
     } else {
       this.shadow.getElementById("scroller").style.display = "none";
-      this.shadow.getElementById("image").style.display = "block";
-      this.shadow.getElementById("image").setAttribute("src", uri);
+      let image = this.shadow.getElementById("image");
+      image.style.display = "block";
+      image.setAttribute("src", uri);
+      image.onload = e => {
+        this.shadow.querySelector("fs-colorpalette").fromImage(image);
+      }
     }
     let downloadLink = this.shadow.getElementById("downloadLink");
     window.test1 = uri;

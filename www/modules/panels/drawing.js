@@ -50,7 +50,7 @@ export class Drawing extends HTMLElement {
       canvas.brushColor = colorPicker.value;
       colorPalette.add(colorPicker.value);
     });
-    colorPalette.addEventListener("color", e => {
+    document.addEventListener("colorchange", e => {
       canvas.brushColor = e.color;
     });
 

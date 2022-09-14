@@ -10,6 +10,7 @@ export class DrawingCanvas extends HTMLElement {
       <style>
         canvas {
           outline: 1px solid #444;
+          cursor: crosshair;
         }
       </style>
       <canvas width=0 height=0></canvas>
