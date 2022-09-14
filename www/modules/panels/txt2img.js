@@ -39,7 +39,7 @@ export class TextToImage extends HTMLElement {
       <details>
         <summary>Batch Generation</summary>
         <h2>Batch size</h2>
-        <fs-slider id=batchSize min=1 max=500 value=1></fs-slider>
+        <fs-slider id=batchSize min=1 max=500 value=10></fs-slider>
 
         <div class=buttonbar>
           <button id=nextButton
