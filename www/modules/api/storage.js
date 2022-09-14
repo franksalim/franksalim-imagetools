@@ -66,6 +66,6 @@ export class SaveLoad {
       ],
     });
     const file = await fileHandle.getFile();
-    return await loadProjectFromFile(file);
+    return await SaveLoad.loadProjectFromFile(file);
   }
 }
