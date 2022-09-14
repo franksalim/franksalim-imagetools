@@ -40,8 +40,8 @@ export class DrawingCanvas extends HTMLElement {
     let drawing = false;
     let start = {x: 0, y: 0};
 
-    canvas.addEventListener("mouseout", e => { drawing = false; });
-    canvas.addEventListener("mouseup", e => {
+    canvas.addEventListener("pointerout", e => { drawing = false; });
+    canvas.addEventListener("pointerup", e => {
       drawing = false;
       if (drawing) {
         let end = fromEvent(e);
@@ -49,14 +49,14 @@ export class DrawingCanvas extends HTMLElement {
         start = end;
       }
     });
-    canvas.addEventListener("mousemove", e => {
+    canvas.addEventListener("pointermove", e => {
       if (drawing) {
         let end = fromEvent(e);
         drawPath(start, end);
         start = end;
       }
     });
-    canvas.addEventListener("mousedown", e => {
+    canvas.addEventListener("pointerdown", e => {
       drawing = true;
       start = fromEvent(e);
     });
