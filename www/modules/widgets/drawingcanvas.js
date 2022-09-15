@@ -43,12 +43,12 @@ export class DrawingCanvas extends HTMLElement {
 
     canvas.addEventListener("pointerout", e => { drawing = false; });
     canvas.addEventListener("pointerup", e => {
-      drawing = false;
       if (drawing) {
         let end = fromEvent(e);
         drawPath(start, end);
         start = end;
       }
+      drawing = false;
     });
     canvas.addEventListener("pointermove", e => {
       if (drawing) {
