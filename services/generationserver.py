@@ -2,8 +2,7 @@
 
 """
 1. dependencies
-pip install git+https://github.com/huggingface/diffusers.git@main
-pip install transformers ftfy
+pip install diffusers transformers ftfy
 
 2. download model
 if you have a huggingface account:
