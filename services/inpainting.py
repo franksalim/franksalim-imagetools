@@ -22,6 +22,7 @@ def generate_inpaint(image, mask, args, verbose=False):
         print(json.dumps(args))
 
     optprompt = args["prompt"]
+    optseed = int(args["seed"])
     optscale = float(args["scale"])
     optsteps = int(args["steps"])
     optstrength = float(args["strength"])
@@ -60,11 +61,13 @@ def generate_inpaint(image, mask, args, verbose=False):
         img_pipeline = pipe
 
     generator = torch.Generator(device=device)
+    generator = generator.manual_seed(optseed)
 
     with autocast("cuda"):
         image = img_pipeline(prompt=optprompt,
                              guidance_scale=optscale,
                              strength=optstrength,
+                             generator=generator,
                              num_inference_steps=optsteps,
                              init_image=init_image,
                              mask_image=mask_image).images[0]
