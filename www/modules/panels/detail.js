@@ -28,7 +28,7 @@ export class Details extends HTMLElement {
           width: 40px;
           opacity: .5;
         }
-        #args {
+        #params {
           max-width: 448px;
         }
       </style>
@@ -45,26 +45,26 @@ export class Details extends HTMLElement {
         </a>
       </div>
       <fs-colorpalette></fs-colorpalette>
-      <p id=args></p>
+      <p id=params></p>
     `;
 
     this.shadow = shadow;
     shadow.getElementById("openButton").addEventListener("click", e => {
-      let s = shadow.getElementById("args").innerText;
-      document.getElementById("txt2img").setArgs(JSON.parse(s));
+      let s = shadow.getElementById("params").innerText;
+      document.getElementById("txt2img").setparams(JSON.parse(s));
     });
   }
 
-  setImage(uri, args) {
+  setImage(uri, params) {
     this.style.display = "block";
-    this.shadow.getElementById("args").innerText = JSON.stringify(args);
+    this.shadow.getElementById("params").innerText = JSON.stringify(params);
     this.shadow.getElementById("controls").removeAttribute("hidden");
 
-    if (args.tiled) {
+    if (params.tiled) {
       // Need to make #scroller the size of the image and then make
       // #image 3x that size, with #scroller set to overflow: scroll.
       // That way we can see that the image tiles properly.
-      const {width, height} = args;
+      const {width, height} = params;
       this.shadow.getElementById("image").style.display = "none";
       this.shadow.getElementById("scroller").style.display = "block";
       this.shadow.getElementById("scroller").style.width = `${width}px`;
@@ -77,10 +77,13 @@ export class Details extends HTMLElement {
       let image = this.shadow.getElementById("image");
       image.style.display = "block";
       image.setAttribute("src", uri);
+      image.width = params.width;
+      image.height = params.height;
       image.onload = e => {
         this.shadow.querySelector("fs-colorpalette").fromImage(image);
       }
     }
+
     let downloadLink = this.shadow.getElementById("downloadLink");
     window.test1 = uri;
     downloadLink.href = uri;
