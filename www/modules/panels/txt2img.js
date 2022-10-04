@@ -13,9 +13,9 @@ export class TextToImage extends HTMLElement {
       <fs-promptbuilder id=prompt></fs-promptbuilder>
 
       <h2>Width</h2>
-      <fs-slider step=64 min=256 max=1024 value=704 id=width></fs-slider>
+      <fs-slider step=64 min=256 max=1024 value=512 id=width></fs-slider>
       <h2>Height</h2>
-      <fs-slider step=64 min=256 max=1024 value=448 id=height></fs-slider>
+      <fs-slider step=64 min=256 max=1024 value=512 id=height></fs-slider>
 
       <div class=buttonbar>
         <button id=squarePresetButton>Square</button>

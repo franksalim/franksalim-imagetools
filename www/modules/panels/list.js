@@ -48,6 +48,7 @@ export class HistoryList extends HTMLElement {
     if (shouldSelectNewImage) {
       this.select(img);
     }
+    return img;
   }
   getHistory() {
     return [...this.shadow.querySelectorAll('img')];

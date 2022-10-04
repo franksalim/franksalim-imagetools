@@ -17,6 +17,7 @@ cd services
 """
 
 from flask import Flask, send_file, request, redirect
+from flask_sock import Sock
 import json
 import threading
 import sys
@@ -30,6 +31,7 @@ verbose = False
 app = Flask(__name__,
             static_url_path='',
             static_folder='../www')
+sock = Sock(app)
 
 # Working with images will eat all the VRAM, so you've got to
 # hold this lock in order to do that ok.
@@ -41,11 +43,11 @@ def index():
     return redirect("/index.html", code=302)
 
 
-@app.route("/generate/", methods=['POST'])
-def generate():
+@sock.route("/generate/")
+def generate(ws):
     with work_lock:
-        args = request.get_json()
-        return generate_txt2img(args, verbose=verbose)
+        args = json.loads(ws.receive())
+        generate_txt2img(ws, args, verbose=verbose)
 
 
 @app.route("/img2img/", methods=['POST'])

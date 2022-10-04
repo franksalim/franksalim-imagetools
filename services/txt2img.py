@@ -1,4 +1,5 @@
 from diffusersextras import DummySafetyChecker, torch_gc, device
+from decoder import ApproximateDecoder
 
 from flask import send_file
 import json
@@ -37,7 +38,7 @@ def unforce_tiled(): return None
 sd_pipeline = None
 
 
-def generate_txt2img(args, verbose=False):
+def generate_txt2img(ws, args, verbose=False):
     if verbose:
         print(json.dumps(args))
     global sd_pipeline
@@ -76,31 +77,39 @@ def generate_txt2img(args, verbose=False):
             torch_dtype=torch.float16,
             safety_checker=DummySafetyChecker())
 
+        pipe.set_progress_bar_config(disable=True)
         pipe = pipe.to(device)
-
         pipe.enable_attention_slicing()
         sd_pipeline = pipe
 
     generator = torch.Generator(device=device)
     generator = generator.manual_seed(optseed)
-    latents = torch.randn(
-        (1, sd_pipeline.unet.in_channels, optheight // 8, optwidth // 8),
-        generator=generator,
-        device=device
-    )
+
+    decoder = ApproximateDecoder.for_pipeline(sd_pipeline)
+
+    def callback(step, timestep, latents):
+      bio = BytesIO()
+      img = decoder(latents[0])
+      img.save(bio, format="png")
+      bio.seek(0)
+      ws.send(bio.read())
 
     with autocast("cuda"):
-        image = sd_pipeline(prompt=optprompt,
+        img = sd_pipeline(prompt=optprompt,
                             width=optwidth,
                             height=optheight,
                             guidance_scale=optscale,
                             num_inference_steps=optsteps,
-                            latents=latents).images[0]
+                            generator=generator,
+                            callback_steps=3,
+                            callback=callback).images[0]
 
         bio = BytesIO()
-        image.save(bio, format="png")
+        img.save(bio, format="png")
+
         bio.seek(0)
+        ws.send(bio.read())
+        ws.close()
 
         torch_gc()
 
-        return send_file(bio, as_attachment=False, mimetype="image/png")

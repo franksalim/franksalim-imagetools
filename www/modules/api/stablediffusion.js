@@ -1,13 +1,23 @@
 export class StableDiffusion {
   static async generateImageFromText(params) {
-    const response = await fetch("/generate/", {
-      method: "POST",
-      cache: "no-cache",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(params)
-    });
-    let uri = URL.createObjectURL(await response.blob());
-    document.getElementById("historyList").addImage(uri, params);
+    let img = undefined;
+    const ws = new WebSocket("ws://" + location.host + "/generate/");
+    ws.binarytype = "blob";
+    ws.onopen = e => {
+      ws.send(JSON.stringify(params));
+    }
+    ws.onmessage = e => {
+      let uri = URL.createObjectURL(e.data);
+      if (!img) {
+        img = document.getElementById("historyList").addImage(uri, params);
+      } else {
+        img.setAttribute("src", uri);
+        document.getElementById("detail").setImage(uri, params);
+      }
+    }
+    ws.onclose = e => {
+      console.log(e);
+    }
   }
 
   static async generateImageFromImage(imageBlob, params) {
