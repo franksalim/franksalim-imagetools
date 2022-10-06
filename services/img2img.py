@@ -31,12 +31,6 @@ def generate_img2img(image, args, verbose=False):
 
     init_image = Image.open(BytesIO(image.stream.read())).convert("RGB")
 
-    # check if image is multiple of 64 in both dimensions, otherwise resize
-    if init_image.size[0] % 64 != 0 or init_image.size[1] % 64 != 0:
-        # resize to nearest multiple of 64
-        init_image = init_image.resize(
-            (init_image.size[0] // 64 * 64, init_image.size[1] // 64 * 64))
-
     # load model if not loaded
     if img_pipeline is None:
         print("loading img2img model...")
