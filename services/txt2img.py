@@ -56,6 +56,7 @@ def generate_txt2img(args, verbose=False):
         sd_pipeline = None
 
     optprompt = args["prompt"]
+    optnegprompt = args["negprompt"]
     optseed = int(args["seed"])
     optscale = float(args["scale"])
     optsteps = int(args["steps"])
@@ -84,6 +85,7 @@ def generate_txt2img(args, verbose=False):
     generator = torch.Generator(device=device).manual_seed(optseed)
 
     image = sd_pipeline(prompt=optprompt,
+                        negative_prompt=optnegprompt,
                         width=optwidth,
                         height=optheight,
                         guidance_scale=optscale,

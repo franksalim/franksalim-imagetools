@@ -18,7 +18,7 @@ export class PromptBuilder extends HTMLElement {
         }
         </style>
       <div id=chips></div>
-      <textarea placeholder=prompt id=ed>macro photograph, glass beads, blue light, color grading</textarea>
+      <textarea id=ed placeholder="prompt here"></textarea>
     `;
     this.shadow = shadow;
     this.ed = shadow.getElementById("ed");

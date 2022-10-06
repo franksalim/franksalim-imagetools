@@ -3,14 +3,15 @@ import {Slider} from "/modules/widgets/slider.js";
 import {StableDiffusion} from "/modules/api/stablediffusion.js";
 
 export class TextToImage extends HTMLElement {
-  static ids = ["steps", "scale", "width", "height", "seed", "prompt"];
+  static ids = ["steps", "scale", "width", "height", "seed", "prompt", "negprompt"];
 
   constructor() {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
     shadow.innerHTML = `
       <link rel=stylesheet href=/css/panel.css>
-      <fs-promptbuilder id=prompt></fs-promptbuilder>
+      <fs-promptbuilder id=prompt value="grass, macro photography, bokeh"></fs-promptbuilder>
+      <fs-promptbuilder id=negprompt></fs-promptbuilder>
 
       <h2>Width</h2>
       <fs-slider step=8 min=256 max=1024 value=512 id=width></fs-slider>
