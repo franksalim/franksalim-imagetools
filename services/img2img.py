@@ -55,21 +55,20 @@ def generate_img2img(image, args, verbose=False):
         pipe.enable_attention_slicing()
         img_pipeline = pipe
 
-    generator = torch.Generator(device=device)
-    generator = generator.manual_seed(optseed)
+    generator = torch.Generator(device=device).manual_seed(optseed)
 
-    with autocast("cuda"):
-        image = img_pipeline(prompt=optprompt,
-                             guidance_scale=optscale,
-                             strength=optstrength,
-                             generator=generator,
-                             num_inference_steps=optsteps,
-                             init_image=init_image).images[0]
+    with autocast(device):
+      image = img_pipeline(prompt=optprompt,
+                           guidance_scale=optscale,
+                           strength=optstrength,
+                           generator=generator,
+                           num_inference_steps=optsteps,
+                           init_image=init_image).images[0]
 
-        bio = BytesIO()
-        image.save(bio, format="png")
-        bio.seek(0)
+      bio = BytesIO()
+      image.save(bio, format="png")
+      bio.seek(0)
 
-        torch_gc()
+      torch_gc()
 
-        return send_file(bio, as_attachment=False, mimetype="image/png")
+      return send_file(bio, as_attachment=False, mimetype="image/png")

@@ -81,26 +81,19 @@ def generate_txt2img(args, verbose=False):
         pipe.enable_attention_slicing()
         sd_pipeline = pipe
 
-    generator = torch.Generator(device=device)
-    generator = generator.manual_seed(optseed)
-    latents = torch.randn(
-        (1, sd_pipeline.unet.in_channels, optheight // 8, optwidth // 8),
-        generator=generator,
-        device=device
-    )
+    generator = torch.Generator(device=device).manual_seed(optseed)
 
-    with autocast("cuda"):
-        image = sd_pipeline(prompt=optprompt,
-                            width=optwidth,
-                            height=optheight,
-                            guidance_scale=optscale,
-                            num_inference_steps=optsteps,
-                            latents=latents).images[0]
+    image = sd_pipeline(prompt=optprompt,
+                        width=optwidth,
+                        height=optheight,
+                        guidance_scale=optscale,
+                        num_inference_steps=optsteps,
+                        generator=generator).images[0]
 
-        bio = BytesIO()
-        image.save(bio, format="png")
-        bio.seek(0)
+    bio = BytesIO()
+    image.save(bio, format="png")
+    bio.seek(0)
 
-        torch_gc()
+    torch_gc()
 
-        return send_file(bio, as_attachment=False, mimetype="image/png")
+    return send_file(bio, as_attachment=False, mimetype="image/png")
