@@ -18,19 +18,22 @@ export class PromptBuilder extends HTMLElement {
         }
         </style>
       <div id=chips></div>
-      <textarea id=ed placeholder="prompt here"></textarea>
+      <textarea id=ed placeholder="prompt"></textarea>
     `;
     this.shadow = shadow;
     this.ed = shadow.getElementById("ed");
     this.updateChips(this.ed.value);
     this.ed.addEventListener("input", e => { this.updateChips(e.target.value) });
+    if (this.getAttribute("placeholder")) {
+      this.ed.setAttribute("placeholder", this.getAttribute("placeholder"));
+    }
   }
 
   updateChips(text) {
     let chips = this.shadow.getElementById("chips");
     chips.innerHTML = "";
 
-    for (const term of text.split(", ")) {
+    for (const term of text.split(", ").filter(Boolean)) {
       let chip = document.createElement("fs-chip");
       chip.setValue(term);
 
