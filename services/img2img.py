@@ -9,7 +9,6 @@ import numpy as np
 from PIL import Image
 from io import BytesIO
 
-from transformers import AutoFeatureExtractor
 from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
 from torch import autocast
 

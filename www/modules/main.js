@@ -1,4 +1,5 @@
 import { AppBar } from "/modules/panels/appbar.js";
+import { About } from "/modules/panels/about.js";
 import { TextToImage } from "/modules/panels/txt2img.js";
 import { ImageToImage } from "/modules/panels/img2img.js";
 import { Inpainting } from "/modules/panels/inpainting.js";

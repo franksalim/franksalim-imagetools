@@ -2,7 +2,7 @@
 
 """
 1. dependencies
-pip install diffusers transformers ftfy
+pip install flask diffusers
 
 2. download model
 if you have a huggingface account:

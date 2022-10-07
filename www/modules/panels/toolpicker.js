@@ -45,20 +45,23 @@ export class ToolPicker extends HTMLElement {
         }
         </style>
 
-        <button id=img2imgButton title="image to image">
+        <button id=img2imgButton title="Image to image">
           <img src=/assets/imagesmode_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
-        <button selected id=txt2imgButton title="text to image">
+        <button selected id=txt2imgButton title="Text to image">
           <img src=/assets/edit_document_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
-        <button id=inpaintingButton title="inpainting">
+        <button id=inpaintingButton title="Inpainting">
           <img src=/assets/brush_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
-        <button id=drawingButton title="draw">
+        <button id=drawingButton title="Draw">
           <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
 
         <div class=spacer></div>
+        <button id=aboutButton title="About">
+          <img src=/assets/help_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
         <fs-save-project-button></fs-save-project-button>
         <fs-open-project-button></fs-open-project-button>
     `;
@@ -79,6 +82,7 @@ export class ToolPicker extends HTMLElement {
     const txt2imgTool = document.getElementById("txt2img");
     const inpaintingTool = document.getElementById("inpainting");
     const drawingTool = document.getElementById("drawing");
+    const aboutTool = document.getElementById("about");
     this.tools = [txt2imgTool, img2imgTool, inpaintingTool, drawingTool];
     this.select(txt2imgTool);
 
@@ -93,6 +97,9 @@ export class ToolPicker extends HTMLElement {
     });
     shadow.getElementById("drawingButton").addEventListener("click", e => {
       this.select(drawingTool);
+    });
+    shadow.getElementById("aboutButton").addEventListener("click", e => {
+      this.select(aboutTool);
     });
   }
 
