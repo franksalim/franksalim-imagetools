@@ -97,10 +97,10 @@ export class HistoryList extends HTMLElement {
       let prev = selected.previousElementSibling;
       let next = selected.nextElementSibling;
       selected.remove();
-      if (prev) {
+      if (prev && prev.tagName == "IMG") {
         this.select(prev);
         prev.scrollIntoView();
-      } else if (next) {
+      } else if (next && next.tagName == "IMG") {
         this.select(next);
         next.scrollIntoView();
       }
