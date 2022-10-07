@@ -22,6 +22,7 @@ export class Details extends HTMLElement {
           width: 60px;
           border: 0px;
           background: none;
+          text-decoration: none;
         }
         button img, a img {
           height: 40px;
@@ -43,6 +44,9 @@ export class Details extends HTMLElement {
         <a id=downloadLink>
           <img src=assets/download_FILL0_wght400_GRAD0_opsz48.svg>
         </a>
+        <button id=drawButton title="Draw on this image">
+          <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
       </div>
       <fs-colorpalette></fs-colorpalette>
       <p id=args></p>
@@ -52,6 +56,12 @@ export class Details extends HTMLElement {
     shadow.getElementById("openButton").addEventListener("click", e => {
       let s = shadow.getElementById("args").innerText;
       document.getElementById("txt2img").setArgs(JSON.parse(s));
+    });
+    shadow.getElementById("drawButton").addEventListener("click", e => {
+      const drawingTool = document.getElementById("drawing");
+      const image = this.shadow.getElementById("image");
+      drawingTool.setInputSrc(image.getAttribute("src"));
+      document.querySelector("fs-toolpicker").select(drawingTool);
     });
   }
 

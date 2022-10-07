@@ -60,6 +60,14 @@ export class Drawing extends HTMLElement {
     this.shadow = shadow;
   }
 
+  setInputSrc(src) {
+    let image = new Image();
+    image.setAttribute("src", src);
+    image.onload = e => {
+      this.canvas.replaceWithImage(image);
+    }
+  }
+
   setInputImage(file) {
     let image = new Image();
     image.setAttribute("src", URL.createObjectURL(file));
