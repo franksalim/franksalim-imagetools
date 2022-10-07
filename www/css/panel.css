@@ -21,3 +21,7 @@ details {
     font-size: 13px;
     vertical-align: middle;
   }
+
+.primaryAction {
+  font-weight: 900;
+}

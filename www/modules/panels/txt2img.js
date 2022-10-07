@@ -37,24 +37,16 @@ export class TextToImage extends HTMLElement {
       <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
 
 
-      <details>
-        <summary>Batch Generation</summary>
-        <h2>Batch size</h2>
-        <fs-slider id=batchSize min=1 max=500 value=10></fs-slider>
-
-        <div class=buttonbar>
-          <button id=nextButton
-                  title="Increment the seed and generate the next image.">
-            Next 10
-          </button>
-          <button id=runForever>Run forever</button>
-        </buttonbar>
-      </details>
+      <h2>Batch size</h2>
+      <fs-slider id=batchSize min=1 max=500 value=10></fs-slider>
 
       <div class=buttonbar>
-        <button id=generateButton>Generate</button>
-        <button id=import>Import from clipboard</button>
+        <button id=generateButton class=primaryAction>Generate</button>
+        <button id=nextButton title="Generate with the next seed.">Next 10</button>
+        <button id=runForever>Run forever</button>
       </div>
+
+      <button id=import>Import from clipboard</button>
     `;
 
     shadow.getElementById("generateButton")
