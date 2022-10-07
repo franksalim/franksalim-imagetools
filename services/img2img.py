@@ -3,18 +3,15 @@ from diffusersextras import DummySafetyChecker, torch_gc, device
 from flask import send_file
 import json
 
-import gc
 import torch
 import numpy as np
 from PIL import Image
 from io import BytesIO
 
-from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
+from diffusers import StableDiffusionImg2ImgPipeline
 from torch import autocast
 
-
 img_pipeline = None
-
 
 def generate_img2img(image, args, verbose=False):
     torch_gc()

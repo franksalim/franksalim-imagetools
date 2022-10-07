@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image
 from io import BytesIO
 
-from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
+from diffusers import StableDiffusionPipeline
 
 def force_tiled():
     global unforce_tiled

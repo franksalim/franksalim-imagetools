@@ -3,7 +3,6 @@ from diffusersextras import DummySafetyChecker, torch_gc, device
 from flask import send_file
 import json
 
-import gc
 import torch
 import numpy as np
 from PIL import Image
@@ -12,7 +11,7 @@ from io import BytesIO
 from diffusers import StableDiffusionInpaintPipeline
 from torch import autocast
 
-from img2img import img_pipeline
+img_pipeline = None
 
 def generate_inpaint(image, mask, args, verbose=False):
     torch_gc()
@@ -28,18 +27,6 @@ def generate_inpaint(image, mask, args, verbose=False):
 
     init_image = Image.open(BytesIO(image.stream.read())).convert("RGB")
     mask_image = Image.open(BytesIO(mask.stream.read())).convert("RGB")
-
-    # check if image is multiple of 8 in both dimensions, otherwise resize
-    if init_image.size[0] % 8 != 0 or init_image.size[1] % 8 != 0:
-        # resize to nearest multiple of 8
-        init_image = init_image.resize(
-            (init_image.size[0] // 8 * 8, init_image.size[1] // 8 * 8))
-            
-    # check if mask is multiple of 64 in both dimensions, otherwise resize
-    if mask_image.size[0] % 8 != 0 or mask_image.size[1] % 8 != 0:
-        # resize to nearest multiple of 8
-        mask_image = mask_image.resize(
-            (mask_image.size[0] // 8 * 8, mask_image.size[1] // 8 * 8))
 
     # load model if not loaded
     if img_pipeline is None:
