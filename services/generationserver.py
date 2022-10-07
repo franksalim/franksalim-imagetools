@@ -55,6 +55,7 @@ def img2img():
         image = request.files["initImage"]
         return generate_img2img(image, args, verbose=verbose)
 
+
 @app.route("/inpaint/", methods=['POST'])
 def inpaint():
     with work_lock:
@@ -62,6 +63,7 @@ def inpaint():
         image = request.files["initImage"]
         mask = request.files["maskImage"]
         return generate_inpaint(image, mask, args, verbose=verbose)
+
 
 if __name__ == '__main__':
     if "--verbose" in sys.argv or "-v" in sys.argv:

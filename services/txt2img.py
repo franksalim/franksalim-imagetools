@@ -10,6 +10,7 @@ from io import BytesIO
 
 from diffusers import StableDiffusionPipeline
 
+
 def force_tiled():
     global unforce_tiled
     cls = torch.nn.Conv2d
