@@ -6,6 +6,7 @@ import json
 import torch
 import numpy as np
 from PIL import Image
+from PIL.PngImagePlugin import PngInfo
 from io import BytesIO
 
 from diffusers import StableDiffusionPipeline
@@ -90,8 +91,11 @@ def generate_txt2img(args, verbose=False):
                         num_inference_steps=optsteps,
                         generator=generator).images[0]
 
+    metadata = PngInfo()
+    metadata.add_text("StableDiffusionParams", json.dumps(args))
+
     bio = BytesIO()
-    image.save(bio, format="png")
+    image.save(bio, format="png", pnginfo=metadata)
     bio.seek(0)
 
     torch_gc()
