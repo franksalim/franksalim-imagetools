@@ -11,9 +11,6 @@ export class Details extends HTMLElement {
           padding: 16px;
           display: none;
         }
-        #scroller {
-          overflow: scroll;
-        }
         fs-colorpalette {
           padding: 16px 0px;
         }
@@ -33,9 +30,6 @@ export class Details extends HTMLElement {
           max-width: 448px;
         }
       </style>
-      <div id=scroller>
-        <div id=background></div>
-      </div>
       <img id=image>
       <div id="controls" hidden>
         <button id=openButton title="Open prompt in txt2img">
@@ -46,6 +40,9 @@ export class Details extends HTMLElement {
         </a>
         <button id=drawButton title="Draw on this image">
           <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
+        <button id=wallpaperButton title="View tiled image as wallpaper">
+          <img src=/assets/wallpaper_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
       </div>
       <fs-colorpalette></fs-colorpalette>
@@ -63,6 +60,11 @@ export class Details extends HTMLElement {
       drawingTool.setInputSrc(image.getAttribute("src"));
       document.querySelector("fs-toolpicker").select(drawingTool);
     });
+    shadow.getElementById("wallpaperButton").addEventListener("click", e => {
+      const image = this.shadow.getElementById("image");
+      const src = image.getAttribute("src");
+      window.open("/wallpaper.html?" + src);
+    });
   }
 
   setImage(uri, args) {
@@ -71,26 +73,17 @@ export class Details extends HTMLElement {
     this.shadow.getElementById("controls").removeAttribute("hidden");
 
     if (args.tiled) {
-      // Need to make #scroller the size of the image and then make
-      // #image 3x that size, with #scroller set to overflow: scroll.
-      // That way we can see that the image tiles properly.
-      const {width, height} = args;
-      this.shadow.getElementById("image").style.display = "none";
-      this.shadow.getElementById("scroller").style.display = "block";
-      this.shadow.getElementById("scroller").style.width = `${width}px`;
-      this.shadow.getElementById("scroller").style.height = `${height}px`;
-      this.shadow.getElementById("background").style.width = `${width * 100}px`;
-      this.shadow.getElementById("background").style.height = `${height * 100}px`;
-      this.shadow.getElementById("background").style.background = `url(${uri})`;
+      this.shadow.getElementById("wallpaperButton").style.display = "";
     } else {
-      this.shadow.getElementById("scroller").style.display = "none";
-      let image = this.shadow.getElementById("image");
-      image.style.display = "block";
-      image.setAttribute("src", uri);
-      image.onload = e => {
-        this.shadow.querySelector("fs-colorpalette").fromImage(image);
-      }
+      this.shadow.getElementById("wallpaperButton").style.display = "none";
     }
+
+    let image = this.shadow.getElementById("image");
+    image.setAttribute("src", uri);
+    image.onload = e => {
+      this.shadow.querySelector("fs-colorpalette").fromImage(image);
+    }
+
     let downloadLink = this.shadow.getElementById("downloadLink");
     window.test1 = uri;
     downloadLink.href = uri;

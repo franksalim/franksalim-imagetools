@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>fs-imagetools: wallpaper</title>
+<link rel=icon href=favicon.svg>
+
+<script>
+onload = e => {
+  const uri = document.location.search.slice(1);
+  document.body.style.background = `url(${uri})`;
+}
+</script>
