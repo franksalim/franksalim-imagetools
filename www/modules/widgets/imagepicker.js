@@ -10,6 +10,9 @@ export class ImagePicker extends HTMLElement {
           min-height: 100px;
           outline: 1px solid #888;
           background-color: #ddd;
+          background: url("/assets/place_item_FILL0_wght400_GRAD0_opsz48.svg");
+          background-repeat: no-repeat;
+          background-position: center;
         }
       </style>
       <img id=inputImage>
