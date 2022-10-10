@@ -36,7 +36,7 @@ export class ColorPalette extends HTMLElement {
       button.remove();
     }
 
-    const i = 3; // no need to preseve aspect ratio
+    const i = 3; // no need to preserve aspect ratio
     let canvas = document.createElement("canvas");
     canvas.width = i;
     canvas.height = i;

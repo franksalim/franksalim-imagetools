@@ -23,7 +23,13 @@ export class AppBar extends HTMLElement {
           color: white;
           padding: 0px 16px;
         }
+        h1 {
+          font-size: 14px;
+          color: white;
+          flex-grow: 1;
+        }
       </style>
+      <h1>fs-imagetools</h1>
       <div id=status></div>
     `;
     this.shadow = shadow;
