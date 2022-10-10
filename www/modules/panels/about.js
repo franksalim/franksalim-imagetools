@@ -18,6 +18,7 @@ export class About extends HTMLElement {
       <a href="https://github.com/huggingface/diffusers/">Diffusers</a>
       <a href="https://github.com/CompVis/stable-diffusion">Stable Diffusion</a>
       <a href="https://github.com/pallets/flask">Flask</a>
+      <a href="https://github.com/google/material-design-icons">Material Design Icons</a>
     `;
   }
 }

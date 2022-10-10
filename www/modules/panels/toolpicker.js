@@ -5,10 +5,6 @@ export class ToolPicker extends HTMLElement {
   constructor() {
     super();
     let shadow = this.attachShadow({ mode: 'open' });
-    /*
-      icons from https://fonts.google.com/icons
-        https://github.com/google/material-design-icons
-    */
     shadow.innerHTML = `
       <style>
         :host {
@@ -101,6 +97,10 @@ export class ToolPicker extends HTMLElement {
     shadow.getElementById("aboutButton").addEventListener("click", e => {
       this.select(aboutTool);
     });
+  }
+
+  switchTool(name) {
+    this.shadow.querySelector(`#${name}Button`).dispatchEvent(new Event("click"));
   }
 
   select(selected) {

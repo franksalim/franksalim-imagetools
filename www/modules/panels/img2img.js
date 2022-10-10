@@ -68,6 +68,10 @@ export class ImageToImage extends HTMLElement {
     }
   }
 
+  setInputSrc(src) {
+    this.shadow.getElementById("imagepicker").setInputSrc(src);
+  }
+
   setInputImage(file) {
     this.shadow.getElementById("imagepicker").setImageFile(file);
   }

@@ -38,11 +38,17 @@ export class Details extends HTMLElement {
         <a id=downloadLink>
           <img src=assets/download_FILL0_wght400_GRAD0_opsz48.svg>
         </a>
-        <button id=drawButton title="Draw on this image">
-          <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
+        <button id=img2imgButton title="Open in img2img">
+          <img src=/assets/imagesmode_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
+        <button id=inpaintingButton title="Open in inpainting">
+          <img src=/assets/brush_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
         <button id=wallpaperButton title="View tiled image as wallpaper">
           <img src=/assets/wallpaper_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
+        <button id=drawButton title="Draw on this image">
+          <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
       </div>
       <fs-colorpalette></fs-colorpalette>
@@ -54,11 +60,23 @@ export class Details extends HTMLElement {
       let s = shadow.getElementById("args").innerText;
       document.getElementById("txt2img").setArgs(JSON.parse(s));
     });
-    shadow.getElementById("drawButton").addEventListener("click", e => {
-      const drawingTool = document.getElementById("drawing");
+    shadow.getElementById("img2imgButton").addEventListener("click", e => {
+      const tool = document.getElementById("img2img");
       const image = this.shadow.getElementById("image");
-      drawingTool.setInputSrc(image.getAttribute("src"));
-      document.querySelector("fs-toolpicker").select(drawingTool);
+      tool.setInputSrc(image.getAttribute("src"));
+      document.querySelector("fs-toolpicker").switchTool("img2img");
+    });
+    shadow.getElementById("inpaintingButton").addEventListener("click", e => {
+      const tool = document.getElementById("inpainting");
+      const image = this.shadow.getElementById("image");
+      tool.setInputSrc(image.getAttribute("src"));
+      document.querySelector("fs-toolpicker").switchTool("inpainting");
+    });
+    shadow.getElementById("drawButton").addEventListener("click", e => {
+      const tool = document.getElementById("drawing");
+      const image = this.shadow.getElementById("image");
+      tool.setInputSrc(image.getAttribute("src"));
+      document.querySelector("fs-toolpicker").switchTool("drawing");
     });
     shadow.getElementById("wallpaperButton").addEventListener("click", e => {
       const image = this.shadow.getElementById("image");

@@ -28,7 +28,7 @@ export class Drawing extends HTMLElement {
     `;
 
     let canvas = shadow.querySelector("fs-drawingcanvas");
-    canvas.setupCanvas(408, 704);
+    canvas.setupCanvas(512, 512);
     canvas.brushColor = "black";
     canvas.brushSize = 50;
     canvas.fill("slategray");

@@ -50,6 +50,11 @@ export class ImagePicker extends HTMLElement {
     return this.shadow.getElementById("inputImage").getAttribute("src");
   }
 
+  setInputSrc(src) {
+    this.shadow.getElementById("inputImage").setAttribute("src", src);
+    this.dispatchEvent(new Event("input"));
+  }
+
   setImageFile(file) {
     let uri = URL.createObjectURL(file);
     this.shadow.getElementById("inputImage").setAttribute("src", uri);
