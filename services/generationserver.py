@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 
 """
-1. dependencies
-pip install flask diffusers
-
-2. download model
+1. download model
 if you have a huggingface account:
 git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
 otherwise:
 wget https://archive.org/download/stable-diffusion-v1-4.tar/stable-diffusion-v1-4.tar.gz
 tar -zxf ./stable-diffusion-v1-4.tar.gz
 
-3. run server
+2. run server
 cd services
 ./generationserver.py
 """
