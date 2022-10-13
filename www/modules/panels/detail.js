@@ -9,7 +9,7 @@ export class Details extends HTMLElement {
         :host {
           flex: auto;
           padding: 16px;
-          display: none;
+          flex-grow: 1;
         }
         fs-colorpalette {
           padding: 16px 0px;
@@ -86,7 +86,6 @@ export class Details extends HTMLElement {
   }
 
   setImage(uri, args) {
-    this.style.display = "block";
     this.shadow.getElementById("args").innerText = JSON.stringify(args);
     this.shadow.getElementById("controls").removeAttribute("hidden");
 

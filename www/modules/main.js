@@ -7,6 +7,7 @@ import { Drawing } from "/modules/panels/drawing.js";
 import { HistoryList } from "/modules/panels/list.js";
 import { Details } from "/modules/panels/detail.js";
 import { ToolPicker } from "/modules/panels/toolpicker.js";
+import { Layers } from "/modules/panels/layers.js";
 
 // navigate history using the j and k keys
 document.addEventListener('keydown', e => {

@@ -5,7 +5,7 @@ export class HistoryList extends HTMLElement {
     shadow.innerHTML = `
       <style>
         :host {
-          flex-basis: 140px;
+          flex-basis: 130px;
           flex-grow: 0;
           flex-shrink: 0;
           padding: 8px;
