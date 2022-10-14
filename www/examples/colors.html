@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>fs-imagetools: API scripting example</title>
+<link rel=icon href=/favicon.svg>
+
+<script type=module>
+  import {StableDiffusion} from "/modules/api/stablediffusion.js";
+  let params = {};
+  params.seed = 1337;
+  params.scale = 7.5;
+  params.steps = 30;
+  params.strength = 0.80;
+  params.prompt = "macro photograph, ice beads"
+
+  let colors = ["red", "orange", "yellow", "green", "blue", "violet"];
+
+  for (let color of colors) {
+    let canvas = document.createElement("canvas");
+    canvas.height = 512;
+    canvas.width = 512;
+    let context = canvas.getContext("2d");
+    context.fillStyle = color;
+    context.fillRect(0, 0, 512, 512);
+    let input = await new Promise(resolve => {
+      canvas.toBlob(blob => { resolve(blob); });
+    });
+
+    let uri = await StableDiffusion.generateImageFromImage(input, params);
+    let img = new Image();
+    img.height = 256;
+    img.width = 256;
+    img.src = uri;
+    document.body.append(img);
+  }
+</script>
+
+
