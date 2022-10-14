@@ -171,7 +171,8 @@ export class TextToImage extends HTMLElement {
     params.tiled = this.shadow.getElementById('tiled').checked;
 
     TextToImage.setStatus(message);
-    await StableDiffusion.generateImageFromText(params);
+    let uri = await StableDiffusion.generateImageFromText(params);
+    document.getElementById("historyList").addImage(uri, params);
     TextToImage.setStatus("");
   }
 

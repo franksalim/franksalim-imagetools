@@ -54,7 +54,8 @@ export class ImageToImage extends HTMLElement {
       return;
     }
     let blob = await fetch(inputUri).then(r => r.blob());
-    StableDiffusion.generateImageFromImage(blob, params);
+    let uri = await StableDiffusion.generateImageFromImage(blob, params);
+    document.getElementById("historyList").addImage(uri, params);
   }
   static setStatus(s) {
     document.getElementById("appbar").setStatus(s);

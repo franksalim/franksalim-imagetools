@@ -87,7 +87,8 @@ export class Inpainting extends HTMLElement {
     }
     let blob = await fetch(inputUri).then(r => r.blob());
     let maskBlob = await this.shadow.querySelector("fs-drawingcanvas").getBlob();
-    await StableDiffusion.inpaint(blob, maskBlob, params);
+    let uri = await StableDiffusion.inpaint(blob, maskBlob, params);
+    document.getElementById("historyList").addImage(uri, params);
   }
 
   setArgs(params) {

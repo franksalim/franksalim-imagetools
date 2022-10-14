@@ -6,8 +6,7 @@ export class StableDiffusion {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(params)
     });
-    let uri = URL.createObjectURL(await response.blob());
-    document.getElementById("historyList").addImage(uri, params);
+    return URL.createObjectURL(await response.blob());
   }
 
   static async generateImageFromImage(imageBlob, params) {
@@ -20,8 +19,7 @@ export class StableDiffusion {
       cache: "no-cache",
       body: formData
     });
-    let uri = URL.createObjectURL(await response.blob());
-    document.getElementById("historyList").addImage(uri, params);
+    return URL.createObjectURL(await response.blob());
   }
 
   static async inpaint(imageBlob, maskBlob, params) {
@@ -35,7 +33,6 @@ export class StableDiffusion {
       cache: "no-cache",
       body: formData
     });
-    let uri = URL.createObjectURL(await response.blob());
-    document.getElementById("historyList").addImage(uri, params);
+    return URL.createObjectURL(await response.blob());
   }
 }
