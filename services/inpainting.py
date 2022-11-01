@@ -10,7 +10,6 @@ from PIL.PngImagePlugin import PngInfo
 from io import BytesIO
 
 from diffusers import StableDiffusionInpaintPipeline
-from torch import autocast
 
 MODEL = "stable-diffusion-inpainting"
 
@@ -52,23 +51,22 @@ def generate_inpaint(image, mask, args, verbose=False):
 
     generator = torch.Generator(device=device).manual_seed(optseed)
 
-    with autocast(device):
-        image = img_pipeline(prompt=optprompt,
-                             guidance_scale=optscale,
-                             strength=optstrength,
-                             generator=generator,
-                             num_inference_steps=optsteps,
-                             image=init_image,
-                             mask_image=mask_image).images[0]
+    image = img_pipeline(prompt=optprompt,
+                         guidance_scale=optscale,
+                         strength=optstrength,
+                         generator=generator,
+                         num_inference_steps=optsteps,
+                         image=init_image,
+                         mask_image=mask_image).images[0]
 
-        metadata = PngInfo()
-        metadata.add_text("StableDiffusionParams", json.dumps(args))
-        metadata.add_text("StableDiffusionModel", MODEL)
+    metadata = PngInfo()
+    metadata.add_text("StableDiffusionParams", json.dumps(args))
+    metadata.add_text("StableDiffusionModel", MODEL)
 
-        bio = BytesIO()
-        image.save(bio, format="png", pnginfo=metadata)
-        bio.seek(0)
+    bio = BytesIO()
+    image.save(bio, format="png", pnginfo=metadata)
+    bio.seek(0)
 
-        torch_gc()
+    torch_gc()
 
-        return send_file(bio, as_attachment=False, mimetype="image/png")
+    return send_file(bio, as_attachment=False, mimetype="image/png")
