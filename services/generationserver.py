@@ -3,10 +3,9 @@
 """
 1. download model
 if you have a huggingface account:
-git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
-otherwise:
-wget https://archive.org/download/stable-diffusion-v1-4.tar/stable-diffusion-v1-4.tar.gz
-tar -zxf ./stable-diffusion-v1-4.tar.gz
+git lfs install
+git clone https://huggingface.co/runwayml/stable-diffusion-inpainting
+git clone https://huggingface.co/runwayml/stable-diffusion-v1-5
 
 2. run server
 cd services

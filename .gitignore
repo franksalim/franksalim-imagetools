@@ -130,3 +130,5 @@ dmypy.json
 
 /stable-diffusion-v1-4.tar.gz
 /stable-diffusion-v1-4/
+/stable-diffusion-v1-5/
+stable-diffusion-inpainting/

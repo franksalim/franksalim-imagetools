@@ -6,10 +6,13 @@ import json
 import torch
 import numpy as np
 from PIL import Image
+from PIL.PngImagePlugin import PngInfo
 from io import BytesIO
 
 from diffusers import StableDiffusionInpaintPipeline
 from torch import autocast
+
+MODEL = "stable-diffusion-inpainting"
 
 img_pipeline = None
 
@@ -35,7 +38,7 @@ def generate_inpaint(image, mask, args, verbose=False):
 
         # fp16 is half precision
         pipe = StableDiffusionInpaintPipeline.from_pretrained(
-            "../stable-diffusion-v1-4",
+            "../" + MODEL,
             local_files_only=True,
             use_auth_token=False,
             revision="fp16",
@@ -55,11 +58,15 @@ def generate_inpaint(image, mask, args, verbose=False):
                              strength=optstrength,
                              generator=generator,
                              num_inference_steps=optsteps,
-                             init_image=init_image,
+                             image=init_image,
                              mask_image=mask_image).images[0]
 
+        metadata = PngInfo()
+        metadata.add_text("StableDiffusionParams", json.dumps(args))
+        metadata.add_text("StableDiffusionModel", MODEL)
+
         bio = BytesIO()
-        image.save(bio, format="png")
+        image.save(bio, format="png", pnginfo=metadata)
         bio.seek(0)
 
         torch_gc()

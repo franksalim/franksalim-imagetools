@@ -12,6 +12,8 @@ from io import BytesIO
 from diffusers import StableDiffusionPipeline
 
 
+MODEL = "stable-diffusion-v1-5"
+
 def force_tiled():
     global unforce_tiled
     cls = torch.nn.Conv2d
@@ -69,7 +71,7 @@ def generate_txt2img(args, verbose=False):
 
         # fp16 is half precision
         pipe = StableDiffusionPipeline.from_pretrained(
-            "../stable-diffusion-v1-4",
+            "../" + MODEL,
             local_files_only=True,
             use_auth_token=False,
             revision="fp16",
@@ -93,6 +95,7 @@ def generate_txt2img(args, verbose=False):
 
     metadata = PngInfo()
     metadata.add_text("StableDiffusionParams", json.dumps(args))
+    metadata.add_text("StableDiffusionModel", MODEL)
 
     bio = BytesIO()
     image.save(bio, format="png", pnginfo=metadata)

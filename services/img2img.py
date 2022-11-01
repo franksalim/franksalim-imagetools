@@ -6,10 +6,13 @@ import json
 import torch
 import numpy as np
 from PIL import Image
+from PIL.PngImagePlugin import PngInfo
 from io import BytesIO
 
 from diffusers import StableDiffusionImg2ImgPipeline
 from torch import autocast
+
+MODEL = "stable-diffusion-v1-5"
 
 img_pipeline = None
 
@@ -34,7 +37,7 @@ def generate_img2img(image, args, verbose=False):
 
         # fp16 is half precision
         pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
-            "../stable-diffusion-v1-4",
+            "../" + MODEL,
             local_files_only=True,
             use_auth_token=False,
             revision="fp16",
@@ -56,8 +59,12 @@ def generate_img2img(image, args, verbose=False):
                              num_inference_steps=optsteps,
                              init_image=init_image).images[0]
 
+        metadata = PngInfo()
+        metadata.add_text("StableDiffusionParams", json.dumps(args))
+        metadata.add_text("StableDiffusionModel", MODEL)
+
         bio = BytesIO()
-        image.save(bio, format="png")
+        image.save(bio, format="png", pnginfo=metadata)
         bio.seek(0)
 
         torch_gc()
