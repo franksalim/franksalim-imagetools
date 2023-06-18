@@ -26,7 +26,6 @@ def generate_inpaint(image, mask, args, verbose=False):
     optseed = int(args["seed"])
     optscale = float(args["scale"])
     optsteps = int(args["steps"])
-    optstrength = float(args["strength"])
 
     init_image = Image.open(BytesIO(image.stream.read())).convert("RGB")
     mask_image = Image.open(BytesIO(mask.stream.read())).convert("RGB")
@@ -53,7 +52,6 @@ def generate_inpaint(image, mask, args, verbose=False):
 
     image = img_pipeline(prompt=optprompt,
                          guidance_scale=optscale,
-                         strength=optstrength,
                          generator=generator,
                          num_inference_steps=optsteps,
                          image=init_image,

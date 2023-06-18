@@ -55,7 +55,7 @@ def generate_img2img(image, args, verbose=False):
                          strength=optstrength,
                          generator=generator,
                          num_inference_steps=optsteps,
-                         init_image=init_image).images[0]
+                         image=init_image).images[0]
 
     metadata = PngInfo()
     metadata.add_text("StableDiffusionParams", json.dumps(args))

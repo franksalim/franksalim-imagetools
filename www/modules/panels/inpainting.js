@@ -4,7 +4,7 @@ import {DrawingCanvas} from "/modules/widgets/drawingcanvas.js";
 import {StableDiffusion} from "/modules/api/stablediffusion.js";
 
 export class Inpainting extends HTMLElement {
-  static ids = ["steps", "scale", "prompt", "strength", "seed"];
+  static ids = ["steps", "scale", "prompt", "seed"];
 
   constructor() {
     super();
@@ -33,8 +33,6 @@ export class Inpainting extends HTMLElement {
       <fs-slider step=0.5 min=-30 max=30 value=7.5 id=scale></fs-slider>
       <h2>Steps</h2>
       <fs-slider step=1 min=1 max=100 value=30 id=steps></fs-slider>
-      <h2>Strength</h2>
-      <fs-slider step=0.01 min=0.0 max=1.0 value=0.95 id=strength></fs-slider>
 
       <div class=buttonbar>
         <button id=generateButton>Generate</button>
