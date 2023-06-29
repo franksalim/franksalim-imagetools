@@ -14,7 +14,7 @@ class DummySafetyChecker():
         self.__module__ = "foo.bar.foo.bar"
 
     def __call__(self, images, **kwargs):
-        return (images, False)
+        return (images, [False])
 
 
 def torch_gc():
