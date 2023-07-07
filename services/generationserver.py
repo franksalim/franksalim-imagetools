@@ -64,4 +64,4 @@ def inpaint():
 if __name__ == '__main__':
     if "--verbose" in sys.argv or "-v" in sys.argv:
         verbose = True
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
