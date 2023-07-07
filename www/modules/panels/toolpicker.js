@@ -35,34 +35,37 @@ export class ToolPicker extends HTMLElement {
           width: 40px;
           opacity: .5;
         }
-        button[selected] {
+        button[selected], button:active {
           background-color: #ccc;
           box-shadow: -6px 8px 8px rgba(0, 0, 0, .25);
         }
         </style>
 
-        <button id=img2imgButton title="Image to image">
+        <button id=img2imgButton title="Image to image" data-page>
           <img src=/assets/imagesmode_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
-        <button selected id=txt2imgButton title="Text to image">
+        <button selected id=txt2imgButton title="Text to image" data-page>
           <img src=/assets/edit_document_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
-        <button id=inpaintingButton title="Inpainting">
+        <button id=inpaintingButton title="Inpainting" data-page>
           <img src=/assets/brush_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
-        <button id=drawingButton title="Draw">
+        <button id=drawingButton title="Draw" data-page>
           <img src=/assets/draw_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
 
         <div class=spacer></div>
-        <button id=aboutButton title="About">
+        <button id=aboutButton title="About" data-page>
           <img src=/assets/help_FILL0_wght400_GRAD0_opsz48.svg>
+        </button>
+        <button id=clearAllButton title="Clear All">
+          <img src=/assets/delete_FILL0_wght400_GRAD0_opsz48.svg>
         </button>
         <fs-save-project-button></fs-save-project-button>
         <fs-open-project-button></fs-open-project-button>
     `;
     this.shadow = shadow;
-    let buttons = shadow.querySelectorAll("button");
+    let buttons = shadow.querySelectorAll("button[data-page]");
     for (const button of buttons) {
       button.addEventListener("click", e => {
         [...buttons].map(b => { b.removeAttribute("selected") });
@@ -96,6 +99,9 @@ export class ToolPicker extends HTMLElement {
     });
     shadow.getElementById("aboutButton").addEventListener("click", e => {
       this.select(aboutTool);
+    });
+    shadow.getElementById("clearAllButton").addEventListener("click", e => {
+      document.getElementById("historyList").clearHistory();
     });
   }
 
