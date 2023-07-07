@@ -53,7 +53,10 @@ export class PromptBuilder extends HTMLElement {
     let prompt = "";
     let terms = [];
     for (const chip of chips.childNodes) {
-      terms.push(chip.getValue());
+      // skip hidden terms
+      if (chip.visibility) {
+        terms.push(chip.getValue());
+      }
     }
     prompt = terms.join(", ");
     this.ed.value = prompt;
