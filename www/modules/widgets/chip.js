@@ -32,13 +32,19 @@ export class Chip extends HTMLElement {
 
     this.input.addEventListener("keydown", e => {
       switch(e.which) {
-        case 13: // pressing enter adds another chip
-          let newChip = document.createElement("fs-chip");
-          this.after(newChip);
-          newChip.addEventListener("input", e => {
-            this.parentNode.parentNode.host.updateEditor();
-          });
-          newChip.focus();
+        case 13: // enter
+          if (e.ctrlKey) {
+            let tool = document.querySelector("#tools .active");
+            tool?.generate();
+          } else {
+            // add another chip
+            let newChip = document.createElement("fs-chip");
+            this.after(newChip);
+            newChip.addEventListener("input", e => {
+              this.parentNode.parentNode.host.updateEditor();
+            });
+            newChip.focus();
+          }
           break;
         case 8: // backspace deletes empty chips
           if (this.input.value == "") {
