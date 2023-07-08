@@ -38,18 +38,19 @@ export class PromptBuilder extends HTMLElement {
       chip.setValue(term);
 
       chip.addEventListener("input", e => {
-        this.updateEditor(chips);
+        this.updateEditor();
       });
       chip.addEventListener("delete", e => {
         chip.remove();
-        this.updateEditor(chips);
+        this.updateEditor();
       });
       chips.appendChild(chip);
     }
     this.value = this.ed.value;
   }
 
-  updateEditor(chips) {
+  updateEditor() {
+    let chips = this.shadow.getElementById("chips");
     let prompt = "";
     let terms = [];
     for (const chip of chips.childNodes) {

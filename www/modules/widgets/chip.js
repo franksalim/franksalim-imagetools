@@ -30,7 +30,40 @@ export class Chip extends HTMLElement {
     this.shadow = shadow;
     this.input = shadow.getElementById("input");
 
-    shadow.getElementById("input");
+    this.input.addEventListener("keydown", e => {
+      switch(e.which) {
+        case 13: // pressing enter adds another chip
+          let newChip = document.createElement("fs-chip");
+          this.after(newChip);
+          newChip.addEventListener("input", e => {
+            this.parentNode.parentNode.host.updateEditor();
+          });
+          newChip.focus();
+          break;
+        case 8: // backspace deletes empty chips
+          if (this.input.value == "") {
+            let other = this.previousElementSibling;
+            setTimeout(() => {other?.focus()}, 0);
+            this.remove();
+          }
+          break;
+        case 46: // delete
+          if (this.input.value == "") {
+            let other = this.nextElementSibling;
+            setTimeout(() => {other?.focus()}, 0);
+            this.remove();
+          }
+          break;
+        case 38: // up
+          this.previousElementSibling?.focus();
+          break;
+        case 40: // down
+          this.nextElementSibling?.focus();
+          break;
+      }
+      this.parentNode?.parentNode?.host.updateEditor();
+    });
+
     shadow.getElementById("removeButton").addEventListener("click", e => {
       const event = new Event("delete");
       this.dispatchEvent(event);
@@ -43,8 +76,7 @@ export class Chip extends HTMLElement {
       } else {
         e.target.src = "/assets/visibility_off_FILL0_wght400_GRAD0_opsz48.svg";
       }
-      const event = new Event("input");
-      this.dispatchEvent(event);
+      this.fireInputEvent();
     });
 
     this.addEventListener("dragstart", e => {
@@ -84,8 +116,7 @@ export class Chip extends HTMLElement {
       } else {
         e.target.after(Chip.dragged);
       }
-      const event = new Event("input");
-      this.dispatchEvent(event);
+      this.fireInputEvent();
     });
   }
 
@@ -96,6 +127,15 @@ export class Chip extends HTMLElement {
 
   getValue() {
     return this.input.value;
+  }
+
+  focus() {
+    this.input.focus();
+  }
+
+  fireInputEvent() {
+    const event = new Event("input");
+    this.dispatchEvent(event);
   }
 }
 window.customElements.define('fs-chip', Chip);
