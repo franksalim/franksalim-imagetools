@@ -9,10 +9,11 @@ from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 from io import BytesIO
 
-from diffusers import StableDiffusionXLPipeline
+from diffusers import StableDiffusionXLPipeline, DiffusionPipeline
 
 
 MODEL = "../models/stable-diffusion-xl-base-1.0"
+MODEL_REFINER = "../models/stable-diffusion-xl-refiner-1.0"
 
 def force_tiled():
     global unforce_tiled
@@ -36,12 +37,14 @@ def unforce_tiled(): return None
 
 
 sd_pipeline = None
+refiner = None
 
 
 def generate_txt2img(args, verbose=False):
     if verbose:
         print(json.dumps(args))
     global sd_pipeline
+    global refiner
     global currently_tiled
     should_tile = args.get("tiled", False) == True
 
@@ -82,14 +85,40 @@ def generate_txt2img(args, verbose=False):
         torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
         sd_pipeline = pipe
 
+        pipe = DiffusionPipeline.from_pretrained(
+            MODEL_REFINER,
+            text_encoder_2=sd_pipeline.text_encoder_2,
+            vae=sd_pipeline.vae,
+            local_files_only=True,
+            use_auth_token=False,
+            torch_dtype=torch.float16,
+            variant="fp16",
+            use_safetensors=True)
+
+        pipe = pipe.to(device)
+
+        pipe.enable_xformers_memory_efficient_attention()
+        torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
+        refiner = pipe
+
     generator = torch.Generator(device=device).manual_seed(optseed)
 
-    image = sd_pipeline(prompt=optprompt,
+    latents = sd_pipeline(prompt=optprompt,
                         negative_prompt=optnegprompt,
                         width=optwidth,
                         height=optheight,
                         guidance_scale=optscale,
                         num_inference_steps=optsteps,
+                        denoising_end = 0.8,
+                        generator=generator,
+                        output_type="latent").images[0]
+
+    image = refiner(prompt=optprompt,
+                        negative_prompt=optnegprompt,
+                        guidance_scale=optscale,
+                        num_inference_steps=optsteps,
+                        denoising_start = 0.8,
+                        image=latents,
                         generator=generator).images[0]
 
     metadata = PngInfo()
