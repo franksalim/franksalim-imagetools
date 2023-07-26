@@ -65,7 +65,6 @@ def generate_txt2img(args, verbose=False):
     optwidth = int(args["width"])
 
     # load model if not loaded
-    torch_gc()
     if sd_pipeline is None:
         print("loading txt2img model...")
 
@@ -80,6 +79,7 @@ def generate_txt2img(args, verbose=False):
         pipe = pipe.to(device)
 
         pipe.enable_attention_slicing()
+        torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
         sd_pipeline = pipe
 
     generator = torch.Generator(device=device).manual_seed(optseed)
@@ -99,7 +99,5 @@ def generate_txt2img(args, verbose=False):
     bio = BytesIO()
     image.save(bio, format="png", pnginfo=metadata)
     bio.seek(0)
-
-    torch_gc()
 
     return send_file(bio, as_attachment=False, mimetype="image/png")
