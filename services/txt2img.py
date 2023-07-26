@@ -78,7 +78,7 @@ def generate_txt2img(args, verbose=False):
 
         pipe = pipe.to(device)
 
-        pipe.enable_attention_slicing()
+        pipe.enable_xformers_memory_efficient_attention()
         torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
         sd_pipeline = pipe
 
