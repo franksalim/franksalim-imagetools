@@ -9,10 +9,10 @@ from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 from io import BytesIO
 
-from diffusers import StableDiffusionPipeline
+from diffusers import StableDiffusionXLPipeline
 
 
-MODEL = "stable-diffusion-v1-5"
+MODEL = "../models/stable-diffusion-xl-base-1.0"
 
 def force_tiled():
     global unforce_tiled
@@ -69,14 +69,13 @@ def generate_txt2img(args, verbose=False):
     if sd_pipeline is None:
         print("loading txt2img model...")
 
-        # fp16 is half precision
-        pipe = StableDiffusionPipeline.from_pretrained(
-            "../" + MODEL,
+        pipe = StableDiffusionXLPipeline.from_pretrained(
+            MODEL,
             local_files_only=True,
             use_auth_token=False,
-            revision="fp16",
             torch_dtype=torch.float16,
-            safety_checker=DummySafetyChecker())
+            variant="fp16",
+            use_safetensors=True)
 
         pipe = pipe.to(device)
 

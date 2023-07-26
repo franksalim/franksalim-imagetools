@@ -17,6 +17,7 @@ git clone https://github.com/franksalim/franksalim-imagetools
 cd franksalim-imagetools
 pip install -r requirements.txt
 git clone https://huggingface.co/runwayml/stable-diffusion-v1-5
+git clone https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
 cd services
 ./generationserver.py
 ```
