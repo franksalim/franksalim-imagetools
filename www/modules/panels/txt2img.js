@@ -14,9 +14,9 @@ export class TextToImage extends HTMLElement {
       <fs-promptbuilder id=negprompt placeholder="negative prompt"></fs-promptbuilder>
 
       <h2>Width</h2>
-      <fs-slider step=8 min=256 max=1024 value=512 id=width></fs-slider>
+      <fs-slider step=8 min=768 max=2048 value=1024 id=width></fs-slider>
       <h2>Height</h2>
-      <fs-slider step=8 min=256 max=1024 value=512 id=height></fs-slider>
+      <fs-slider step=8 min=768 max=2048 value=1024 id=height></fs-slider>
 
       <div class=buttonbar>
         <button id=squarePresetButton>Square</button>
@@ -117,24 +117,24 @@ export class TextToImage extends HTMLElement {
 
     let squarePresetButton = shadow.getElementById("squarePresetButton");
     squarePresetButton.addEventListener("click", e => {
-      widthSlider.value = 512;
-      heightSlider.value = 512;
+      widthSlider.value = 1024;
+      heightSlider.value = 1024;
       widthSlider.dispatchEvent(new Event("input"));
       heightSlider.dispatchEvent(new Event("input"));
     });
 
     let portraitPresetButton = shadow.getElementById("portraitPresetButton");
     portraitPresetButton.addEventListener("click", e => {
-      widthSlider.value = 448;
-      heightSlider.value = 704;
+      widthSlider.value = 768;
+      heightSlider.value = 1024;
       widthSlider.dispatchEvent(new Event("input"));
       heightSlider.dispatchEvent(new Event("input"));
     });
 
     let landcapePresetButton = shadow.getElementById("landcapePresetButton");
     landcapePresetButton.addEventListener("click", e => {
-      widthSlider.value = 704;
-      heightSlider.value = 448;
+      widthSlider.value = 1024;
+      heightSlider.value = 768;
       widthSlider.dispatchEvent(new Event("input"));
       heightSlider.dispatchEvent(new Event("input"));
     });
