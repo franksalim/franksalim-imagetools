@@ -1,4 +1,4 @@
-from diffusersextras import DummySafetyChecker, torch_gc, device
+from diffusersextras import device
 
 from flask import send_file
 import json
@@ -9,15 +9,14 @@ from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 from io import BytesIO
 
-from diffusers import StableDiffusionImg2ImgPipeline
+from diffusers import StableDiffusionXLImg2ImgPipeline
 
-MODEL = "stable-diffusion-v1-5"
+MODEL = "../models/stable-diffusion-xl-base-1.0"
 
 img_pipeline = None
 
 
 def generate_img2img(image, args, verbose=False):
-    torch_gc()
     global img_pipeline
     if verbose:
         print(json.dumps(args))
@@ -34,18 +33,18 @@ def generate_img2img(image, args, verbose=False):
     if img_pipeline is None:
         print("loading img2img model...")
 
-        # fp16 is half precision
-        pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
-            "../" + MODEL,
+        pipe = StableDiffusionXLImg2ImgPipeline.from_pretrained(
+            MODEL,
             local_files_only=True,
             use_auth_token=False,
-            revision="fp16",
             torch_dtype=torch.float16,
-            safety_checker=DummySafetyChecker())
+            variant="fp16",
+            use_safetensors=True)
 
         pipe = pipe.to(device)
 
-        pipe.enable_attention_slicing()
+        pipe.enable_xformers_memory_efficient_attention()
+        torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
         img_pipeline = pipe
 
     generator = torch.Generator(device=device).manual_seed(optseed)
@@ -64,7 +63,5 @@ def generate_img2img(image, args, verbose=False):
     bio = BytesIO()
     image.save(bio, format="png", pnginfo=metadata)
     bio.seek(0)
-
-    torch_gc()
 
     return send_file(bio, as_attachment=False, mimetype="image/png")

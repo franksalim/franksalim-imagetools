@@ -1,4 +1,4 @@
-from diffusersextras import DummySafetyChecker, torch_gc, device
+from diffusersextras import device
 
 from flask import send_file
 import json

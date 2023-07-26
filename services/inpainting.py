@@ -1,4 +1,4 @@
-from diffusersextras import DummySafetyChecker, torch_gc, device
+from diffusersextras import device
 
 from flask import send_file
 import json
@@ -9,15 +9,14 @@ from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 from io import BytesIO
 
-from diffusers import StableDiffusionInpaintPipeline
+from diffusers import StableDiffusionXLInpaintPipeline
 
-MODEL = "stable-diffusion-inpainting"
+MODEL = "../models/stable-diffusion-xl-base-1.0"
 
 img_pipeline = None
 
 
 def generate_inpaint(image, mask, args, verbose=False):
-    torch_gc()
     global img_pipeline
     if verbose:
         print(json.dumps(args))
@@ -35,17 +34,18 @@ def generate_inpaint(image, mask, args, verbose=False):
         print("loading inpainting model...")
 
         # fp16 is half precision
-        pipe = StableDiffusionInpaintPipeline.from_pretrained(
-            "../" + MODEL,
+        pipe = StableDiffusionXLInpaintPipeline.from_pretrained(
+            MODEL,
             local_files_only=True,
             use_auth_token=False,
-            revision="fp16",
             torch_dtype=torch.float16,
-            safety_checker=DummySafetyChecker())
+            variant="fp16",
+            use_safetensors=True)
 
         pipe = pipe.to(device)
 
-        pipe.enable_attention_slicing()
+        pipe.enable_xformers_memory_efficient_attention()
+        torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)
         img_pipeline = pipe
 
     generator = torch.Generator(device=device).manual_seed(optseed)
@@ -64,7 +64,5 @@ def generate_inpaint(image, mask, args, verbose=False):
     bio = BytesIO()
     image.save(bio, format="png", pnginfo=metadata)
     bio.seek(0)
-
-    torch_gc()
 
     return send_file(bio, as_attachment=False, mimetype="image/png")
