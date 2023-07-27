@@ -4,3 +4,5 @@ transformers
 torch
 safetensors
 accelerate
+xformers
+invisible-watermark
